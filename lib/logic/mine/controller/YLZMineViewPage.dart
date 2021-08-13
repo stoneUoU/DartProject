@@ -34,6 +34,7 @@ class _YLZMineViewPageState extends State<YLZMineViewPage>
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
+      color: Colors.white,
       child: Column(
         children: [
           Container(

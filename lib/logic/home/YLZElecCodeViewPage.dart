@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:dart_demo/base/config/YLZMacros.dart';
 import 'package:dart_demo/logic/home/view/cell/elec/YLZElecCodeBannerWidget.dart';
 import 'package:dart_demo/logic/home/view/cell/elec/YLZElecCodeCarouselWidget.dart';
+import 'package:dart_demo/logic/home/view/cell/elec/YLZElecCodeFailureWidget.dart';
 import 'package:dart_demo/logic/home/view/cell/elec/YLZElecCodeFunctionWidget.dart';
 import 'package:dart_demo/logic/home/view/cell/elec/YLZElecCodeWidget.dart';
 import 'package:flutter/material.dart';
@@ -69,6 +70,7 @@ class _YLZElecCodeViewPageState extends State<YLZElecCodeViewPage> {
             (kBottomNavigationBarHeight +
                 StatusH(context) +
                 TabbarSafeBottomM(context)),
+        color: Colors.white,
         child: CustomScrollView(
           slivers: [
             _StickyHeaderList(index: 0),
@@ -145,6 +147,7 @@ class _StickyHeaderList extends StatelessWidget {
                   this.clickListener!();
                 }
               });
+              // return YLZElecCodeFailureWidget();
             } else if (index == 2) {
               return YLZElecCodeFunctionWidget(
                   elecCodeFunctionWidgetClickListener: (int intString) {
