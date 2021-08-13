@@ -82,10 +82,13 @@ class _YLZHomeViewPageState extends State<YLZHomeViewPage>
                     List<HomePage> homePageList = model.homePage!;
                     return Stack(
                       children: [
-                        CustomScrollView(
-                          slivers: _buildWidget(homePageList),
-                          reverse: false,
-                          controller: _scrollController,
+                        Container(
+                          child: CustomScrollView(
+                            slivers: _buildWidget(homePageList),
+                            reverse: false,
+                            controller: _scrollController,
+                          ),
+                          color: Colors.white,
                         ),
                         Positioned(
                             top: 0,

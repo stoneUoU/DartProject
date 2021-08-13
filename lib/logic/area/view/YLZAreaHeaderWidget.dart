@@ -12,6 +12,7 @@ class YLZAreaHeaderWidget extends StatelessWidget {
     return Container(
       height: StatusH(context) + NaviH,
       width: ScreenW(context),
+      color: Colors.white,
       child: Column(
         children: [
           Container(

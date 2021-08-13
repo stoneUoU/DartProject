@@ -51,148 +51,153 @@ class YLZElecCodeWidgetState extends State<YLZElecCodeWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
-      width: ScreenW(context) - 32,
-      height: 345,
-      child: Card(
-        elevation: 15.0,
-        shadowColor: Colors.black38,
+      decoration: BoxDecoration(
+        boxShadow: [
+          //阴影效果
+          BoxShadow(
+            offset: Offset(0, 0), //阴影在X轴和Y轴上的偏移
+            color: Color(YLZColorBackGround), //阴影颜色
+            blurRadius: 3.0, //阴影程度
+            spreadRadius: 5, //阴影扩散的程度 取值可以正数,也可以是负数
+          ),
+        ],
         color: Colors.white,
-        child: Column(
-          children: [
-            Container(
-              child: Column(
-                children: [
-                  Container(
-                    width: ScreenW(context) - 120,
-                    height: 64,
-                    margin: EdgeInsets.fromLTRB(0, 32, 0, 0),
-                    child: BarcodeWidget(
-                      barcode: Barcode.code128(),
-                      data: barCodeBytes,
-                      drawText: false,
-                    ),
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      margin: EdgeInsets.fromLTRB(16, 5, 16, 5),
+      width: ScreenW(context) - 32,
+      child: Column(
+        children: [
+          Container(
+            child: Column(
+              children: [
+                Container(
+                  width: ScreenW(context) - 120,
+                  height: 64,
+                  margin: EdgeInsets.fromLTRB(0, 32, 0, 0),
+                  child: BarcodeWidget(
+                    barcode: Barcode.code128(),
+                    data: barCodeBytes,
+                    drawText: false,
                   ),
-                  Container(
-                      width: 120,
-                      height: 120,
-                      margin: EdgeInsets.fromLTRB(0, 16, 0, 0),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          BarcodeWidget(
-                            barcode: Barcode.qrCode(
-                              errorCorrectLevel: BarcodeQRCorrectionLevel.high,
-                            ),
-                            data: codeBytes,
-                            width: 120,
-                            height: 120,
-                          ),
-                          Container(
-                            color: Colors.white,
-                            width: 20,
-                            height: 20,
-                            child: Image.asset(
-                              'assets/images/ylz_elec_code_small_logo.png',
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                        ],
-                      )),
-                  Container(
-                    alignment: Alignment.center,
+                ),
+                Container(
+                    width: 120,
+                    height: 120,
                     margin: EdgeInsets.fromLTRB(0, 16, 0, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: Stack(
+                      alignment: Alignment.center,
                       children: [
-                        Image.asset(
-                          'assets/images/ylz_elec_code_fresh.png',
-                          fit: BoxFit.fill,
+                        BarcodeWidget(
+                          barcode: Barcode.qrCode(
+                            errorCorrectLevel: BarcodeQRCorrectionLevel.high,
+                          ),
+                          data: codeBytes,
+                          width: 120,
+                          height: 120,
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(6, 0, 6, 0),
-                          child: Text("每隔1分钟自动"),
-                        ),
-                        InkWell(
-                          child: Container(
-                            child: Text(
-                              "刷新",
-                              style: TextStyle(
-                                  color: Color(YLZColorLightBlueView)),
-                            ),
+                          color: Colors.white,
+                          width: 20,
+                          height: 20,
+                          child: Image.asset(
+                            'assets/images/ylz_elec_code_small_logo.png',
+                            fit: BoxFit.fill,
                           ),
-                          onTap: () {
-                            if (widget.elecCodeWidgetFreshClickListener !=
-                                null) {
-                              widget.elecCodeWidgetFreshClickListener();
-                            }
-                          },
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 18),
-              height: 50,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    color: Color(YLZColorLine),
-                    height: 1.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        margin: EdgeInsets.only(left: 12),
-                        child: Text(
-                          '医保账户 ',
-                          style: const TextStyle(
-                              color: Color(YLZColorTitleOne), fontSize: 16),
                         ),
-                        height: 49,
+                      ],
+                    )),
+                Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.fromLTRB(0, 16, 0, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/ylz_elec_code_fresh.png',
+                        fit: BoxFit.fill,
+                      ),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(6, 0, 6, 0),
+                        child: Text("每隔1分钟自动"),
                       ),
                       InkWell(
                         child: Container(
-                          margin: EdgeInsets.only(right: 12),
-                          child: Row(
-                            children: [
-                              Text(
-                                '厦门市市本级 ',
-                                style: const TextStyle(
-                                    color: Color(YLZColorTitleOne),
-                                    fontSize: 16),
-                              ),
-                              Image.asset(
-                                'assets/images/ylz_arrow_right.png',
-                                width: 12,
-                                height: 12,
-                              )
-                            ],
+                          child: Text(
+                            "刷新",
+                            style:
+                                TextStyle(color: Color(YLZColorLightBlueView)),
                           ),
                         ),
                         onTap: () {
-                          print("AAA");
-                          showModalBottomSheet(
-                              backgroundColor: Colors.transparent,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return YLZElecAreaWidget();
-                              });
+                          if (widget.elecCodeWidgetFreshClickListener != null) {
+                            widget.elecCodeWidgetFreshClickListener();
+                          }
                         },
                       )
                     ],
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 18),
+            height: 50,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  color: Color(YLZColorLine),
+                  height: 1.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.only(left: 12),
+                      child: Text(
+                        '医保账户 ',
+                        style: const TextStyle(
+                            color: Color(YLZColorTitleOne), fontSize: 16),
+                      ),
+                      height: 49,
+                    ),
+                    InkWell(
+                      child: Container(
+                        margin: EdgeInsets.only(right: 12),
+                        child: Row(
+                          children: [
+                            Text(
+                              '厦门市市本级 ',
+                              style: const TextStyle(
+                                  color: Color(YLZColorTitleOne), fontSize: 16),
+                            ),
+                            Image.asset(
+                              'assets/images/ylz_arrow_right.png',
+                              width: 12,
+                              height: 12,
+                            )
+                          ],
+                        ),
+                      ),
+                      onTap: () {
+                        print("AAA");
+                        showModalBottomSheet(
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return YLZElecAreaWidget();
+                            });
+                      },
+                    )
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

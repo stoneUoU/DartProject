@@ -1,4 +1,5 @@
 import 'package:dart_demo/base/config/YLZMacros.dart';
+import 'package:dart_demo/base/config/YLZStyle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
@@ -14,9 +15,19 @@ class YLZElecCodeCarouselWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(6.0)),
+        boxShadow: [
+          //阴影效果
+          BoxShadow(
+            offset: Offset(0, 0), //阴影在X轴和Y轴上的偏移
+            color: Color(YLZColorBackGround), //阴影颜色
+            blurRadius: 3.0, //阴影程度
+            spreadRadius: 5, //阴影扩散的程度 取值可以正数,也可以是负数
+          ),
+        ],
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12.0),
       ),
-      margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
+      margin: EdgeInsets.fromLTRB(16, 5, 16, 16),
       width: ScreenW(context) - 32,
       height: 88,
       child: Card(

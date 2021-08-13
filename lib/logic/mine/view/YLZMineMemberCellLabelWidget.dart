@@ -19,9 +19,10 @@ class YLZMineMemberCellLabelWidget extends StatelessWidget {
             padding: EdgeInsets.only(top: 6),
             child: Text(
               'iOS工程师',
-              style: const TextStyle(
-                color: Color(YLZColorTitleTwo),
-              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style:
+                  const TextStyle(color: Color(YLZColorTitleTwo), fontSize: 14),
             ),
           )
         ],
