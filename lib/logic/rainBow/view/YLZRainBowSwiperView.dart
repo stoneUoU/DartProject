@@ -1,7 +1,7 @@
 import 'package:dart_demo/base/config/YLZMacros.dart';
 import 'package:dart_demo/logic/rainBow/model/YLZRainBowRotationModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
 class YLZRainBowSwiperView extends StatefulWidget {
   List dataList = [];
