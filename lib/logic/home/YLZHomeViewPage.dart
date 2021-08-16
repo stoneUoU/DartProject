@@ -16,7 +16,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 class YLZHomeViewPage extends StatefulWidget {
-  const YLZHomeViewPage({Key? key}) : super(key: key);
+  final ValueChanged<int> onJumpTo;
+
+  const YLZHomeViewPage({Key? key, required this.onJumpTo}) : super(key: key);
 
   @override
   _YLZHomeViewPageState createState() => _YLZHomeViewPageState();
@@ -94,7 +96,10 @@ class _YLZHomeViewPageState extends State<YLZHomeViewPage>
                             top: 0,
                             left: 0,
                             child: YLZHomeNavigationWithSearchWidget(
-                                homeNavigationWithSearchWidgetStateKey))
+                                homeNavigationWithSearchWidgetStateKey, () {
+                              // print("点击");
+                              widget.onJumpTo(1);
+                            }))
                       ],
                     );
                   } else {

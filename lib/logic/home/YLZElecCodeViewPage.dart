@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:dart_demo/base/config/YLZMacros.dart';
+import 'package:dart_demo/base/navigator/HiNavigator.dart';
 import 'package:dart_demo/logic/home/view/cell/elec/YLZElecCodeBannerWidget.dart';
 import 'package:dart_demo/logic/home/view/cell/elec/YLZElecCodeCarouselWidget.dart';
-import 'package:dart_demo/logic/home/view/cell/elec/YLZElecCodeFailureWidget.dart';
 import 'package:dart_demo/logic/home/view/cell/elec/YLZElecCodeFunctionWidget.dart';
 import 'package:dart_demo/logic/home/view/cell/elec/YLZElecCodeWidget.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +42,10 @@ class _YLZElecCodeViewPageState extends State<YLZElecCodeViewPage> {
         elevation: 0,
         centerTitle: false,
         titleSpacing: 0,
-        leading: BackButton(),
+        leading: BackButton(onPressed: () {
+          // HiNavigator().onJumpTo(RouteStatus.home);
+          HiNavigator().pop(context);
+        }),
         title: Text(
           "返回",
           style: TextStyle(fontSize: 18),

@@ -7,10 +7,11 @@ import 'package:dart_demo/net/dao/area_dao.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-// import 'package:geolocator/geolocator.dart';
 
 class YLZAreaViewPage extends StatefulWidget {
-  const YLZAreaViewPage({Key? key}) : super(key: key);
+  final ValueChanged<int> onJumpTo;
+
+  const YLZAreaViewPage({Key? key, required this.onJumpTo}) : super(key: key);
 
   @override
   _YLZAreaViewPageState createState() => _YLZAreaViewPageState();
@@ -40,7 +41,11 @@ class _YLZAreaViewPageState extends State<YLZAreaViewPage>
       body: Container(
         child: Column(
           children: [
-            YLZAreaHeaderWidget(),
+            YLZAreaHeaderWidget(
+              clickListener: () {
+                widget.onJumpTo(0);
+              },
+            ),
             FutureBuilder(
                 future: _futureBuilderFuture,
                 builder: (context, snapshot) {

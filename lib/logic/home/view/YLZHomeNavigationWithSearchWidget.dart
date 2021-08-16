@@ -7,8 +7,9 @@ import 'YLZHomeSearchWidget.dart';
 
 class YLZHomeNavigationWithSearchWidget extends StatefulWidget {
   final Key key;
-
-  const YLZHomeNavigationWithSearchWidget(this.key) : super(key: key);
+  final YLZHomeNavigationWidgetClickListener clickListener;
+  const YLZHomeNavigationWithSearchWidget(this.key, this.clickListener)
+      : super(key: key);
 
   @override
   YLZHomeNavigationWithSearchWidgetState createState() =>
@@ -49,7 +50,8 @@ class YLZHomeNavigationWithSearchWidgetState
                 Positioned(
                     top: 0,
                     left: 0,
-                    child: YLZHomeNavigationWidget(homeNavigationKey))
+                    child: YLZHomeNavigationWidget(
+                        homeNavigationKey, widget.clickListener))
               ],
             ),
             Positioned(

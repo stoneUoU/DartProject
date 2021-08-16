@@ -63,7 +63,7 @@ class _YLZCustomTabBarPageState extends State<YLZCustomTabBarPage>
           physics: NeverScrollableScrollPhysics(), //设置滑动的效果，这个禁用滑动
           controller: _tabController,
           children: <Widget>[
-            YLZHomeViewPage(),
+            YLZHomeViewPage(onJumpTo: (int i) {}),
             YLZRainBowPage(),
             YLZCodeLoginPage()
           ],

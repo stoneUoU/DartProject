@@ -55,6 +55,10 @@ const int YLZColorBlackView = 0xff000000;
 
 const int YLZColorLightGreenView = 0xffF2F6FE;
 
+const int MGColorMainView = 0xff1D1B2A;
+
+const int MGColorLightBlueView = 0xff8AC4F5;
+
 const int colorC14 = 0xffE6A23C;
 const int colorC15 = 0xffFEFBF2;
 const int colorC16 = 0xffFFF4D9;

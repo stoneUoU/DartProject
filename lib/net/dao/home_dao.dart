@@ -23,7 +23,7 @@ class HomeDao {
   }
 
   static _sendDynamicNews() async {
-    BaseRequest request;
+    HomeRequest request;
     request = HomeRequest();
     request.pathCategory = 1;
     request.add("data", {});

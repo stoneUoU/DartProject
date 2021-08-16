@@ -1,10 +1,12 @@
 import 'package:dart_demo/base/config/YLZMacros.dart';
 import 'package:flutter/material.dart';
 
+typedef void YLZHomeNavigationWidgetClickListener();
+
 class YLZHomeNavigationWidget extends StatefulWidget {
   final Key key;
-
-  const YLZHomeNavigationWidget(this.key) : super(key: key);
+  final YLZHomeNavigationWidgetClickListener clickListener;
+  const YLZHomeNavigationWidget(this.key, this.clickListener) : super(key: key);
 
   @override
   YLZHomeNavigationWidgetState createState() => YLZHomeNavigationWidgetState();
@@ -48,11 +50,18 @@ class YLZHomeNavigationWidgetState extends State<YLZHomeNavigationWidget> {
                             )
                           ],
                         )),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 16, 0),
-                      child: Image.asset(
-                        'assets/images/ylz_message_logo.png',
+                    InkWell(
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(0, 0, 16, 0),
+                        child: Image.asset(
+                          'assets/images/ylz_message_logo.png',
+                        ),
                       ),
+                      onTap: () {
+                        if (widget.clickListener != Null) {
+                          widget.clickListener();
+                        }
+                      },
                     )
                   ],
                 ))

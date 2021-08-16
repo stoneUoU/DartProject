@@ -4,11 +4,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 class HiCache {
   SharedPreferences? prefs;
 
+  static HiCache? _instance;
+
   HiCache._() {
     init();
   }
-
-  static HiCache? _instance;
 
   HiCache._pre(SharedPreferences prefs) {
     this.prefs = prefs;
@@ -56,7 +56,11 @@ class HiCache {
     prefs?.setStringList(key, value);
   }
 
-  T get<T>(String key) {
-    return prefs?.get(key) as T;
+  T? get<T>(String key) {
+    var result = prefs?.get(key);
+    if (result != null) {
+      return result as T;
+    }
+    return null;
   }
 }

@@ -24,8 +24,8 @@ class YLZHomeSearchWidgetState extends State<YLZHomeSearchWidget> {
       marginLeftRatio = offset * (70 - 16);
       marginRightRatio = offset * (45 - 16);
 
-      print("marginTopRatio________________${marginTopRatio}");
-      print("heightRatio________________${heightRatio}");
+      // print("marginTopRatio________________${marginTopRatio}");
+      // print("heightRatio________________${heightRatio}");
     });
   }
 

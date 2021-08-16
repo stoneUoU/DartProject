@@ -98,6 +98,8 @@ class HiNavigator extends _RouteJumpListener {
     }
   }
 
+  void pop(BuildContext context) {Navigator.pop(context);}
+
   ///监听路由页面跳转
   void addListener(RouteChangeListener listener) {
     if (!_listeners.contains(listener)) {

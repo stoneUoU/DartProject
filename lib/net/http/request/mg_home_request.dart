@@ -1,6 +1,6 @@
 import 'package:dart_demo/net/http/request/base_request.dart';
 
-class HomeRequest extends BaseRequest {
+class MGHomeRequest extends BaseRequest {
   int pathCategory = 0;
 
   @override
@@ -16,9 +16,9 @@ class HomeRequest extends BaseRequest {
   @override
   String path() {
     if (pathCategory == 0) {
-      return "/base/api/bmgt/appChnlHolder/listAppModule";
+      return "/provide/home_nav";
     } else {
-      return "/base/api/news/topList";
+      return "/provide/home_data";
     }
   }
 }

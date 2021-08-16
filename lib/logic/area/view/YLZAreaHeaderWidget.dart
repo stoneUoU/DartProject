@@ -2,10 +2,13 @@ import 'package:dart_demo/base/config/YLZMacros.dart';
 import 'package:dart_demo/base/config/YLZStyle.dart';
 import 'package:flutter/material.dart';
 
+typedef void YLZAreaHeaderWidgetClickListener();
+
 class YLZAreaHeaderWidget extends StatelessWidget {
-  const YLZAreaHeaderWidget({
-    Key? key,
-  }) : super(key: key);
+  final YLZAreaHeaderWidgetClickListener clickListener;
+
+  const YLZAreaHeaderWidget({Key? key, required this.clickListener})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,14 +56,25 @@ class YLZAreaHeaderWidget extends StatelessWidget {
                 ),
                 Container(
                   width: ScreenW(context) / 3,
-                  padding: EdgeInsets.only(right: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.asset('assets/images/ylz_area_notice.png',
-                          fit: BoxFit.fill),
+                      InkWell(
+                        child: Padding(
+                          child: Image.asset(
+                              'assets/images/ylz_area_notice.png',
+                              fit: BoxFit.fill),
+                          padding: EdgeInsets.all(0),
+                        ),
+                        onTap: () {
+                          if (this.clickListener != Null) {
+                            this.clickListener();
+                          }
+                        },
+                      ),
                       Container(
+                        margin: EdgeInsets.only(right: 16),
                         decoration: BoxDecoration(
                           color: Colors.red,
                           borderRadius: BorderRadius.all(Radius.circular(3.0)),

@@ -1,31 +1,43 @@
 import 'package:dart_demo/base/navigator/HiNavigator.dart';
 import 'package:dart_demo/logic/area/controller/YLZAreaViewPage.dart';
-import 'package:dart_demo/logic/home/YLZHomeViewPage.dart';
+import 'package:dart_demo/logic/mguo/controller/mg_home_view_page.dart';
 import 'package:dart_demo/logic/mine/controller/YLZMineViewPage.dart';
 import 'package:dart_demo/net/db/hi_cache.dart';
-import 'package:dart_demo/provider/YLZTabbarProvider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 ///底部导航
-class YLZBottomNavigator extends StatelessWidget {
+class YLZBottomNavigator extends StatefulWidget {
+  @override
+  _YLZBottomNavigatorState createState() => _YLZBottomNavigatorState();
+}
+
+class _YLZBottomNavigatorState extends State<YLZBottomNavigator> {
   final _activeColor = Colors.red;
   static int initialPage = 0;
   final PageController _controller = PageController(initialPage: initialPage);
-  List<Widget> _pages = [
-    YLZHomeViewPage(),
-    YLZAreaViewPage(),
-    YLZMineViewPage()
-  ];
-  bool _hasBuild = false;
+  late List<Widget> _pages;
+  int _currentIndex = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _pages = [
+      // YLZHomeViewPage(onJumpTo: (int i) {
+      //   this._onJumpTo(context, i);
+      // }),
+      MGHomeViewPage(),
+      YLZAreaViewPage(onJumpTo: (int i) {
+        this._onJumpTo(context, i);
+      }),
+      YLZMineViewPage()
+    ];
+    //页面第一次打开时通知打开的是那个tab
+    HiNavigator().onBottomTabChange(initialPage, _pages[initialPage]);
+  }
+
   @override
   Widget build(BuildContext context) {
-    int selectedIndex = context.watch<YLZTabbarProvider>().selectedIndex;
-    if (!_hasBuild) {
-      //页面第一次打开时通知打开的是那个tab
-      HiNavigator().onBottomTabChange(initialPage, _pages[initialPage]);
-      _hasBuild = true;
-    }
     return Scaffold(
       body: PageView(
         controller: _controller,
@@ -33,7 +45,7 @@ class YLZBottomNavigator extends StatelessWidget {
         physics: NeverScrollableScrollPhysics(),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectedIndex,
+        currentIndex: _currentIndex,
         onTap: (index) => _onJumpTo(context, index),
         type: BottomNavigationBarType.fixed,
         selectedItemColor: _activeColor,
@@ -72,17 +84,26 @@ class YLZBottomNavigator extends StatelessWidget {
           "onCodeLoginPageListener": (bool isSuccess) {
             if (isSuccess) {
               _controller.jumpToPage(index);
-              context.read<YLZTabbarProvider>().setSelectedIndex(index);
+              setState(() {
+                //控制选中第一个tab
+                _currentIndex = index;
+              });
             }
           }
         });
       } else {
         _controller.jumpToPage(index);
-        context.read<YLZTabbarProvider>().setSelectedIndex(index);
+        setState(() {
+          //控制选中第一个tab
+          _currentIndex = index;
+        });
       }
     } else {
       _controller.jumpToPage(index);
-      context.read<YLZTabbarProvider>().setSelectedIndex(index);
+      setState(() {
+        //控制选中第一个tab
+        _currentIndex = index;
+      });
     }
   }
 }
