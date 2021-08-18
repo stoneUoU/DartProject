@@ -45,27 +45,21 @@ class _MGHomeTabPageState extends State<MGHomeTabPage> {
   }
 
   Widget contentChild(Mg_home_model homeModel) {
-    if (widget.model.id == 0) {
-      return Container(
-        color: Color(MGColorMainView),
-        child: CustomScrollView(
-          slivers: _buildWidget(homeModel),
-          reverse: false,
-          controller: _scrollController,
-        ),
-      );
-    }
     return Container(
-      color: Colors.red,
+      color: Color(MGColorMainView),
+      child: CustomScrollView(
+        slivers: _buildWidget(homeModel),
+        reverse: false,
+        controller: _scrollController,
+      ),
     );
   }
 
   List<Widget> _buildWidget(Mg_home_model model) {
     List<Widget> widgetList = [];
     if (widget.model.id == 0) {
-      widgetList.add(_BannerHeaderGrid(
-        homeModel: model,
-      ));
+      //推荐页代码：
+      widgetList.add(_BannerHeaderGrid(homeModel: model, isRecommend: true));
       widgetList.add(_MovieHeaderGrid(
         homeModel: model,
       ));
@@ -77,6 +71,26 @@ class _MGHomeTabPageState extends State<MGHomeTabPage> {
         Video? video = model.video?[0];
         widgetList.add(_MGFooterGrid(video: video ?? Video(), isFinal: false));
       }
+      int maxLength = (model.video?.length ?? 0);
+      for (int index = 0; index < maxLength; index++) {
+        Video? video = model.video?[index];
+        video?.indexSection = index;
+        widgetList.add(_VideoHeaderGrid(
+          video: video ?? Video(),
+        ));
+        if (index == maxLength - 1) {
+          widgetList.add(_MGFooterGrid(video: video ?? Video(), isFinal: true));
+        } else {
+          Video? videoModel = model.video?[index + 1];
+          widgetList
+              .add(_MGFooterGrid(video: videoModel ?? Video(), isFinal: false));
+        }
+      }
+    } else {
+      widgetList.add(_BannerHeaderGrid(
+        homeModel: model,
+        isRecommend: false,
+      ));
       int maxLength = (model.video?.length ?? 0);
       for (int index = 0; index < maxLength; index++) {
         Video? video = model.video?[index];
@@ -104,8 +118,10 @@ class _MGHomeTabPageState extends State<MGHomeTabPage> {
 }
 
 class _BannerHeaderGrid extends StatelessWidget {
+  final bool isRecommend;
   final Mg_home_model homeModel;
-  const _BannerHeaderGrid({Key? key, required this.homeModel})
+  const _BannerHeaderGrid(
+      {Key? key, required this.homeModel, required this.isRecommend})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -120,7 +136,7 @@ class _BannerHeaderGrid extends StatelessWidget {
 
   SliverGrid buildSliverGrid(BuildContext context) {
     double cellWidth = ((MediaQuery.of(context).size.width));
-    double desiredCellHeight = 216;
+    double desiredCellHeight = isRecommend ? 216 : 232;
     double childAspectRatio = cellWidth / desiredCellHeight;
     return SliverGrid(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -165,16 +181,7 @@ class _BannerHeaderGrid extends StatelessWidget {
                           builder: DotSwiperPaginationBuilder(
                               activeColor: Color(YLZColorLightBlueView)))),
                 ),
-                Container(
-                  color: Color(MGColorMainViewThree),
-                  margin: EdgeInsets.only(top: 8),
-                  height: 28,
-                  child: Row(
-                    children: [
-                      Container(width: 72, color: Color(MGColorMainViewTwo))
-                    ],
-                  ),
-                )
+                _buildUnderBannerContainer()
               ],
             ),
           );
@@ -182,6 +189,43 @@ class _BannerHeaderGrid extends StatelessWidget {
         childCount: 1,
       ),
     );
+  }
+
+  Container _buildUnderBannerContainer() {
+    if (!isRecommend) {
+      return Container(
+        margin: EdgeInsets.only(top: 8),
+        height: 44,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            return Container(
+                decoration: new BoxDecoration(
+                    color: Color(MGColorMainViewTwo),
+                    borderRadius: BorderRadius.all(Radius.circular(6.0))),
+                margin: EdgeInsets.only(right: 10),
+                child: Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "电影",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    )),
+                width: 88,
+                height: 44);
+          },
+          itemCount: 10,
+        ),
+      );
+    } else {
+      return Container(
+        color: Color(MGColorMainViewThree),
+        margin: EdgeInsets.only(top: 8),
+        height: 28,
+        child: Row(
+          children: [Container(width: 72, color: Color(MGColorMainViewTwo))],
+        ),
+      );
+    }
   }
 
   Container buildHeaderContainer() {
