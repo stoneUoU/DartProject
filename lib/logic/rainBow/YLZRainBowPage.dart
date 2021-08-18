@@ -19,7 +19,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:logger/logger.dart';
 
 class YLZRainBowPage extends StatefulWidget {
   const YLZRainBowPage({Key? key}) : super(key: key);
@@ -45,7 +44,6 @@ class _YYLZRainBowPageState extends State<YLZRainBowPage>
   List<Map<String, dynamic>> loadMoreJson = [];
   late Future _futureBuilderFuture;
 
-  var logger = Logger();
   int _pageIndex = 1;
   EasyRefreshController easyRefreshController = new EasyRefreshController();
 

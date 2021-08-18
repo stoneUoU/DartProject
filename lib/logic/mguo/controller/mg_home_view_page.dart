@@ -55,11 +55,13 @@ class _MGHomeViewPageState extends State<MGHomeViewPage>
                         child: _tabBar(),
                       ),
                       Flexible(
-                          child: TabBarView(
-                              controller: _controller,
-                              children: modelList.map((tab) {
-                                return MGHomeTabPage(model: tab);
-                              }).toList()))
+                          child: Container(
+                              color: Color(MGColorMainView),
+                              child: TabBarView(
+                                  controller: _controller,
+                                  children: modelList.map((tab) {
+                                    return MGHomeTabPage(model: tab);
+                                  }).toList()))),
                     ],
                   ),
                 );

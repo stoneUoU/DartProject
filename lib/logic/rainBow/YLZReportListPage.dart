@@ -15,7 +15,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:logger/logger.dart';
 
 class YLZReportListPage extends StatefulWidget {
   YLZReportListPage({Key? key}) : super(key: key);
@@ -32,7 +31,6 @@ class _YLZReportListPageState extends State<YLZReportListPage> {
   int pageIndex = 1;
   bool netFlag = true;
   Dio dio = Dio();
-  final log = Logger();
 
   @override
   void initState() {

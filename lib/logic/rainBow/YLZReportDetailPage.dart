@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:logger/logger.dart';
 
 typedef void OnYLZReportDetailPageListener(String idStr);
 
@@ -28,7 +27,7 @@ class _YLZReportDetailPageState extends State<YLZReportDetailPage> {
   Dio dio = Dio();
   bool flag = true;
   YLZReportDetailModel renderMs = YLZReportDetailModel();
-  final log = Logger();
+
   EasyRefreshController easyRefreshController = new EasyRefreshController();
   final ScrollController _scrollController = new ScrollController();
   @override

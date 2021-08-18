@@ -30,7 +30,6 @@ class _APPState extends State<APP> {
 
   @override
   Widget build(BuildContext context) {
-    print("--------------------");
     return FutureBuilder<HiCache>(
         //进行初始化
         future: HiCache.preInit(),

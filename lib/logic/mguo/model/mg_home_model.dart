@@ -5,18 +5,18 @@
 
 class Mg_home_model {
   List<Slide>? _slide;
-  List<Hotvideo>? _hotvideo;
+  List<VideoModel>? _hotvideo;
   Tv? _tv;
   List<Video>? _video;
 
   List<Slide>? get slide => _slide;
-  List<Hotvideo>? get hotvideo => _hotvideo;
+  List<VideoModel>? get hotvideo => _hotvideo;
   Tv? get tv => _tv;
   List<Video>? get video => _video;
 
   Mg_home_model(
       {List<Slide>? slide,
-      List<Hotvideo>? hotvideo,
+      List<VideoModel>? hotvideo,
       Tv? tv,
       List<Video>? video}) {
     _slide = slide;
@@ -35,7 +35,7 @@ class Mg_home_model {
     if (json["hotvideo"] != null) {
       _hotvideo = [];
       json["hotvideo"].forEach((v) {
-        _hotvideo?.add(Hotvideo.fromJson(v));
+        _hotvideo?.add(VideoModel.fromJson(v));
       });
     }
     _tv = json["tv"] != null ? Tv.fromJson(json["tv"]) : null;
@@ -72,19 +72,25 @@ class Mg_home_model {
 /// data : [{"id":42114,"name":"vivo-平凡之夜","qingxidu":"高清","img":"https://cs.xinpianchang.com/uploadfile/article/2021/01/06/5ff56ba49c8ad.jpeg@540w_324h_1e_1c.jpg","msg":"2020","score":"7.0","section":0,"actor":"","director":""},{"id":42113,"name":"给生活一次喘息","qingxidu":"高清","img":"https://cs.xinpianchang.com/uploadfile/article/2020/11/02/5f9fd0fb7be83.jpeg@540w_324h_1e_1c.jpg","msg":"2019","score":"4.0","section":0,"actor":"","director":""},{"id":42111,"name":"宁波，我们做得很好","qingxidu":"高清","img":"https://cs.xinpianchang.com/uploadfile/article/2020/02/05/5e3ad5fe26f50.jpeg@540w_324h_1e_1c.jpg","msg":"2019","score":"4.0","section":0,"actor":"","director":""},{"id":42112,"name":"《扶贫济困 你我同行》扶贫形象片","qingxidu":"高清","img":"https://cs.xinpianchang.com/uploadfile/article/2019/11/18/5dd28eff40287.jpeg@540w_324h_1e_1c.jpg","msg":"2020","score":"5.0","section":0,"actor":"","director":""},{"id":42194,"name":"获奖剧情短片《异类》","qingxidu":"高清","img":"https://cs.xinpianchang.com/uploadfile/article/2020/12/26/5fe729a9b08f2.jpeg@540w_324h_1e_1c.jpg","msg":"2020","score":"7.0","section":0,"actor":"","director":""},{"id":42449,"name":"有匪·破雪斩","qingxidu":"高清","img":"https://p.ssl.qhimg.com/d/dy_5762238f75ca8c85cc0b83cd3a47cba9.","msg":"2021","score":"8.0","section":0,"actor":"韩聪聪,高广泽,啜妮","director":"孟远"}]
 
 class Video {
+  int indexSection = 0;
   String? _name;
   int? _id;
   List<Msg>? _msg;
-  Ad? _ad;
-  List<Data>? _data;
+  AdModel? _ad;
+  List<VideoModel>? _data;
 
   String? get name => _name;
   int? get id => _id;
   List<Msg>? get msg => _msg;
-  Ad? get ad => _ad;
-  List<Data>? get data => _data;
+  AdModel? get ad => _ad;
+  List<VideoModel>? get data => _data;
 
-  Video({String? name, int? id, List<Msg>? msg, Ad? ad, List<Data>? data}) {
+  Video(
+      {String? name,
+      int? id,
+      List<Msg>? msg,
+      AdModel? ad,
+      List<VideoModel>? data}) {
     _name = name;
     _id = id;
     _msg = msg;
@@ -101,11 +107,11 @@ class Video {
         _msg?.add(Msg.fromJson(v));
       });
     }
-    _ad = json["ad"] != null ? Ad.fromJson(json["ad"]) : null;
+    _ad = json["ad"] != null ? AdModel.fromJson(json["ad"]) : null;
     if (json["data"] != null) {
       _data = [];
       json["data"].forEach((v) {
-        _data?.add(Data.fromJson(v));
+        _data?.add(VideoModel.fromJson(v));
       });
     }
   }
@@ -137,7 +143,7 @@ class Video {
 /// actor : ""
 /// director : ""
 
-class Data {
+class VideoModel {
   int? _id;
   String? _name;
   String? _qingxidu;
@@ -158,7 +164,7 @@ class Data {
   String? get actor => _actor;
   String? get director => _director;
 
-  Data(
+  VideoModel(
       {int? id,
       String? name,
       String? qingxidu,
@@ -179,7 +185,7 @@ class Data {
     _director = director;
   }
 
-  Data.fromJson(dynamic json) {
+  VideoModel.fromJson(dynamic json) {
     _id = json["id"];
     _name = json["name"];
     _qingxidu = json["qingxidu"];
@@ -211,7 +217,7 @@ class Data {
 /// url : "https://loreal.tmall.com/shop/view_shop.htm?spm=a224e.7913437.1.363579&mytmenu=mdianpu&utkn=g%2Cyw34bm6ryw45tn55y3wl3ivv5i1550202871308&user_number_id=533497499&scm=1028.1.1.20001&_bind=true&bc_fl_src"
 /// subTitle : ""
 
-class Ad {
+class AdModel {
   String? _title;
   String? _img;
   String? _url;
@@ -222,14 +228,14 @@ class Ad {
   String? get url => _url;
   String? get subTitle => _subTitle;
 
-  Ad({String? title, String? img, String? url, String? subTitle}) {
+  AdModel({String? title, String? img, String? url, String? subTitle}) {
     _title = title;
     _img = img;
     _url = url;
     _subTitle = subTitle;
   }
 
-  Ad.fromJson(dynamic json) {
+  AdModel.fromJson(dynamic json) {
     _title = json["title"];
     _img = json["img"];
     _url = json["url"];
@@ -283,14 +289,14 @@ class Tv {
   int? _id;
   String? _name;
   List<Msg>? _msg;
-  List<Data>? _data;
+  List<VideoModel>? _data;
 
   int? get id => _id;
   String? get name => _name;
   List<Msg>? get msg => _msg;
-  List<Data>? get data => _data;
+  List<VideoModel>? get data => _data;
 
-  Tv({int? id, String? name, List<Msg>? msg, List<Data>? data}) {
+  Tv({int? id, String? name, List<Msg>? msg, List<VideoModel>? data}) {
     _id = id;
     _name = name;
     _msg = msg;
@@ -309,7 +315,7 @@ class Tv {
     if (json["data"] != null) {
       _data = [];
       json["data"].forEach((v) {
-        _data?.add(Data.fromJson(v));
+        _data?.add(VideoModel.fromJson(v));
       });
     }
   }
@@ -328,85 +334,6 @@ class Tv {
   }
 }
 
-/// id : 42068
-/// name : "为理想，去实现"
-/// qingxidu : "完结"
-/// img : "http://r1.ykimg.com/053500006004EB8D13EA35084A250A9B?x-oss-process=image/resize,w_750/interlace,1/quality,Q_100/sharpen,100"
-/// msg : "2019"
-/// score : "4.0"
-/// section : 0
-/// actor : ""
-/// director : ""
-
-class MGHomeData {
-  int? _id;
-  String? _name;
-  String? _qingxidu;
-  String? _img;
-  String? _msg;
-  String? _score;
-  int? _section;
-  String? _actor;
-  String? _director;
-
-  int? get id => _id;
-  String? get name => _name;
-  String? get qingxidu => _qingxidu;
-  String? get img => _img;
-  String? get msg => _msg;
-  String? get score => _score;
-  int? get section => _section;
-  String? get actor => _actor;
-  String? get director => _director;
-
-  MGHomeData(
-      {int? id,
-      String? name,
-      String? qingxidu,
-      String? img,
-      String? msg,
-      String? score,
-      int? section,
-      String? actor,
-      String? director}) {
-    _id = id;
-    _name = name;
-    _qingxidu = qingxidu;
-    _img = img;
-    _msg = msg;
-    _score = score;
-    _section = section;
-    _actor = actor;
-    _director = director;
-  }
-
-  MGHomeData.fromJson(dynamic json) {
-    _id = json["id"];
-    _name = json["name"];
-    _qingxidu = json["qingxidu"];
-    _img = json["img"];
-    _msg = json["msg"];
-    _score = json["score"];
-    _section = json["section"];
-    _actor = json["actor"];
-    _director = json["director"];
-  }
-
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["id"] = _id;
-    map["name"] = _name;
-    map["qingxidu"] = _qingxidu;
-    map["img"] = _img;
-    map["msg"] = _msg;
-    map["score"] = _score;
-    map["section"] = _section;
-    map["actor"] = _actor;
-    map["director"] = _director;
-    return map;
-  }
-}
-
 /// id : 42594
 /// name : "刺杀小说家"
 /// qingxidu : ""
@@ -416,75 +343,6 @@ class MGHomeData {
 /// section : 0
 /// actor : "雷佳音,杨幂,董子健"
 /// director : "路阳"
-
-class Hotvideo {
-  int? _id;
-  String? _name;
-  String? _qingxidu;
-  String? _img;
-  String? _msg;
-  String? _score;
-  int? _section;
-  String? _actor;
-  String? _director;
-
-  int? get id => _id;
-  String? get name => _name;
-  String? get qingxidu => _qingxidu;
-  String? get img => _img;
-  String? get msg => _msg;
-  String? get score => _score;
-  int? get section => _section;
-  String? get actor => _actor;
-  String? get director => _director;
-
-  Hotvideo(
-      {int? id,
-      String? name,
-      String? qingxidu,
-      String? img,
-      String? msg,
-      String? score,
-      int? section,
-      String? actor,
-      String? director}) {
-    _id = id;
-    _name = name;
-    _qingxidu = qingxidu;
-    _img = img;
-    _msg = msg;
-    _score = score;
-    _section = section;
-    _actor = actor;
-    _director = director;
-  }
-
-  Hotvideo.fromJson(dynamic json) {
-    _id = json["id"];
-    _name = json["name"];
-    _qingxidu = json["qingxidu"];
-    _img = json["img"];
-    _msg = json["msg"];
-    _score = json["score"];
-    _section = json["section"];
-    _actor = json["actor"];
-    _director = json["director"];
-  }
-
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["id"] = _id;
-    map["name"] = _name;
-    map["qingxidu"] = _qingxidu;
-    map["img"] = _img;
-    map["msg"] = _msg;
-    map["score"] = _score;
-    map["section"] = _section;
-    map["actor"] = _actor;
-    map["director"] = _director;
-    return map;
-  }
-}
 
 /// id : 42227
 /// url : 42227

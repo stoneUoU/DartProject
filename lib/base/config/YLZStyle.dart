@@ -59,6 +59,14 @@ const int MGColorMainView = 0xff1D1B2A;
 
 const int MGColorLightBlueView = 0xff8AC4F5;
 
+const int MGColorMainViewTwo = 0xff3B3756;
+
+const int MGColorMainViewThree = 0xff2E2B42;
+
+const int MGColorHomeViewPurple = 0xff746cff;
+
+const int MGColorHomeViewPink = 0xffc003f8;
+
 const int colorC14 = 0xffE6A23C;
 const int colorC15 = 0xffFEFBF2;
 const int colorC16 = 0xffFFF4D9;

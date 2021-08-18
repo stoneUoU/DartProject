@@ -1,3 +1,4 @@
+import 'package:dart_demo/base/config/YLZStyle.dart';
 import 'package:dart_demo/base/navigator/HiNavigator.dart';
 import 'package:dart_demo/logic/area/controller/YLZAreaViewPage.dart';
 import 'package:dart_demo/logic/mguo/controller/mg_home_view_page.dart';
@@ -45,10 +46,12 @@ class _YLZBottomNavigatorState extends State<YLZBottomNavigator> {
         physics: NeverScrollableScrollPhysics(),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color(MGColorMainView),
         currentIndex: _currentIndex,
         onTap: (index) => _onJumpTo(context, index),
         type: BottomNavigationBarType.fixed,
         selectedItemColor: _activeColor,
+          unselectedItemColor:Colors.white,
         items: [
           _bottomItem('首页', 'assets/images/mine_icon_store_onclick.png',
               'assets/images/mine_icon_store_click.png', 0),

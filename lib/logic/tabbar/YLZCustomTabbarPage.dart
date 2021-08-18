@@ -6,7 +6,6 @@ import 'package:dart_demo/logic/rainBow/YLZRainBowPage.dart';
 import 'package:dart_demo/provider/YLZTabbarProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_bottom_tab_bar/flutter_custom_bottom_tab_bar.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 class YLZCustomTabBarPage extends StatefulWidget {
@@ -20,7 +19,6 @@ class _YLZCustomTabBarPageState extends State<YLZCustomTabBarPage>
     with TickerProviderStateMixin {
   late TabController _tabController;
   var titles = ['首页', '发现', '我的'];
-  final log = Logger();
   @override
   void initState() {
     super.initState();
