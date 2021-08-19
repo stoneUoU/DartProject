@@ -1,6 +1,7 @@
 import 'package:dart_demo/base/config/YLZTheme.dart';
 import 'package:dart_demo/base/navigator/HiNavigator.dart';
 import 'package:dart_demo/logic/home/YLZElecCodeViewPage.dart';
+import 'package:dart_demo/logic/home/YLZScanViewPage.dart';
 import 'package:dart_demo/logic/login/YLZCodeLoginPage.dart';
 import 'package:dart_demo/logic/login/YLZSmsLoginPage.dart';
 import 'package:dart_demo/logic/rainBow/YLZReportDetailPage.dart';
@@ -125,6 +126,8 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
           onReportDetailPageListener: _args?["onReportDetailPageListener"]));
     } else if (routeStatus == RouteStatus.elecCode) {
       page = pageWrap(YLZElecCodeViewPage());
+    } else if (routeStatus == RouteStatus.scan) {
+      page = pageWrap(YLZScanViewPage());
     }
     //重新创建一个数组，否则pages因引用没有改变路由不会生效
     tempPages = [...tempPages, page];

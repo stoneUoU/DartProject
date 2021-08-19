@@ -47,5 +47,7 @@
     <string>App需要通过当前地理位置获取您周边的医院信息，为您提供更好的就医服务</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>App需要通过当前地理位置获取您周边的医院信息，为您提供更好的就医服务</string>
+    <key>io.flutter.embedded_views_preview</key>
+    <string>YES</string>
 </dict>
 </plist>

@@ -1,4 +1,5 @@
 import 'package:dart_demo/logic/home/YLZElecCodeViewPage.dart';
+import 'package:dart_demo/logic/home/YLZScanViewPage.dart';
 import 'package:dart_demo/logic/login/YLZCodeLoginPage.dart';
 import 'package:dart_demo/logic/login/YLZSmsLoginPage.dart';
 import 'package:dart_demo/logic/rainBow/YLZReportDetailPage.dart';
@@ -34,6 +35,7 @@ enum RouteStatus {
   reportList,
   home,
   elecCode,
+  scan,
   unknown
 }
 
@@ -51,6 +53,8 @@ RouteStatus getStatus(MaterialPage page) {
     return RouteStatus.home;
   } else if (page.child is YLZElecCodeViewPage) {
     return RouteStatus.elecCode;
+  } else if (page.child is YLZScanViewPage) {
+    return RouteStatus.scan;
   } else {
     return RouteStatus.unknown;
   }
@@ -98,7 +102,9 @@ class HiNavigator extends _RouteJumpListener {
     }
   }
 
-  void pop(BuildContext context) {Navigator.pop(context);}
+  void pop(BuildContext context) {
+    Navigator.pop(context);
+  }
 
   ///监听路由页面跳转
   void addListener(RouteChangeListener listener) {
