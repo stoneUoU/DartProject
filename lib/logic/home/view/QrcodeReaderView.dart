@@ -53,7 +53,7 @@ class QrcodeReaderViewState extends State<QrcodeReaderView>
   }
 
   Future showScanView() async {
-    if (true == await permission()) {
+    if (!true == await permission()) {
       await Future.delayed(Duration(milliseconds: 300));
       setState(() {
         _init = true;
@@ -76,7 +76,7 @@ class QrcodeReaderViewState extends State<QrcodeReaderView>
 
   void requestPermission() async {
     final ok = await _requestPermission();
-    if (ok) {
+    if (!ok) {
       showScanView();
     }
   }

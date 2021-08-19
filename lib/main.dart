@@ -4,6 +4,7 @@ import 'package:dart_demo/logic/home/YLZElecCodeViewPage.dart';
 import 'package:dart_demo/logic/home/YLZScanViewPage.dart';
 import 'package:dart_demo/logic/login/YLZCodeLoginPage.dart';
 import 'package:dart_demo/logic/login/YLZSmsLoginPage.dart';
+import 'package:dart_demo/logic/mguo/controller/mg_home_player_page.dart';
 import 'package:dart_demo/logic/rainBow/YLZReportDetailPage.dart';
 import 'package:dart_demo/logic/rainBow/YLZReportListPage.dart';
 import 'package:dart_demo/logic/tabbar/YLZBottomNavigator.dart';
@@ -128,6 +129,8 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
       page = pageWrap(YLZElecCodeViewPage());
     } else if (routeStatus == RouteStatus.scan) {
       page = pageWrap(YLZScanViewPage());
+    } else if (routeStatus == RouteStatus.videoPlay) {
+      page = pageWrap(MGHomePlayerPage(id: _args?["id"]));
     }
     //重新创建一个数组，否则pages因引用没有改变路由不会生效
     tempPages = [...tempPages, page];

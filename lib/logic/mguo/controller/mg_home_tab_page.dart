@@ -1,4 +1,5 @@
 import 'package:dart_demo/base/config/YLZStyle.dart';
+import 'package:dart_demo/base/navigator/HiNavigator.dart';
 import 'package:dart_demo/logic/mguo/model/mg_home_model.dart';
 import 'package:dart_demo/logic/mguo/model/mg_home_nav_model.dart';
 import 'package:dart_demo/logic/mguo/view/cell/mg_home_square_cell.dart';
@@ -6,11 +7,12 @@ import 'package:dart_demo/logic/mguo/view/mg_footer_ad_widget.dart';
 import 'package:dart_demo/logic/mguo/view/mg_footer_button_widget.dart';
 import 'package:dart_demo/logic/mguo/view/mg_footer_feedback_widget.dart';
 import 'package:dart_demo/logic/mguo/view/mg_home_header_widget.dart';
-import '../view/cell/mg_home_normal_cell.dart';
 import 'package:dart_demo/net/dao/mg_home_dao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
+
+import '../view/cell/mg_home_normal_cell.dart';
 
 class MGHomeTabPage extends StatefulWidget {
   final Mg_home_nav_model model;
@@ -176,9 +178,12 @@ class _BannerHeaderGrid extends StatelessWidget {
                       },
                       // viewportFraction: 0.8,
                       // scale: 0.9,
-                      onTap:(index){
+                      onTap: (index) {
                         Slide sildeModel = homeModel.slide![index];
-                        print("sildeModel______${sildeModel.id}");
+                        // print("sildeModel______${sildeModel.id}");
+                        // HiNavigator().onJumpTo(RouteStatus.scan);
+                        HiNavigator().onJumpTo(RouteStatus.videoPlay,
+                            args: {"id": sildeModel.id});
                       },
                       autoplay: true,
                       itemCount: homeModel.slide?.length ?? 0,
@@ -369,9 +374,13 @@ class _TvHeaderGrid extends StatelessWidget {
       delegate: SliverChildBuilderDelegate(
         (context, index) {
           VideoModel? videoModel = homeModel.tv?.data?[index];
-          return InkWell(child: MgHomeNormalCell(videoModel: videoModel, cellWidth: cellWidth),onTap:(){
-            print("InkWell click________${videoModel?.id ?? ""}");
-          });
+          return InkWell(
+              child: MgHomeNormalCell(
+                  videoModel: videoModel, cellWidth: cellWidth),
+              onTap: () {
+                HiNavigator().onJumpTo(RouteStatus.videoPlay,
+                    args: {"id": videoModel?.id ?? 0});
+              });
         },
         childCount: homeModel.tv?.data?.length ?? 0,
       ),
@@ -394,15 +403,13 @@ class _TvHeaderGrid extends StatelessWidget {
   }
 }
 
-
-
 class _VideoHeaderGrid extends StatelessWidget {
   final Video video;
   const _VideoHeaderGrid({Key? key, required this.video}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return SliverStickyHeader(
-        header: MGHomeHeaderWidget(video:video),
+        header: MGHomeHeaderWidget(video: video),
         sliver: SliverPadding(
           padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
           sliver: buildSliverGrid(context), //SliverGrid和GridView类似)
@@ -424,7 +431,8 @@ class _VideoHeaderGrid extends StatelessWidget {
         delegate: SliverChildBuilderDelegate(
           (context, index) {
             VideoModel? videoModel = video.data?[index];
-            return MgHomeNormalCell(videoModel: videoModel, cellWidth: cellWidth);
+            return MgHomeNormalCell(
+                videoModel: videoModel, cellWidth: cellWidth);
           },
           childCount: video.data?.length ?? 0,
         ),
@@ -442,9 +450,13 @@ class _VideoHeaderGrid extends StatelessWidget {
         delegate: SliverChildBuilderDelegate(
           (context, index) {
             VideoModel? videoModel = video.data?[index];
-            return InkWell(child: MgHomeSquareCell(videoModel: videoModel, cellWidth: cellWidth),onTap:(){
-              print("InkWell click________${videoModel?.id ?? ""}");
-            });
+            return InkWell(
+                child: MgHomeSquareCell(
+                    videoModel: videoModel, cellWidth: cellWidth),
+                onTap: () {
+                  HiNavigator().onJumpTo(RouteStatus.videoPlay,
+                      args: {"id": videoModel?.id ?? 0});
+                });
           },
           childCount: video.data?.length ?? 0,
         ),

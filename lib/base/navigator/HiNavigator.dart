@@ -2,6 +2,7 @@ import 'package:dart_demo/logic/home/YLZElecCodeViewPage.dart';
 import 'package:dart_demo/logic/home/YLZScanViewPage.dart';
 import 'package:dart_demo/logic/login/YLZCodeLoginPage.dart';
 import 'package:dart_demo/logic/login/YLZSmsLoginPage.dart';
+import 'package:dart_demo/logic/mguo/controller/mg_home_player_page.dart';
 import 'package:dart_demo/logic/rainBow/YLZReportDetailPage.dart';
 import 'package:dart_demo/logic/rainBow/YLZReportListPage.dart';
 import 'package:dart_demo/logic/tabbar/YLZBottomNavigator.dart';
@@ -36,6 +37,7 @@ enum RouteStatus {
   home,
   elecCode,
   scan,
+  videoPlay,
   unknown
 }
 
@@ -55,6 +57,8 @@ RouteStatus getStatus(MaterialPage page) {
     return RouteStatus.elecCode;
   } else if (page.child is YLZScanViewPage) {
     return RouteStatus.scan;
+  } else if (page.child is MGHomePlayerPage) {
+    return RouteStatus.videoPlay;
   } else {
     return RouteStatus.unknown;
   }
