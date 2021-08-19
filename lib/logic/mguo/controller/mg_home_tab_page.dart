@@ -1,9 +1,12 @@
 import 'package:dart_demo/base/config/YLZStyle.dart';
 import 'package:dart_demo/logic/mguo/model/mg_home_model.dart';
 import 'package:dart_demo/logic/mguo/model/mg_home_nav_model.dart';
+import 'package:dart_demo/logic/mguo/view/cell/mg_home_square_cell.dart';
 import 'package:dart_demo/logic/mguo/view/mg_footer_ad_widget.dart';
 import 'package:dart_demo/logic/mguo/view/mg_footer_button_widget.dart';
 import 'package:dart_demo/logic/mguo/view/mg_footer_feedback_widget.dart';
+import 'package:dart_demo/logic/mguo/view/mg_home_header_widget.dart';
+import '../view/cell/mg_home_normal_cell.dart';
 import 'package:dart_demo/net/dao/mg_home_dao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
@@ -173,6 +176,10 @@ class _BannerHeaderGrid extends StatelessWidget {
                       },
                       // viewportFraction: 0.8,
                       // scale: 0.9,
+                      onTap:(index){
+                        Slide sildeModel = homeModel.slide![index];
+                        print("sildeModel______${sildeModel.id}");
+                      },
                       autoplay: true,
                       itemCount: homeModel.slide?.length ?? 0,
                       loop: true,
@@ -239,7 +246,7 @@ class _MovieHeaderGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverStickyHeader(
-        header: buildHeaderContainer(),
+        header: _buildHeaderContainer(),
         sliver: SliverPadding(
           padding: EdgeInsets.all(0.0),
           sliver: buildSliverGrid(context, homeModel), //SliverGrid和GridView类似)
@@ -319,7 +326,7 @@ class _MovieHeaderGrid extends StatelessWidget {
     );
   }
 
-  Container buildHeaderContainer() {
+  Container _buildHeaderContainer() {
     return Container(
       alignment: Alignment.centerLeft,
       height: 44,
@@ -362,46 +369,9 @@ class _TvHeaderGrid extends StatelessWidget {
       delegate: SliverChildBuilderDelegate(
         (context, index) {
           VideoModel? videoModel = homeModel.tv?.data?[index];
-          return Container(
-            child: Column(
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                          child: new FadeInImage.assetNetwork(
-                            placeholder:
-                                "assets/images/ylz_blank_rectangle.png",
-                            image: "${videoModel?.img ?? ""}",
-                            fit: BoxFit.cover,
-                          )),
-                      width: cellWidth,
-                      height: 100,
-                    ),
-                    Positioned(
-                        right: 6,
-                        bottom: 6,
-                        child: Text(
-                          "${videoModel?.qingxidu ?? ""}",
-                          style: TextStyle(color: Colors.white, fontSize: 14),
-                        ))
-                  ],
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  width: cellWidth,
-                  height: 36,
-                  child: Text(
-                    "${videoModel?.name ?? ""}",
-                    style: TextStyle(color: Colors.white, fontSize: 14),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                )
-              ],
-            ),
-          );
+          return InkWell(child: MgHomeNormalCell(videoModel: videoModel, cellWidth: cellWidth),onTap:(){
+            print("InkWell click________${videoModel?.id ?? ""}");
+          });
         },
         childCount: homeModel.tv?.data?.length ?? 0,
       ),
@@ -424,13 +394,15 @@ class _TvHeaderGrid extends StatelessWidget {
   }
 }
 
+
+
 class _VideoHeaderGrid extends StatelessWidget {
   final Video video;
   const _VideoHeaderGrid({Key? key, required this.video}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return SliverStickyHeader(
-        header: buildHeaderContainer(video),
+        header: MGHomeHeaderWidget(video:video),
         sliver: SliverPadding(
           padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
           sliver: buildSliverGrid(context), //SliverGrid和GridView类似)
@@ -452,47 +424,7 @@ class _VideoHeaderGrid extends StatelessWidget {
         delegate: SliverChildBuilderDelegate(
           (context, index) {
             VideoModel? videoModel = video.data?[index];
-            return Container(
-              child: Column(
-                children: [
-                  Stack(
-                    children: [
-                      Container(
-                        child: ClipRRect(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(6.0)),
-                            child: new FadeInImage.assetNetwork(
-                              placeholder:
-                                  "assets/images/ylz_blank_rectangle.png",
-                              image: "${videoModel?.img ?? ""}",
-                              fit: BoxFit.cover,
-                            )),
-                        width: cellWidth,
-                        height: 100,
-                      ),
-                      Positioned(
-                          right: 6,
-                          bottom: 6,
-                          child: Text(
-                            "${videoModel?.qingxidu ?? ""}",
-                            style: TextStyle(color: Colors.white, fontSize: 14),
-                          ))
-                    ],
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: cellWidth,
-                    height: 36,
-                    child: Text(
-                      "${videoModel?.name ?? ""}",
-                      style: TextStyle(color: Colors.white, fontSize: 14),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  )
-                ],
-              ),
-            );
+            return MgHomeNormalCell(videoModel: videoModel, cellWidth: cellWidth);
           },
           childCount: video.data?.length ?? 0,
         ),
@@ -510,66 +442,14 @@ class _VideoHeaderGrid extends StatelessWidget {
         delegate: SliverChildBuilderDelegate(
           (context, index) {
             VideoModel? videoModel = video.data?[index];
-            return Container(
-                child: Column(
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                          child: new FadeInImage.assetNetwork(
-                            placeholder:
-                                "assets/images/ylz_blank_rectangle.png",
-                            image: "${videoModel?.img ?? ""}",
-                            fit: BoxFit.cover,
-                          )),
-                      width: cellWidth,
-                      height: 160,
-                    ),
-                    Positioned(
-                        right: 6,
-                        bottom: 6,
-                        child: Text(
-                          "${videoModel?.score ?? ""}",
-                          style:
-                              TextStyle(color: Colors.deepOrange, fontSize: 16),
-                        ))
-                  ],
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  width: cellWidth,
-                  height: 36,
-                  child: Text(
-                    "${videoModel?.name ?? ""}",
-                    style: TextStyle(color: Colors.white, fontSize: 14),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                )
-              ],
-            ));
+            return InkWell(child: MgHomeSquareCell(videoModel: videoModel, cellWidth: cellWidth),onTap:(){
+              print("InkWell click________${videoModel?.id ?? ""}");
+            });
           },
           childCount: video.data?.length ?? 0,
         ),
       );
     }
-  }
-
-  Container buildHeaderContainer(Video video) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      height: 44,
-      color: Color(MGColorMainView),
-      child: Padding(
-        padding: EdgeInsets.only(left: 16),
-        child: Text(
-          "${video.name}",
-          style: TextStyle(color: Colors.white, fontSize: 16),
-        ),
-      ),
-    );
   }
 }
 
