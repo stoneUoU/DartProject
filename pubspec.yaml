@@ -65,6 +65,7 @@ dependencies:
 #  permission_handler: ^8.1.4+2
   image_picker: ^0.8.3+2
   permission_handler: ^6.1.1
+  fast_rsa: ^3.0.0
 
 dev_dependencies:
   flutter_test:

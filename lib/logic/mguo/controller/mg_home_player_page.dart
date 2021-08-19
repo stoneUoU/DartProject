@@ -1,5 +1,9 @@
+import 'dart:convert';
 import 'dart:developer';
 
+import 'package:dart_demo/base/navigator/HiNavigator.dart';
+import 'package:dart_demo/logic/mguo/model/mg_father_video_player_model.dart';
+import 'package:dart_demo/logic/mguo/model/mg_video_decode_model.dart';
 import 'package:dart_demo/logic/mguo/model/mg_video_detail_model.dart';
 import 'package:dart_demo/net/dao/mg_video_dao.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +20,8 @@ class MGHomePlayerPage extends StatefulWidget {
 
 class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
   late Future _futureBuilderFuture;
-
+  Dio dio = Dio();
+  List<MGFatherVideoPlayerModel> videolists = [];
   @override
   void initState() {
     // TODO: implement initState
@@ -26,6 +31,21 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          //让title居左
+          backgroundColor: Colors.white,
+          elevation: 0,
+          centerTitle: false,
+          titleSpacing: 0,
+          leading: BackButton(onPressed: () {
+            // HiNavigator().onJumpTo(RouteStatus.home);
+            HiNavigator().pop(context);
+          }),
+          title: Text(
+            "返回",
+            style: TextStyle(fontSize: 18),
+          ),
+        ),
         body: FutureBuilder(
             future: _futureBuilderFuture,
             builder: (context, snapshot) {
@@ -40,44 +60,95 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
             }));
   }
 
-  // [self.playlistArray removeAllObjects];
-  // [self.videoPlayerView.playlistModelArray removeAllObjects];
-  // self.playlistArray = [[self.videoPlayerModel.playlist componentsSeparatedByString:@"$$$"] mutableCopy];
-  // for (int i = 0; i<self.videoPlayerModel.playerInfo.count; i++) {
-  // NSString *sectionUrlStr = self.playlistArray[i];
-  // //拆分出来有可能[@"A",""];
-  // NSArray *sectionUrlNullArray = [sectionUrlStr componentsSeparatedByString:@"#"];
-  // NSMutableArray *sectionUrlArray = [NSMutableArray array];
-  // for (int a = 0; a < sectionUrlNullArray.count; a++) {
-  // NSString *str = sectionUrlNullArray[a];
-  // if (str.length != 0) {
-  // [sectionUrlArray addObject:str];
-  // }
-  // }
-  // NSMutableArray *sectionUrlModelArray = [NSMutableArray array];
-  // PlayerInfoModel *playerInfoModel = self.videoPlayerModel.playerInfo[i];
-  // for (int j = 0; j<sectionUrlArray.count; j++) {
-  // NSString *endUrlStr = sectionUrlArray[j];
-  // NSArray *endUrlArray = [endUrlStr componentsSeparatedByString:@"$"];
-  // //这一步纯粹为了YYModel使用:
-  // NSDictionary *endUrlDictonary = @{@"from":playerInfoModel.from,@"videoName":self.videoPlayerModel.name,@"img":self.videoPlayerModel.img,@"sectionName":endUrlArray[0],@"playerUrl":endUrlArray[1],@"isMovie":@(self.videoPlayerModel.isMovie),@"show":playerInfoModel.show,@"videoId":self.id};
-  // VideoModel *videoModel = [VideoModel modelWithDictionary:endUrlDictonary];
-  // [sectionUrlModelArray addObject:videoModel];
-  // }
-  // NSDictionary *sectionUrlModelDictonary = @{@"videoModel":sectionUrlModelArray,@"from":playerInfoModel.from,@"show":playerInfoModel.show,@"icon":playerInfoModel.icon};
-  // [self.videoPlayerView.playlistModelArray addObject:[VideoFatherModel modelWithDictionary:sectionUrlModelDictonary]];
-  // }
+  Widget buildWidget() {
+    return Container();
+  }
 
   void dealRecord(MGVideoDetailModel model) {
+    List<MGFatherVideoPlayerModel> totalVideolist = [];
     String exampleString = model.playlist ?? "";
     List<String> stringList = [];
     stringList = exampleString.split("\$\$\$");
-    log("stringList_______${stringList}");
+
+    for (int index = 0; index < model.playerInfo!.length; index++) {
+      String sectionUrlString = stringList[index];
+      List<String> sectionUrlStringList = sectionUrlString.split("#");
+
+      List<String> sectionUrlNewStringList = [];
+      for (int a = 0; a < sectionUrlStringList.length; a++) {
+        String str = sectionUrlStringList[a];
+        if (str.length != 0) {
+          sectionUrlNewStringList.add(str);
+        }
+      }
+      List<Map> sectionUrlModelList = [];
+      Player_info playerInfoModel = model.playerInfo![index];
+      for (int j = 0; j < sectionUrlNewStringList.length; j++) {
+        String endUrlString = sectionUrlNewStringList[j];
+        List<String> endUrlStringList = endUrlString.split("\$");
+        Map<String, dynamic> endUrlMap = {
+          "from": playerInfoModel.from,
+          "videoName": model.name,
+          "img": model.img,
+          "sectionName": endUrlStringList[0].toString(),
+          "playerUrl": endUrlStringList[1].toString(),
+          "isMovie": model.isMovie,
+          "show": playerInfoModel.show,
+          "videoId": widget.id
+        };
+        // MGVideoPlayerModel playerModel = MGVideoPlayerModel.fromJson(endUrlMap);
+        sectionUrlModelList.add(endUrlMap);
+      }
+      Map<String, dynamic> endUrlMap = {
+        "videoModel": sectionUrlModelList,
+        "show": playerInfoModel.show,
+        "from": playerInfoModel.from,
+        "icon": playerInfoModel.icon
+      };
+      totalVideolist.add(MGFatherVideoPlayerModel.fromJson(endUrlMap));
+
+      // setState(() {
+      //   videolists = totalVideolist;
+      // });
+    }
+    _decodeVideo(totalVideolist[1].from ?? "");
   }
 
   Future _start() async {
     MGVideoDetailModel detailModel = await MGHomeVideoDao.videoInfo(widget.id);
     return detailModel;
+  }
+
+  Future _decodeVideo(String playerCode) async {
+    MGVideoDecodeModel decodeModel =
+        await MGHomeVideoDao.videoDecode(playerCode);
+    log("json_______________${json.encode(decodeModel)}");
+  }
+
+  Future<String> _loadData() async {
+    var publicKeyStr =
+        "-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC3jrJKw+DB2MO7KRTFdLeaciv+3SDNDSnuc3KtUuIwPuVwrbGnVmgRej6VuRwNA4Qx/CvVaKly1Wijsb/HdP5WXFeAGHzO2JuRrTOYrAlm/H09oAIoQk7KMAEfM9sM5h2jDiZc+GJ7h5f8VBitH1b0RjvTKufhk9AHU/dEyI2YNQIDAQAB\n-----END PUBLIC KEY-----";
+    var publicKey = RSAKeyParser().parse(publicKeyStr);
+    final encrypter = Encrypter(RSA(publicKey: publicKey));
+    return await encrypter.decrypt(Encrypted.fromBase64(content));
+
+    // String url = "/";
+    // var data = {"reportId": widget.reportId, "userId": "9"};
+    // var response = await dio.post("${RainBowUrl}${url}", data: data);
+    // if (response.data["flag"] == 1) {
+    //   if (mounted) {
+    //     setState(() {
+    //       try {
+    //         this.renderMs =
+    //         new YLZReportDetailModel.fromJson(response.data["rs"]);
+    //       } catch (e) {
+    //         print(e);
+    //       }
+    //     });
+    //   }
+    // } else {
+    //   print(response);
+    // }
   }
 
   Center _buildSpinKitFadingCircle() {

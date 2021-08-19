@@ -182,8 +182,10 @@ class _BannerHeaderGrid extends StatelessWidget {
                         Slide sildeModel = homeModel.slide![index];
                         // print("sildeModel______${sildeModel.id}");
                         // HiNavigator().onJumpTo(RouteStatus.scan);
+                        // HiNavigator().onJumpTo(RouteStatus.videoPlay,
+                        // args: {"id": sildeModel.id});
                         HiNavigator().onJumpTo(RouteStatus.videoPlay,
-                            args: {"id": sildeModel.id});
+                            args: {"id": 42484});
                       },
                       autoplay: true,
                       itemCount: homeModel.slide?.length ?? 0,
@@ -378,8 +380,10 @@ class _TvHeaderGrid extends StatelessWidget {
               child: MgHomeNormalCell(
                   videoModel: videoModel, cellWidth: cellWidth),
               onTap: () {
-                HiNavigator().onJumpTo(RouteStatus.videoPlay,
-                    args: {"id": videoModel?.id ?? 0});
+                // HiNavigator().onJumpTo(RouteStatus.videoPlay,
+                //     args: {"id": videoModel?.id ?? 0});
+                HiNavigator()
+                    .onJumpTo(RouteStatus.videoPlay, args: {"id": 42484});
               });
         },
         childCount: homeModel.tv?.data?.length ?? 0,
@@ -454,8 +458,10 @@ class _VideoHeaderGrid extends StatelessWidget {
                 child: MgHomeSquareCell(
                     videoModel: videoModel, cellWidth: cellWidth),
                 onTap: () {
-                  HiNavigator().onJumpTo(RouteStatus.videoPlay,
-                      args: {"id": videoModel?.id ?? 0});
+                  // HiNavigator().onJumpTo(RouteStatus.videoPlay,
+                  //     args: {"id": videoModel?.id ?? 0});
+                  HiNavigator()
+                      .onJumpTo(RouteStatus.videoPlay, args: {"id": 42484});
                 });
           },
           childCount: video.data?.length ?? 0,
