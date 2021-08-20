@@ -94,6 +94,13 @@ const MaterialColor primarySwatch = const MaterialColor(
     900: const Color(primaryDarkValue),
   },
 );
+
+///主色调
+const MaterialColor primary = const MaterialColor(
+  0xfffb7299,
+  const <int, Color>{50: const Color(0xffff9db5)},
+);
+
 const String app_default_share_url =
     "https://github.com/CarGuo/GSYGithubAppFlutter";
 

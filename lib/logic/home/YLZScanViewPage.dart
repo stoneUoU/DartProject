@@ -87,7 +87,6 @@ class YLZScanViewPageState extends State<YLZScanViewPage>
     } else if (!status.isGranted) {
       status = await Permission.camera.request();
     }
-    print("__________${status}");
     return status.isGranted;
   }
 
@@ -140,6 +139,8 @@ class YLZScanViewPageState extends State<YLZScanViewPage>
     if (isScan == true) return;
     isScan = true;
     stopScan();
+    print("data______${data}");
+    // await widget.onScan(data);
   }
 
   void startScan() async {
@@ -167,6 +168,7 @@ class YLZScanViewPageState extends State<YLZScanViewPage>
       return;
     }
     final rest = await FlutterQrReader.imgScan(image.path);
+    print("rest______${rest}");
     startScan();
   }
 

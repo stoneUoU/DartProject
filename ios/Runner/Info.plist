@@ -22,6 +22,16 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>App需要使用您的相机扫描二维码信息或拍摄头像</string>
+	<key>NSLocationUsageDescription</key>
+	<string>App需要通过当前地理位置获取您周边的医院信息，为您提供更好的就医服务</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>App需要通过当前地理位置获取您周边的医院信息，为您提供更好的就医服务</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>App需要访问相册，以保存您拍摄的照片</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>App需要访问相册，以便您选择图片设置头像</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -41,17 +51,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-    <key>NSPhotoLibraryAddUsageDescription</key>
-    <string>App需要访问相册，以保存您拍摄的照片</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>App需要访问相册，以便您选择图片设置头像</string>
-    <key>NSCameraUsageDescription</key>
-    <string>App需要使用您的相机扫描二维码信息或拍摄头像</string>
-    <key>io.flutter.embedded_views_preview</key>
-    <string>YES</string>
-    <key>NSLocationUsageDescription</key>
-    <string>App需要通过当前地理位置获取您周边的医院信息，为您提供更好的就医服务</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>App需要通过当前地理位置获取您周边的医院信息，为您提供更好的就医服务</string>
+	<key>io.flutter.embedded_views_preview</key>
+	<string>YES</string>
 </dict>
 </plist>

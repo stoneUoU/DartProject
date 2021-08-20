@@ -181,11 +181,11 @@ class _BannerHeaderGrid extends StatelessWidget {
                       onTap: (index) {
                         Slide sildeModel = homeModel.slide![index];
                         // print("sildeModel______${sildeModel.id}");
-                        // HiNavigator().onJumpTo(RouteStatus.scan);
+                        HiNavigator().onJumpTo(RouteStatus.scan);
                         // HiNavigator().onJumpTo(RouteStatus.videoPlay,
                         // args: {"id": sildeModel.id});
-                        HiNavigator().onJumpTo(RouteStatus.videoPlay,
-                            args: {"id": 42484});
+                        // HiNavigator().onJumpTo(RouteStatus.videoPlay,
+                        // args: {"id": 42484});
                       },
                       autoplay: true,
                       itemCount: homeModel.slide?.length ?? 0,

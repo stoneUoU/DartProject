@@ -1,13 +1,19 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:common_utils/common_utils.dart';
 import 'package:dart_demo/base/navigator/HiNavigator.dart';
 import 'package:dart_demo/logic/mguo/model/mg_father_video_player_model.dart';
 import 'package:dart_demo/logic/mguo/model/mg_video_decode_model.dart';
 import 'package:dart_demo/logic/mguo/model/mg_video_detail_model.dart';
+import 'package:dart_demo/logic/mguo/model/mg_video_parse_model.dart';
+import 'package:dart_demo/logic/mguo/view/VideoView.dart';
 import 'package:dart_demo/net/dao/mg_video_dao.dart';
+import 'package:dart_demo/net/db/hi_cache.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:rsa_util/rsa_util.dart';
 
 class MGHomePlayerPage extends StatefulWidget {
   final int id;
@@ -22,10 +28,18 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
   late Future _futureBuilderFuture;
   Dio dio = Dio();
   List<MGFatherVideoPlayerModel> videolists = [];
+  final publicKeyString =
+      "-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC3jrJKw+DB2MO7KRTFdLeaciv+3SDNDSnuc3KtUuIwPuVwrbGnVmgRej6VuRwNA4Qx/CvVaKly1Wijsb/HdP5WXFeAGHzO2JuRrTOYrAlm/H09oAIoQk7KMAEfM9sM5h2jDiZc+GJ7h5f8VBitH1b0RjvTKufhk9AHU/dEyI2YNQIDAQAB\n-----END PUBLIC KEY-----";
+
   @override
   void initState() {
     // TODO: implement initState
     _futureBuilderFuture = _start();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -53,15 +67,62 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
                 MGVideoDetailModel model = snapshot.data! as MGVideoDetailModel;
                 //进行数据处理：
                 dealRecord(model);
-                return Container();
+                return _buildWidget();
               } else {
                 return _buildSpinKitFadingCircle();
               }
             }));
   }
 
-  Widget buildWidget() {
-    return Container();
+  Widget _buildWidget() {
+    return VideoView(
+      "https://assets.mixkit.co/videos/preview/mixkit-daytime-city-traffic-aerial-view-56-large.mp4",
+      cover:
+          "https://pic.ntimg.cn/BannerPic/20210521/design/20210521194418.jpg",
+      overlayUI: videoAppBar(),
+      barrageUI: Container(),
+    );
+  }
+
+  ///黑色线性渐变
+  blackLinearGradient({bool fromTop = false}) {
+    return LinearGradient(
+        begin: fromTop ? Alignment.topCenter : Alignment.bottomCenter,
+        end: fromTop ? Alignment.bottomCenter : Alignment.topCenter,
+        colors: [
+          Colors.black54,
+          Colors.black45,
+          Colors.black38,
+          Colors.black26,
+          Colors.black12,
+          Colors.transparent
+        ]);
+  }
+
+  ///视频详情页appBar
+  videoAppBar() {
+    return Container(
+      padding: EdgeInsets.only(right: 8),
+      decoration: BoxDecoration(gradient: blackLinearGradient(fromTop: true)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          BackButton(
+            color: Colors.white,
+          ),
+          Row(
+            children: [
+              Icon(Icons.live_tv_rounded, color: Colors.white, size: 20),
+              Padding(
+                padding: EdgeInsets.only(left: 12),
+                child: Icon(Icons.more_vert_rounded,
+                    color: Colors.white, size: 20),
+              )
+            ],
+          )
+        ],
+      ),
+    );
   }
 
   void dealRecord(MGVideoDetailModel model) {
@@ -106,12 +167,9 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
         "icon": playerInfoModel.icon
       };
       totalVideolist.add(MGFatherVideoPlayerModel.fromJson(endUrlMap));
-
-      // setState(() {
-      //   videolists = totalVideolist;
-      // });
     }
-    _decodeVideo(totalVideolist[1].from ?? "");
+    _decodeVideo(totalVideolist[1].from ?? "",
+        totalVideolist[1].videoModel?[0].playerUrl ?? "");
   }
 
   Future _start() async {
@@ -119,36 +177,43 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
     return detailModel;
   }
 
-  Future _decodeVideo(String playerCode) async {
+  Future _decodeVideo(String playerCode, String videoString) async {
     MGVideoDecodeModel decodeModel =
         await MGHomeVideoDao.videoDecode(playerCode);
-    log("json_______________${json.encode(decodeModel)}");
+    String parseUrl = await _loadData(decodeModel.data ?? "");
+
+    _parseUrl(parseUrl, videoString);
   }
 
-  Future<String> _loadData() async {
-    var publicKeyStr =
-        "-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC3jrJKw+DB2MO7KRTFdLeaciv+3SDNDSnuc3KtUuIwPuVwrbGnVmgRej6VuRwNA4Qx/CvVaKly1Wijsb/HdP5WXFeAGHzO2JuRrTOYrAlm/H09oAIoQk7KMAEfM9sM5h2jDiZc+GJ7h5f8VBitH1b0RjvTKufhk9AHU/dEyI2YNQIDAQAB\n-----END PUBLIC KEY-----";
-    var publicKey = RSAKeyParser().parse(publicKeyStr);
-    final encrypter = Encrypter(RSA(publicKey: publicKey));
-    return await encrypter.decrypt(Encrypted.fromBase64(content));
+  Future<String> _loadData(String message) async {
+    RSAUtil rsa = RSAUtil.getInstance(publicKeyString, "");
+    var rsaResult = rsa.decryptByPublicKey(message);
+    return rsaResult;
+  }
 
-    // String url = "/";
-    // var data = {"reportId": widget.reportId, "userId": "9"};
-    // var response = await dio.post("${RainBowUrl}${url}", data: data);
-    // if (response.data["flag"] == 1) {
-    //   if (mounted) {
-    //     setState(() {
-    //       try {
-    //         this.renderMs =
-    //         new YLZReportDetailModel.fromJson(response.data["rs"]);
-    //       } catch (e) {
-    //         print(e);
-    //       }
-    //     });
-    //   }
-    // } else {
-    //   print(response);
-    // }
+  Future _parseUrl(String parseUrl, String videoString) async {
+    //获取毫秒级时间戳：
+    String timeStampString =
+        new DateTime.now().millisecondsSinceEpoch.toString();
+    HiCache.getInstance().setString("milliseconds", timeStampString);
+
+    String saltString = "043730226d9ada98";
+    String secretString = "${saltString}${timeStampString}";
+
+    Map<String, String> headers = {
+      "AUTHORIZE": EncryptUtil.encodeMd5(secretString)
+    };
+    dio.options.headers.addAll({});
+    var data = {
+      "url": videoString,
+      "tm": HiCache.getInstance().get("milliseconds")
+    };
+    var response =
+        await dio.get("${parseUrl}&url=${data["url"]}&tm=${data["tm"]}");
+    MGVideoParseModel parseModel =
+        MGVideoParseModel.fromJson(json.decode(response.data));
+    //最终获取到了视频数据：
+    log("url___________${parseModel.url}");
   }
 
   Center _buildSpinKitFadingCircle() {
