@@ -1,3 +1,4 @@
+import 'package:dart_demo/logic/mguo/model/mg_father_video_player_model.dart';
 import 'package:dart_demo/logic/mguo/model/mg_home_model.dart';
 
 /// name : "流星幻剑"
@@ -58,6 +59,7 @@ class MGVideoDetailModel {
   bool? _isSharevip;
   bool? _openSharevip;
   List<VideoModel>? _likes;
+  List<MGFatherVideoPlayerModel> totalVideolist = [];
 
   String? get name => _name;
   String? get msg => _msg;

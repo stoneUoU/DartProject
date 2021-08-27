@@ -22,8 +22,7 @@ class MgHomeNormalCell extends StatelessWidget {
                 child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(6.0)),
                     child: new FadeInImage.assetNetwork(
-                      placeholder:
-                      "assets/images/ylz_blank_rectangle.png",
+                      placeholder: "assets/images/ylz_blank_rectangle.png",
                       image: "${videoModel?.img ?? ""}",
                       fit: BoxFit.cover,
                     )),

@@ -5,11 +5,11 @@ import 'package:dart_demo/logic/home/model/YLZDynamicModel.dart';
 import 'package:dart_demo/logic/home/model/YLZModuleModel.dart';
 import 'package:dart_demo/logic/home/view/YLZHomeHeaderWidget.dart';
 import 'package:dart_demo/logic/home/view/YLZHomeNavigationWithSearchWidget.dart';
-import 'package:dart_demo/logic/home/view/cell/YLZElecWidget.dart';
-import 'package:dart_demo/logic/home/view/cell/YLZOrganizationWidget.dart';
-import 'package:dart_demo/logic/home/view/cell/YLZQueryServiceWidget.dart';
-import 'package:dart_demo/logic/home/view/cell/YLZSinewsWidget.dart';
-import 'package:dart_demo/logic/home/view/cell/YLZTaxWidget.dart';
+import 'package:dart_demo/logic/home/view/cell/YLZHomeElecWidget.dart';
+import 'package:dart_demo/logic/home/view/cell/YLZHomeOrganizationWidget.dart';
+import 'package:dart_demo/logic/home/view/cell/YLZHomeQueryServiceWidget.dart';
+import 'package:dart_demo/logic/home/view/cell/YLZHomeSinewsWidget.dart';
+import 'package:dart_demo/logic/home/view/cell/YLZHomeTaxWidget.dart';
 import 'package:dart_demo/net/dao/home_dao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -194,7 +194,7 @@ class _StickyHeaderGrid extends StatelessWidget {
         delegate: SliverChildBuilderDelegate(
           (context, i) {
             Childs homeSonPage = homeSonPageList![i] as Childs;
-            return YLZOrganizationWidget(homeSonPage: homeSonPage);
+            return YLZHomeOrganizationWidget(homeSonPage: homeSonPage);
           },
           childCount: homeSonPageList?.length,
         ),
@@ -215,7 +215,7 @@ class _StickyHeaderGrid extends StatelessWidget {
                 color: Colors.red,
               );
             } else {
-              return YLZSinewsWidget(index, dynamicModel);
+              return YLZHomeSinewsWidget(index, dynamicModel);
             }
           },
           childCount: childLength > 2 ? 2 : childLength,
@@ -230,7 +230,7 @@ class _StickyHeaderGrid extends StatelessWidget {
             childAspectRatio: 10 / 3),
         delegate: SliverChildBuilderDelegate(
           (context, index) {
-            return YLZTaxWidget();
+            return YLZHomeTaxWidget();
           },
           childCount: 1,
         ),
@@ -287,7 +287,7 @@ class _StickyHeaderGrid extends StatelessWidget {
             Childs insureModel = homeSonPageList![0] as Childs;
             Childs payModel = homeSonPageList[1] as Childs;
             Childs consumeModel = homeSonPageList[2] as Childs;
-            return YLZQueryServiceWidget(
+            return YLZHomeQueryServiceWidget(
                 cellWidth: cellWidth,
                 insureModel: insureModel,
                 payModel: payModel,
@@ -309,7 +309,7 @@ class _StickyHeaderGrid extends StatelessWidget {
         delegate: SliverChildBuilderDelegate(
           (context, index) {
             return InkWell(
-              child: YLZElecWidget(homePage,
+              child: YLZHomeElecWidget(homePage,
                   cellWidth: cellWidth, desiredCellHeight: desiredCellHeight),
               onTap: () {
                 HiNavigator().onJumpTo(RouteStatus.elecCode);

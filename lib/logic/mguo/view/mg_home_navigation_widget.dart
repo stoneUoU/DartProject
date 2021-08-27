@@ -3,13 +3,22 @@ import 'package:dart_demo/base/config/YLZStyle.dart';
 import 'package:flutter/material.dart';
 
 class MGHomeNavigatorWidget extends StatefulWidget {
-  const MGHomeNavigatorWidget({Key? key}) : super(key: key);
+  final Key key;
+
+  const MGHomeNavigatorWidget(Key this.key) : super(key: key);
 
   @override
-  _MGHomeNavigatorWidgetState createState() => _MGHomeNavigatorWidgetState();
+  MGHomeNavigatorWidgetState createState() => MGHomeNavigatorWidgetState();
 }
 
-class _MGHomeNavigatorWidgetState extends State<MGHomeNavigatorWidget> {
+class MGHomeNavigatorWidgetState extends State<MGHomeNavigatorWidget> {
+  int index = 0;
+  void generateIndex(int index) {
+    setState(() {
+      this.index = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -53,34 +62,70 @@ class _MGHomeNavigatorWidgetState extends State<MGHomeNavigatorWidget> {
                           top: 5)
                     ],
                   ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 0, 16, 0),
-                    width: 44 + 48,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          width: 22,
-                          height: 22,
-                          margin: EdgeInsets.only(right: 16),
-                          child: Image.asset(
-                            'assets/images/mg_watch_history.png',
-                          ),
-                        ),
-                        Container(
-                            width: 22,
-                            height: 22,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(11.0),
-                              color: Colors.greenAccent,
-                            ))
-                      ],
-                    ),
-                  )
+                  _buildRightContainer(this.index)
                 ],
               ))
         ],
       ),
     );
+  }
+
+  Container _buildRightContainer(int index) {
+    print("AAAAAAAAA_______${index}");
+    if (index == 0) {
+      return Container(
+        margin: EdgeInsets.fromLTRB(0, 0, 16, 0),
+        width: 44 + 48,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Container(
+              width: 22,
+              height: 22,
+              margin: EdgeInsets.only(right: 16),
+              child: Image.asset(
+                'assets/images/mg_watch_history.png',
+              ),
+            ),
+            Container(
+                width: 22,
+                height: 22,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(11.0),
+                  color: Colors.greenAccent,
+                ))
+          ],
+        ),
+      );
+    } else {
+      return Container(
+        margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
+        width: 44 + 32,
+        height: 32,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+          border: Border.all(color: Color(MGColorHomeViewPurple), width: 1),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 6),
+              child: Text(
+                "筛选",
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+            Container(
+              width: 22,
+              height: 22,
+              child: Image.asset(
+                'assets/images/mg_filter.png',
+              ),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }

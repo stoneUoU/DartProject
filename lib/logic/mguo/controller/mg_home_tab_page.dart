@@ -1,3 +1,4 @@
+import 'package:dart_demo/base/config/YLZMacros.dart';
 import 'package:dart_demo/base/config/YLZStyle.dart';
 import 'package:dart_demo/base/navigator/HiNavigator.dart';
 import 'package:dart_demo/logic/mguo/model/mg_home_model.dart';
@@ -15,7 +16,7 @@ import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import '../view/cell/mg_home_normal_cell.dart';
 
 class MGHomeTabPage extends StatefulWidget {
-  final Mg_home_nav_model model;
+  final MGHomeNavModel model;
 
   const MGHomeTabPage({Key? key, required this.model}) : super(key: key);
 
@@ -26,7 +27,7 @@ class MGHomeTabPage extends StatefulWidget {
 class _MGHomeTabPageState extends State<MGHomeTabPage> {
   late Future _futureBuilderFuture;
   ScrollController _scrollController = new ScrollController();
-  Mg_home_model homeModel = Mg_home_model();
+  MGHomeModel homeModel = MGHomeModel();
 
   @override
   void initState() {
@@ -41,7 +42,7 @@ class _MGHomeTabPageState extends State<MGHomeTabPage> {
         future: _futureBuilderFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            Mg_home_model model = snapshot.data! as Mg_home_model;
+            MGHomeModel model = snapshot.data! as MGHomeModel;
             return contentChild(model);
           } else {
             return Container();
@@ -49,7 +50,7 @@ class _MGHomeTabPageState extends State<MGHomeTabPage> {
         });
   }
 
-  Widget contentChild(Mg_home_model homeModel) {
+  Widget contentChild(MGHomeModel homeModel) {
     return Container(
       color: Color(MGColorMainView),
       child: CustomScrollView(
@@ -60,7 +61,7 @@ class _MGHomeTabPageState extends State<MGHomeTabPage> {
     );
   }
 
-  List<Widget> _buildWidget(Mg_home_model model) {
+  List<Widget> _buildWidget(MGHomeModel model) {
     List<Widget> widgetList = [];
     if (widget.model.id == 0) {
       //推荐页代码：
@@ -116,7 +117,7 @@ class _MGHomeTabPageState extends State<MGHomeTabPage> {
   }
 
   Future _start(int id) async {
-    Mg_home_model model;
+    MGHomeModel model;
     model = await MGHomeDao.dataLists(id);
     return model;
   }
@@ -124,7 +125,7 @@ class _MGHomeTabPageState extends State<MGHomeTabPage> {
 
 class _BannerHeaderGrid extends StatelessWidget {
   final bool isRecommend;
-  final Mg_home_model homeModel;
+  final MGHomeModel homeModel;
   const _BannerHeaderGrid(
       {Key? key, required this.homeModel, required this.isRecommend})
       : super(key: key);
@@ -181,9 +182,9 @@ class _BannerHeaderGrid extends StatelessWidget {
                       onTap: (index) {
                         Slide sildeModel = homeModel.slide![index];
                         // print("sildeModel______${sildeModel.id}");
-                        HiNavigator().onJumpTo(RouteStatus.scan);
-                        // HiNavigator().onJumpTo(RouteStatus.videoPlay,
-                        // args: {"id": sildeModel.id});
+                        // HiNavigator().onJumpTo(RouteStatus.scan);
+                        HiNavigator().onJumpTo(RouteStatus.videoPlay,
+                            args: {"id": sildeModel.id});
                         // HiNavigator().onJumpTo(RouteStatus.videoPlay,
                         // args: {"id": 42484});
                       },
@@ -195,7 +196,7 @@ class _BannerHeaderGrid extends StatelessWidget {
                           builder: DotSwiperPaginationBuilder(
                               activeColor: Color(YLZColorLightBlueView)))),
                 ),
-                _buildUnderBannerContainer()
+                _buildUnderBannerContainer(context)
               ],
             ),
           );
@@ -205,14 +206,21 @@ class _BannerHeaderGrid extends StatelessWidget {
     );
   }
 
-  Container _buildUnderBannerContainer() {
+  Container _buildUnderBannerContainer(BuildContext context) {
     if (!isRecommend) {
+      List<String> lists = [];
+      int maxLength = (homeModel.video?.length ?? 0);
+      for (int index = 0; index < maxLength; index++) {
+        Video? video = homeModel.video?[index];
+        lists.add(video?.name ?? "");
+      }
       return Container(
         margin: EdgeInsets.only(top: 8),
         height: 44,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
+            String listString = lists[index];
             return Container(
                 decoration: new BoxDecoration(
                     color: Color(MGColorMainViewTwo),
@@ -221,13 +229,13 @@ class _BannerHeaderGrid extends StatelessWidget {
                 child: Container(
                     alignment: Alignment.center,
                     child: Text(
-                      "电影",
+                      "${listString}",
                       style: TextStyle(color: Colors.white, fontSize: 16),
                     )),
                 width: 88,
                 height: 44);
           },
-          itemCount: 10,
+          itemCount: lists.length,
         ),
       );
     } else {
@@ -236,10 +244,28 @@ class _BannerHeaderGrid extends StatelessWidget {
         margin: EdgeInsets.only(top: 8),
         height: 28,
         child: Row(
-          children: [Container(width: 72, color: Color(MGColorMainViewTwo))],
+          children: [Container(width: 72, color: Color(MGColorMainViewTwo)),_buildComplexMarquee(context)],
         ),
       );
     }
+  }
+
+  Widget _buildComplexMarquee(BuildContext context) {
+    return Container();
+    // width: ScreenW(context) - (36+72),padding: EdgeInsets.fromLTRB(16, 0, 16, 0),height: 28,child: Marquee(
+    // text: 'There once was a boy who told this story about a boy: ',
+    // style: TextStyle(fontWeight: FontWeight.bold),
+    // scrollAxis: Axis.vertical,
+    // crossAxisAlignment: CrossAxisAlignment.start,
+    // blankSpace: 20.0,
+    // velocity: 100.0,
+    // pauseAfterRound: Duration(seconds: 1),
+    // startPadding: 10.0,
+    // accelerationDuration: Duration(seconds: 1),
+    // accelerationCurve: Curves.linear,
+    // decelerationDuration: Duration(milliseconds: 500),
+    // decelerationCurve: Curves.easeOut,
+    // )
   }
 
   Container buildHeaderContainer() {
@@ -248,7 +274,7 @@ class _BannerHeaderGrid extends StatelessWidget {
 }
 
 class _MovieHeaderGrid extends StatelessWidget {
-  final Mg_home_model homeModel;
+  final MGHomeModel homeModel;
   const _MovieHeaderGrid({Key? key, required this.homeModel}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -261,7 +287,7 @@ class _MovieHeaderGrid extends StatelessWidget {
         ));
   }
 
-  SliverGrid buildSliverGrid(BuildContext context, Mg_home_model homeModel) {
+  SliverGrid buildSliverGrid(BuildContext context, MGHomeModel homeModel) {
     double cellWidth = ((MediaQuery.of(context).size.width));
     double desiredCellHeight = 182;
     double childAspectRatio = cellWidth / desiredCellHeight;
@@ -279,49 +305,56 @@ class _MovieHeaderGrid extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 VideoModel videoModel = homeModel.hotvideo![index];
-                return Container(
-                  margin: EdgeInsets.only(
-                      right: index == homeModel.hotvideo!.length - 1 ? 0 : 10),
-                  child: Column(
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            child: ClipRRect(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(6.0)),
-                                child: new FadeInImage.assetNetwork(
-                                  placeholder:
-                                      "assets/images/ylz_blank_rectangle.png",
-                                  image: "${videoModel.img}",
-                                  fit: BoxFit.cover,
-                                )),
-                            width: 104,
-                            height: 146,
-                          ),
-                          Positioned(
-                              right: 6,
-                              bottom: 6,
-                              child: Text(
-                                "${videoModel.score}",
-                                style: TextStyle(
-                                    color: Colors.deepOrange, fontSize: 16),
-                              ))
-                        ],
-                      ),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        width: 104,
-                        height: 36,
-                        child: Text(
-                          "${videoModel.name}",
-                          style: TextStyle(color: Colors.white, fontSize: 14),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                return InkWell(
+                  child: Container(
+                    margin: EdgeInsets.only(
+                        right:
+                            index == homeModel.hotvideo!.length - 1 ? 0 : 10),
+                    child: Column(
+                      children: [
+                        Stack(
+                          children: [
+                            Container(
+                              child: ClipRRect(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(6.0)),
+                                  child: new FadeInImage.assetNetwork(
+                                    placeholder:
+                                        "assets/images/ylz_blank_rectangle.png",
+                                    image: "${videoModel.img}",
+                                    fit: BoxFit.cover,
+                                  )),
+                              width: 104,
+                              height: 146,
+                            ),
+                            Positioned(
+                                right: 6,
+                                bottom: 6,
+                                child: Text(
+                                  "${videoModel.score}",
+                                  style: TextStyle(
+                                      color: Colors.deepOrange, fontSize: 16),
+                                ))
+                          ],
                         ),
-                      )
-                    ],
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          width: 104,
+                          height: 36,
+                          child: Text(
+                            "${videoModel.name}",
+                            style: TextStyle(color: Colors.white, fontSize: 14),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
+                  onTap: () {
+                    HiNavigator().onJumpTo(RouteStatus.videoPlay,
+                        args: {"id": videoModel.id});
+                  },
                 );
               },
               itemCount: homeModel.hotvideo?.length ?? 0,
@@ -350,7 +383,7 @@ class _MovieHeaderGrid extends StatelessWidget {
 }
 
 class _TvHeaderGrid extends StatelessWidget {
-  final Mg_home_model homeModel;
+  final MGHomeModel homeModel;
   const _TvHeaderGrid({Key? key, required this.homeModel}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -380,10 +413,10 @@ class _TvHeaderGrid extends StatelessWidget {
               child: MgHomeNormalCell(
                   videoModel: videoModel, cellWidth: cellWidth),
               onTap: () {
-                // HiNavigator().onJumpTo(RouteStatus.videoPlay,
-                //     args: {"id": videoModel?.id ?? 0});
-                HiNavigator()
-                    .onJumpTo(RouteStatus.videoPlay, args: {"id": 42484});
+                HiNavigator().onJumpTo(RouteStatus.videoPlay,
+                    args: {"id": videoModel?.id ?? 0});
+                // HiNavigator()
+                //     .onJumpTo(RouteStatus.videoPlay, args: {"id": 42484});
               });
         },
         childCount: homeModel.tv?.data?.length ?? 0,
@@ -458,10 +491,10 @@ class _VideoHeaderGrid extends StatelessWidget {
                 child: MgHomeSquareCell(
                     videoModel: videoModel, cellWidth: cellWidth),
                 onTap: () {
-                  // HiNavigator().onJumpTo(RouteStatus.videoPlay,
-                  //     args: {"id": videoModel?.id ?? 0});
-                  HiNavigator()
-                      .onJumpTo(RouteStatus.videoPlay, args: {"id": 42484});
+                  HiNavigator().onJumpTo(RouteStatus.videoPlay,
+                      args: {"id": videoModel?.id ?? 0});
+                  // HiNavigator()
+                  //     .onJumpTo(RouteStatus.videoPlay, args: {"id": 42484});
                 });
           },
           childCount: video.data?.length ?? 0,

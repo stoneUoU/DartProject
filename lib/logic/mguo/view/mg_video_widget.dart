@@ -1,18 +1,16 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:chewie/chewie.dart' hide MaterialControls;
 import 'package:dart_demo/base/config/YLZStyle.dart';
 import 'package:dart_demo/base/view/YLZNormalView.dart';
-import 'package:dart_demo/logic/mguo/view/Hi_video_control.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import "package:orientation/orientation.dart";
 import 'package:video_player/video_player.dart';
 
+import 'mg_video_controls.dart';
+
 ///播放器组件
-class VideoView extends StatefulWidget {
+class MGVideoWidget extends StatefulWidget {
   final String url;
   final String cover;
   final bool autoPlay;
@@ -21,7 +19,7 @@ class VideoView extends StatefulWidget {
   final Widget overlayUI;
   final Widget barrageUI;
 
-  const VideoView(this.url,
+  const MGVideoWidget(this.url,
       {Key? key,
       required this.cover,
       this.autoPlay = false,
@@ -32,10 +30,10 @@ class VideoView extends StatefulWidget {
       : super(key: key);
 
   @override
-  _VideoViewState createState() => _VideoViewState();
+  _MGVideoWidgetState createState() => _MGVideoWidgetState();
 }
 
-class _VideoViewState extends State<VideoView> {
+class _MGVideoWidgetState extends State<MGVideoWidget> {
   late VideoPlayerController _videoPlayerController; //video_player播放器Controller
   late ChewieController _chewieController; //chewie播放器Controller
   //封面
@@ -63,7 +61,7 @@ class _VideoViewState extends State<VideoView> {
         looping: widget.looping,
         placeholder: _placeholder,
         allowPlaybackSpeedChanging: false,
-        customControls: MaterialControls(
+        customControls: MGVideoControls(
           showLoadingOnInitialize: false,
           showBigPlayIcon: false,
           bottomGradient: blackLinearGradient(),

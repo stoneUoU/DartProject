@@ -17,9 +17,11 @@ class MGVideoRequest extends BaseRequest {
   String path() {
     if (pathCategory == 0) {
       return "/provide/vod_detail";
-    } else {
+    } else if (pathCategory == 1) {
       //视频解析：
       return "/provide/parse_url";
+    } else {
+      return "/provide/advert";
     }
   }
 }

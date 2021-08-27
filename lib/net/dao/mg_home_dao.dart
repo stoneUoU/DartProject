@@ -15,11 +15,11 @@ class MGHomeDao {
 
   static _sendNavigator() async {
     BaseRequest request;
-    List<Mg_home_nav_model> list = [];
+    List<MGHomeNavModel> list = [];
     request = MGHomeRequest();
     var result = await HiNet().fire(request);
     for (int index = 0; index < result.length; index++) {
-      Mg_home_nav_model model = Mg_home_nav_model.fromJson(result[index]);
+      MGHomeNavModel model = MGHomeNavModel.fromJson(result[index]);
       list.add(model);
     }
     return list;
@@ -27,12 +27,12 @@ class MGHomeDao {
 
   static _sendDataLists(int id) async {
     MGHomeRequest request;
-    Mg_home_model model = Mg_home_model();
+    MGHomeModel model = MGHomeModel();
     request = MGHomeRequest();
     request.pathCategory = 1;
     request.add("id", id);
     var result = await HiNet().fire(request);
-    model = Mg_home_model.fromJson(result);
+    model = MGHomeModel.fromJson(result);
     return model;
   }
 }

@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 ///自定义播放器UI
-class MaterialControls extends StatefulWidget {
+class MGVideoControls extends StatefulWidget {
   //初始化时是否展示loading
   final bool showLoadingOnInitialize;
 
@@ -24,7 +24,7 @@ class MaterialControls extends StatefulWidget {
   //弹幕浮层
   final Widget barrageUI;
 
-  const MaterialControls(
+  const MGVideoControls(
       {Key? key,
       this.showLoadingOnInitialize = true,
       this.showBigPlayIcon = true,
@@ -35,11 +35,11 @@ class MaterialControls extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _MaterialControlsState();
+    return _MGVideoControlsState();
   }
 }
 
-class _MaterialControlsState extends State<MaterialControls>
+class _MGVideoControlsState extends State<MGVideoControls>
     with SingleTickerProviderStateMixin {
   late VideoPlayerValue _latestValue;
   double _latestVolume = 0.0;
@@ -503,14 +503,12 @@ class _MaterialControlsState extends State<MaterialControls>
             setState(() {
               _dragging = true;
             });
-
             _hideTimer?.cancel();
           },
           onDragEnd: () {
             setState(() {
               _dragging = false;
             });
-
             _startHideTimer();
           },
           colors: chewieController!.materialProgressColors ??

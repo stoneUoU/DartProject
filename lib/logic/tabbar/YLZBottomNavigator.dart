@@ -51,7 +51,7 @@ class _YLZBottomNavigatorState extends State<YLZBottomNavigator> {
         onTap: (index) => _onJumpTo(context, index),
         type: BottomNavigationBarType.fixed,
         selectedItemColor: _activeColor,
-          unselectedItemColor:Colors.white,
+        unselectedItemColor: Colors.white,
         items: [
           _bottomItem('首页', 'assets/images/mine_icon_store_onclick.png',
               'assets/images/mine_icon_store_click.png', 0),
@@ -66,8 +66,8 @@ class _YLZBottomNavigatorState extends State<YLZBottomNavigator> {
 
   _bottomItem(String title, String icon, String activeIcon, int index) {
     return BottomNavigationBarItem(
-        icon: Image.asset(
-          icon,
+        icon: Image(
+          image:AssetImage(icon),
           width: 20,
           height: 20,
         ),

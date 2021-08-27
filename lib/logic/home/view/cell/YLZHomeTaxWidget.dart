@@ -1,8 +1,8 @@
 import 'package:dart_demo/base/config/YLZStyle.dart';
 import 'package:flutter/material.dart';
 
-class YLZTaxWidget extends StatelessWidget {
-  const YLZTaxWidget({
+class YLZHomeTaxWidget extends StatelessWidget {
+  const YLZHomeTaxWidget({
     Key? key,
   }) : super(key: key);
 

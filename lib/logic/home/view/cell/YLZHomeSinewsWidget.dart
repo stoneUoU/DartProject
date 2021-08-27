@@ -3,10 +3,10 @@ import 'package:dart_demo/base/view/YLZSeparatorView.dart';
 import 'package:dart_demo/logic/home/model/YLZDynamicModel.dart';
 import 'package:flutter/material.dart';
 
-class YLZSinewsWidget extends StatelessWidget {
+class YLZHomeSinewsWidget extends StatelessWidget {
   int index;
   YLZDynamicModel? dynamicModel;
-  YLZSinewsWidget(
+  YLZHomeSinewsWidget(
     this.index,
     this.dynamicModel, {
     Key? key,

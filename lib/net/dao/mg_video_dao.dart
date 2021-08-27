@@ -1,3 +1,4 @@
+import 'package:dart_demo/logic/mguo/model/mg_ad_model.dart';
 import 'package:dart_demo/logic/mguo/model/mg_video_decode_model.dart';
 import 'package:dart_demo/logic/mguo/model/mg_video_detail_model.dart';
 import 'package:dart_demo/net/http/core/hi_net.dart';
@@ -10,6 +11,10 @@ class MGHomeVideoDao {
 
   static videoDecode(String player_code) {
     return _sendVideoDecode(player_code);
+  }
+
+  static videoAds(String flag) {
+    return _sendVideoAds(flag);
   }
 
   static _sendVideoInfo(int id) async {
@@ -31,6 +36,17 @@ class MGHomeVideoDao {
     request.add("player_code", player_code);
     var result = await HiNet().fire(request);
     model = MGVideoDecodeModel.fromJson(result);
+    return model;
+  }
+
+  static _sendVideoAds(String flag) async {
+    MGVideoRequest request;
+    MGAdModel model = MGAdModel();
+    request = MGVideoRequest();
+    request.pathCategory = 2;
+    request.add("flag", flag);
+    var result = await HiNet().fire(request);
+    model = MGAdModel.fromJson(result["data"]);
     return model;
   }
 }

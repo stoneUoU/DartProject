@@ -1,8 +1,8 @@
 import 'package:dart_demo/logic/home/model/YLZModuleModel.dart';
 import 'package:flutter/material.dart';
 
-class YLZOrganizationWidget extends StatelessWidget {
-  const YLZOrganizationWidget({
+class YLZHomeOrganizationWidget extends StatelessWidget {
+  const YLZHomeOrganizationWidget({
     Key? key,
     required this.homeSonPage,
   }) : super(key: key);

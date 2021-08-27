@@ -2,17 +2,24 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:common_utils/common_utils.dart';
-import 'package:dart_demo/base/navigator/HiNavigator.dart';
+import 'package:dart_demo/base/config/YLZMacros.dart';
+import 'package:dart_demo/base/config/YLZStyle.dart';
+import 'package:dart_demo/base/view/YLZNormalView.dart';
+import 'package:dart_demo/logic/mguo/model/mg_ad_model.dart';
 import 'package:dart_demo/logic/mguo/model/mg_father_video_player_model.dart';
+import 'package:dart_demo/logic/mguo/model/mg_home_model.dart';
 import 'package:dart_demo/logic/mguo/model/mg_video_decode_model.dart';
 import 'package:dart_demo/logic/mguo/model/mg_video_detail_model.dart';
 import 'package:dart_demo/logic/mguo/model/mg_video_parse_model.dart';
-import 'package:dart_demo/logic/mguo/view/VideoView.dart';
+import 'package:dart_demo/logic/mguo/model/mg_video_player_model.dart';
+import 'package:dart_demo/logic/mguo/view/mg_video_widget.dart';
 import 'package:dart_demo/net/dao/mg_video_dao.dart';
 import 'package:dart_demo/net/db/hi_cache.dart';
+import 'package:dart_demo/provider/MGVideoDetailProvider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 import 'package:rsa_util/rsa_util.dart';
 
 class MGHomePlayerPage extends StatefulWidget {
@@ -30,11 +37,18 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
   List<MGFatherVideoPlayerModel> videolists = [];
   final publicKeyString =
       "-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC3jrJKw+DB2MO7KRTFdLeaciv+3SDNDSnuc3KtUuIwPuVwrbGnVmgRej6VuRwNA4Qx/CvVaKly1Wijsb/HdP5WXFeAGHzO2JuRrTOYrAlm/H09oAIoQk7KMAEfM9sM5h2jDiZc+GJ7h5f8VBitH1b0RjvTKufhk9AHU/dEyI2YNQIDAQAB\n-----END PUBLIC KEY-----";
+  bool adShow = true;
+  //选中的渠道：
+  int selectedChannel = 0;
+  //选中的集数：
+  int selectedRow = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     _futureBuilderFuture = _start();
+    // _decodeVideo(totalVideolist[1].from ?? "",
+    //     totalVideolist[1].videoModel?[0].playerUrl ?? "");
   }
 
   @override
@@ -45,63 +59,536 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          //让title居左
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: false,
-          titleSpacing: 0,
-          leading: BackButton(onPressed: () {
-            // HiNavigator().onJumpTo(RouteStatus.home);
-            HiNavigator().pop(context);
-          }),
-          title: Text(
-            "返回",
-            style: TextStyle(fontSize: 18),
-          ),
-        ),
         body: FutureBuilder(
             future: _futureBuilderFuture,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                MGVideoDetailModel model = snapshot.data! as MGVideoDetailModel;
+                List dataList = (snapshot.data as List).cast();
+                MGVideoDetailModel model = dataList[0] as MGVideoDetailModel;
+                MGAdModel adModel = dataList[1] as MGAdModel;
                 //进行数据处理：
-                dealRecord(model);
-                return _buildWidget();
+                MGVideoDetailModel modelAfterDeal = dealRecord(model);
+                return _buildWidget(modelAfterDeal, adModel);
               } else {
                 return _buildSpinKitFadingCircle();
               }
             }));
   }
 
-  Widget _buildWidget() {
-    return VideoView(
-      "https://assets.mixkit.co/videos/preview/mixkit-daytime-city-traffic-aerial-view-56-large.mp4",
-      cover:
-          "https://pic.ntimg.cn/BannerPic/20210521/design/20210521194418.jpg",
-      overlayUI: videoAppBar(),
-      barrageUI: Container(),
+  Widget _buildWidget(MGVideoDetailModel model, MGAdModel adModel) {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            child: MGVideoWidget(
+              "https://assets.mixkit.co/videos/preview/mixkit-daytime-city-traffic-aerial-view-56-large.mp4",
+              cover:
+                  "https://pic.ntimg.cn/BannerPic/20210521/design/20210521194418.jpg",
+              overlayUI: videoAppBar(),
+              barrageUI: Container(),
+            ),
+          ),
+          Container(
+              height: ScreenH(context) -
+                  (ScreenW(context) * 9 / 16 + TabbarSafeBottomM(context)),
+              child: ListView(
+                  padding:
+                      EdgeInsets.fromLTRB(0, 0, 0, TabbarSafeBottomM(context)),
+                  scrollDirection: Axis.vertical,
+                  children: [
+                    _buildTitleWidget(model),
+                    _buildToolsWidget(),
+                    _buildAdsWidget(adModel),
+                    _buildPlayerListWidget(model),
+                    _buildLovesListWidget(model),
+                  ]))
+        ],
+      ),
+      color: Color(MGColorMainView),
     );
   }
 
-  ///黑色线性渐变
-  blackLinearGradient({bool fromTop = false}) {
-    return LinearGradient(
-        begin: fromTop ? Alignment.topCenter : Alignment.bottomCenter,
-        end: fromTop ? Alignment.bottomCenter : Alignment.topCenter,
-        colors: [
-          Colors.black54,
-          Colors.black45,
-          Colors.black38,
-          Colors.black26,
-          Colors.black12,
-          Colors.transparent
-        ]);
+  Container _buildLovesListWidget(MGVideoDetailModel model) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            child: Text(
+              "猜你喜欢",
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 16),
+            height: 188,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                VideoModel videoModel = model.likes![index];
+                return Container(
+                  margin: EdgeInsets.only(
+                      right: index == model.likes!.length - 1 ? 0 : 10),
+                  child: Column(
+                    children: [
+                      Stack(
+                        children: [
+                          Container(
+                            child: ClipRRect(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(6.0)),
+                                child: new FadeInImage.assetNetwork(
+                                  placeholder:
+                                      "assets/images/ylz_blank_rectangle.png",
+                                  image: "${videoModel.img}",
+                                  fit: BoxFit.cover,
+                                )),
+                            width: 104,
+                            height: 146,
+                          ),
+                          Positioned(
+                              right: 6,
+                              bottom: 6,
+                              child: Text(
+                                "${videoModel.score}",
+                                style: TextStyle(
+                                    color: Colors.deepOrange, fontSize: 16),
+                              ))
+                        ],
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        width: 104,
+                        height: 36,
+                        child: Text(
+                          "${videoModel.name}",
+                          style: TextStyle(color: Colors.white, fontSize: 14),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
+              itemCount: model.likes?.length ?? 0,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Container _buildPlayerListWidget(MGVideoDetailModel model) {
+    MGFatherVideoPlayerModel channelModel = MGFatherVideoPlayerModel();
+    model.totalVideolist.forEach((element) {
+      MGFatherVideoPlayerModel eleMent = element as MGFatherVideoPlayerModel;
+      if (eleMent.selected) {
+        channelModel = eleMent;
+      }
+    });
+    return Container(
+      padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    "播放列表",
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                  InkWell(
+                    child: Text(
+                      "  简介 ",
+                      style: TextStyle(
+                          color: Color(YLZColorTitleTwo), fontSize: 16),
+                    ),
+                    onTap: () {
+                      showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (BuildContext context) {
+                            return _buildIntroAlert(model);
+                          });
+                    },
+                  ),
+                  Image.asset(
+                    'assets/images/ylz_arrow_right.png',
+                    fit: BoxFit.fill,
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  InkWell(
+                    child: Text(
+                      "更新至${channelModel.videoModel?.length ?? 0}集",
+                      style: TextStyle(
+                          color: Color(YLZColorTitleTwo), fontSize: 14),
+                    ),
+                    onTap: () {
+                      log("更新至n集");
+                    },
+                  ),
+                  Image.asset(
+                    'assets/images/ylz_arrow_right.png',
+                    fit: BoxFit.fill,
+                  ),
+                ],
+              )
+            ],
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(0, 16, 0, 16),
+            height: 44,
+            width: ScreenW(context) - 32,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                MGVideoPlayerModel playerModel =
+                    channelModel.videoModel![index];
+                return Container(
+                    margin: EdgeInsets.only(right: index == 9 ? 0 : 10),
+                    child: InkWell(
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: (model.isMovie ?? false) ? 96 : 44,
+                        height: 44,
+                        decoration: new BoxDecoration(
+                            color: Color(playerModel.selected!
+                                ? MGColorMainViewTwo
+                                : MGColorMainView),
+                            border: new Border.all(
+                              color: Color(MGColorMainViewTwo),
+                              width: 1.0,
+                            ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(6.0))),
+                        child: Text(
+                          (model.isMovie ?? false)
+                              ? "${playerModel.sectionName}"
+                              : "${index + 1}",
+                          style: TextStyle(
+                              color: playerModel.selected!
+                                  ? Colors.white
+                                  : Color(YLZColorTitleThree),
+                              fontSize: 14),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      onTap: () {
+                        print("${index}");
+                        if (selectedRow != index) {
+                          setState(() {
+                            selectedRow = index;
+                          });
+                        }
+                      },
+                    ));
+              },
+              itemCount: channelModel.videoModel?.length ?? 0,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Container _buildAdsWidget(MGAdModel adModel) {
+    if (adShow) {
+      return Container(
+        padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+        child: Stack(
+          children: [
+            ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                child: new FadeInImage.assetNetwork(
+                  placeholder: "assets/images/ylz_blank_rectangle.png",
+                  image: "${adModel.img}",
+                  fit: BoxFit.cover,
+                )),
+            Positioned(
+                top: 6,
+                right: 6,
+                child: InkWell(
+                  child: Container(
+                    width: 24,
+                    height: 24,
+                    decoration: new BoxDecoration(
+                        color: Color(MGColorMainViewTwo),
+                        borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                  ),
+                  onTap: () {
+                    setState(() {
+                      adShow = false;
+                    });
+                  },
+                )),
+            Positioned(
+              child: Container(
+                margin: EdgeInsets.only(left: 16),
+                padding: EdgeInsets.fromLTRB(6, 2, 6, 2),
+                decoration: new BoxDecoration(
+                  border: new Border.all(
+                    color: Colors.green,
+                    width: 1.0,
+                  ),
+                  borderRadius: new BorderRadius.all(new Radius.circular(4.0)),
+                ),
+                child: Text(
+                  "广告",
+                  style: TextStyle(color: Colors.green, fontSize: 12),
+                ),
+              ),
+              right: 6,
+              bottom: 6,
+            )
+          ],
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Container _buildToolsWidget() {
+    return Container(
+        padding: EdgeInsets.fromLTRB(16, 24, 16, 24),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Column(
+              children: [
+                Image.asset(
+                  'assets/images/ylz_home_scan.png',
+                  fit: BoxFit.fill,
+                ),
+                Text(
+                  "求片反馈",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style:
+                      TextStyle(color: Color(YLZColorTitleThree), fontSize: 14),
+                )
+              ],
+            ),
+            Column(
+              children: [
+                Image.asset(
+                  'assets/images/ylz_home_scan.png',
+                  fit: BoxFit.fill,
+                ),
+                Text(
+                  "收藏",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style:
+                      TextStyle(color: Color(YLZColorTitleThree), fontSize: 14),
+                )
+              ],
+            ),
+            Column(
+              children: [
+                Image.asset(
+                  'assets/images/ylz_home_scan.png',
+                  fit: BoxFit.fill,
+                ),
+                Text(
+                  "下载",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style:
+                      TextStyle(color: Color(YLZColorTitleThree), fontSize: 14),
+                )
+              ],
+            ),
+            Column(
+              children: [
+                Image.asset(
+                  'assets/images/ylz_home_scan.png',
+                  fit: BoxFit.fill,
+                ),
+                Text(
+                  "分享",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style:
+                      TextStyle(color: Color(YLZColorTitleThree), fontSize: 14),
+                )
+              ],
+            )
+          ],
+        ));
+  }
+
+  Container _buildTitleWidget(MGVideoDetailModel model) {
+    MGFatherVideoPlayerModel channelModel = MGFatherVideoPlayerModel();
+    model.totalVideolist.forEach((element) {
+      MGFatherVideoPlayerModel eleMent = element as MGFatherVideoPlayerModel;
+      if (eleMent.selected) {
+        channelModel = eleMent;
+      }
+    });
+    return Container(
+      margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
+      child: Stack(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 16, 120, 10),
+                child: Text(
+                  "${model.name}",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+              Row(
+                children: [
+                  Image.asset(
+                    'assets/images/ylz_home_scan.png',
+                    fit: BoxFit.fill,
+                    width: 16,
+                    height: 16,
+                  ),
+                  Text(
+                    "  热度：${model.hits}  评分：${model.score}  ${model.type}  ${model.msg}",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        color: Color(YLZColorTitleThree), fontSize: 14),
+                  )
+                ],
+              )
+            ],
+          ),
+          Positioned(
+              right: 0,
+              top: 12,
+              child: GestureDetector(
+                child: Container(
+                  padding: EdgeInsets.all(4.0),
+                  decoration: new BoxDecoration(
+                      color: Color(MGColorMainViewThree),
+                      borderRadius: BorderRadius.all(Radius.circular(18.0))),
+                  child: Row(
+                    children: [
+                      Image.asset('assets/images/ylz_home_scan.png',
+                          fit: BoxFit.fill, width: 16, height: 16),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                        child: Text(
+                          "${channelModel.show ?? ""}",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              color: Color(YLZColorTitleThree), fontSize: 14),
+                        ),
+                      ),
+                      Image.asset(
+                        'assets/images/ylz_arrow_right.png',
+                        fit: BoxFit.fill,
+                      ),
+                    ],
+                  ),
+                ),
+                onTap: () {
+                  showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (BuildContext context) {
+                        return _buildChannelAlert(model);
+                      });
+                },
+              ))
+        ],
+      ),
+    );
+  }
+
+  Container _buildIntroAlert(MGVideoDetailModel model) {
+    return Container(
+      color: Colors.green,
+      height: ScreenH(context) - (ScreenW(context) * 9 / 16),
+    );
+  }
+
+  Container _buildChannelAlert(MGVideoDetailModel model) {
+    return Container(
+      color: Color(MGColorMainViewThree),
+      height: 44 * 4 + TabbarSafeBottomM(context),
+      child: Column(
+        children: [
+          Container(
+              height: 44,
+              alignment: Alignment.center,
+              child: Text(
+                "选择播放渠道",
+                style:
+                    TextStyle(color: Color(YLZColorTitleThree), fontSize: 16),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              )),
+          Container(
+            height: 44 * 3,
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemBuilder: (context, index) {
+                MGFatherVideoPlayerModel channelModel =
+                    model.totalVideolist[index];
+                channelModel.selected = index ==
+                    context.watch<MGVideoDetailProvider>().selectedChannel;
+                return InkWell(
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        height: 43,
+                        child: Text(
+                          "${channelModel.show}",
+                          style: TextStyle(
+                              color: channelModel.selected
+                                  ? Colors.red
+                                  : Colors.white,
+                              fontSize: 14),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Container(height: 1.0, color: Color(MGColorMainViewTwo))
+                    ],
+                  ),
+                  onTap: () {
+                    setState(() {
+                      selectedChannel = index;
+                      selectedRow = 0;
+                    });
+                    context
+                        .read<MGVideoDetailProvider>()
+                        .changeSelectedChannel(index);
+                  },
+                );
+              },
+              itemCount: model.totalVideolist.length,
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   ///视频详情页appBar
   videoAppBar() {
     return Container(
+      margin: EdgeInsets.only(top: StatusH(context)),
       padding: EdgeInsets.only(right: 8),
       decoration: BoxDecoration(gradient: blackLinearGradient(fromTop: true)),
       child: Row(
@@ -125,7 +612,7 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
     );
   }
 
-  void dealRecord(MGVideoDetailModel model) {
+  MGVideoDetailModel dealRecord(MGVideoDetailModel model) {
     List<MGFatherVideoPlayerModel> totalVideolist = [];
     String exampleString = model.playlist ?? "";
     List<String> stringList = [];
@@ -155,9 +642,9 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
           "playerUrl": endUrlStringList[1].toString(),
           "isMovie": model.isMovie,
           "show": playerInfoModel.show,
-          "videoId": widget.id
+          "videoId": widget.id,
+          "selected": j == selectedRow
         };
-        // MGVideoPlayerModel playerModel = MGVideoPlayerModel.fromJson(endUrlMap);
         sectionUrlModelList.add(endUrlMap);
       }
       Map<String, dynamic> endUrlMap = {
@@ -166,22 +653,25 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
         "from": playerInfoModel.from,
         "icon": playerInfoModel.icon
       };
-      totalVideolist.add(MGFatherVideoPlayerModel.fromJson(endUrlMap));
+      MGFatherVideoPlayerModel channelModel =
+          MGFatherVideoPlayerModel.fromJson(endUrlMap);
+      channelModel.selected = index == selectedChannel;
+      totalVideolist.add(channelModel);
     }
-    _decodeVideo(totalVideolist[1].from ?? "",
-        totalVideolist[1].videoModel?[0].playerUrl ?? "");
+    model.totalVideolist = totalVideolist;
+    return model;
   }
 
   Future _start() async {
     MGVideoDetailModel detailModel = await MGHomeVideoDao.videoInfo(widget.id);
-    return detailModel;
+    MGAdModel adModel = await MGHomeVideoDao.videoAds("test");
+    return [detailModel, adModel];
   }
 
   Future _decodeVideo(String playerCode, String videoString) async {
     MGVideoDecodeModel decodeModel =
         await MGHomeVideoDao.videoDecode(playerCode);
     String parseUrl = await _loadData(decodeModel.data ?? "");
-
     _parseUrl(parseUrl, videoString);
   }
 

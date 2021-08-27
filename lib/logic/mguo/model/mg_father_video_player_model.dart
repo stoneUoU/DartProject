@@ -10,6 +10,7 @@ class MGFatherVideoPlayerModel {
   String? _show;
   String? _icon;
   String? _from;
+  bool selected = false;
 
   List<MGVideoPlayerModel>? get videoModel => _videoModel;
   String? get show => _show;

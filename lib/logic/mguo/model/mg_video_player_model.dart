@@ -16,6 +16,7 @@ class MGVideoPlayerModel {
   String? _videoName;
   bool? _isMovie;
   String? _from;
+  bool? _selected;
 
   String? get playerUrl => _playerUrl;
   String? get img => _img;
@@ -25,6 +26,12 @@ class MGVideoPlayerModel {
   String? get videoName => _videoName;
   bool? get isMovie => _isMovie;
   String? get from => _from;
+  bool? get selected => _selected;
+
+  //开放给外面设置:
+  void setSelected(bool selected) {
+    _selected = selected;
+  }
 
   MGVideoPlayerModel(
       {String? playerUrl,
@@ -35,7 +42,8 @@ class MGVideoPlayerModel {
       String? videoName,
       bool? checked,
       bool? isMovie,
-      String? from}) {
+      String? from,
+      bool? selected}) {
     _playerUrl = playerUrl;
     _img = img;
     _sectionName = sectionName;
@@ -44,6 +52,7 @@ class MGVideoPlayerModel {
     _videoName = videoName;
     _isMovie = isMovie;
     _from = from;
+    _selected = selected;
   }
 
   MGVideoPlayerModel.fromJson(dynamic json) {
@@ -55,6 +64,7 @@ class MGVideoPlayerModel {
     _videoName = json["videoName"];
     _isMovie = json["isMovie"];
     _from = json["from"];
+    _selected = json["selected"];
   }
 
   Map<String, dynamic> toJson() {
@@ -67,6 +77,7 @@ class MGVideoPlayerModel {
     map["videoName"] = _videoName;
     map["isMovie"] = _isMovie;
     map["from"] = _from;
+    map["selected"] = _selected;
     return map;
   }
 }

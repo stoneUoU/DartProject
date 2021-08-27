@@ -2,8 +2,8 @@ import 'package:dart_demo/base/config/YLZStyle.dart';
 import 'package:dart_demo/logic/home/model/YLZModuleModel.dart';
 import 'package:flutter/material.dart';
 
-class YLZQueryServiceWidget extends StatelessWidget {
-  const YLZQueryServiceWidget({
+class YLZHomeQueryServiceWidget extends StatelessWidget {
+  const YLZHomeQueryServiceWidget({
     Key? key,
     required this.cellWidth,
     required this.insureModel,

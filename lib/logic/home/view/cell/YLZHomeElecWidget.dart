@@ -3,10 +3,10 @@ import 'package:dart_demo/base/config/YLZStyle.dart';
 import 'package:dart_demo/logic/home/model/YLZModuleModel.dart';
 import 'package:flutter/material.dart';
 
-class YLZElecWidget extends StatelessWidget {
+class YLZHomeElecWidget extends StatelessWidget {
   HomePage? homePage;
 
-  YLZElecWidget(
+  YLZHomeElecWidget(
     this.homePage, {
     Key? key,
     required this.cellWidth,

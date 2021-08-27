@@ -265,13 +265,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_marquee:
-    dependency: "direct main"
-    description:
-      name: flutter_marquee
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.1"
   flutter_math_fork:
     dependency: transitive
     description:
@@ -457,6 +450,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  marquee_flutter_nullsafety:
+    dependency: "direct main"
+    description:
+      name: marquee_flutter_nullsafety
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   matcher:
     dependency: transitive
     description:
@@ -611,6 +611,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
+  popover:
+    dependency: "direct main"
+    description:
+      name: popover
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.6+2"
   process:
     dependency: transitive
     description:

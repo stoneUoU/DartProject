@@ -2,7 +2,7 @@
 /// msg : []
 /// name : "推荐"
 
-class Mg_home_nav_model {
+class MGHomeNavModel {
   String? _name;
   int? _id;
   List<Msg>? _msg;
@@ -11,13 +11,13 @@ class Mg_home_nav_model {
   int? get id => _id;
   List<Msg>? get msg => _msg;
 
-  Mg_home_nav_model({String? name, int? id, List<Msg>? msg}) {
+  MGHomeNavModel({String? name, int? id, List<Msg>? msg}) {
     _name = name;
     _id = id;
     _msg = msg;
   }
 
-  Mg_home_nav_model.fromJson(dynamic json) {
+  MGHomeNavModel.fromJson(dynamic json) {
     _name = json["name"];
     _id = json["id"];
     if (json["msg"] != null) {

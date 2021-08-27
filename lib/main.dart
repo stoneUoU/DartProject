@@ -9,6 +9,7 @@ import 'package:dart_demo/logic/rainBow/YLZReportDetailPage.dart';
 import 'package:dart_demo/logic/rainBow/YLZReportListPage.dart';
 import 'package:dart_demo/logic/tabbar/YLZBottomNavigator.dart';
 import 'package:dart_demo/net/db/hi_cache.dart';
+import 'package:dart_demo/provider/MGVideoDetailProvider.dart';
 import 'package:dart_demo/provider/YLZCodeProvider.dart';
 import 'package:dart_demo/provider/YLZCounter.dart';
 import 'package:dart_demo/provider/YLZTabbarProvider.dart';
@@ -46,7 +47,8 @@ class _APPState extends State<APP> {
             providers: [
               ChangeNotifierProvider(create: (_) => YLZCounter()),
               ChangeNotifierProvider(create: (_) => YLZTabbarProvider()),
-              ChangeNotifierProvider(create: (_) => YLZCodeProvider())
+              ChangeNotifierProvider(create: (_) => YLZCodeProvider()),
+              ChangeNotifierProvider(create: (_) => MGVideoDetailProvider())
             ],
             child: ScreenUtilInit(
                 designSize: Size(1125, 2436),
