@@ -53,7 +53,6 @@ dependencies:
   simple_logger: ^1.0.0
   flutter_easyrefresh: ^2.2.1
   connectivity: ^3.0.6
-  marquee_flutter_nullsafety: ^1.0.0
   flutter_html: ^2.1.1
   flutter_custom_bottom_tab_bar:
     git: https://github.com/LiuC520/flutter_custom_bottom_tab_bar
@@ -88,293 +87,295 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
 
-#  assets:
-#    - assets/images/
-
   assets:
-
-    - assets/images/clickBack.png
-    - assets/images/2.0x/clickBack.png
-    - assets/images/3.0x/clickBack.png
-
-    - assets/images/aboutUs.png
-    - assets/images/2.0x/aboutUs.png
-    - assets/images/3.0x/aboutUs.png
-
-    - assets/images/lianxikefu.png
-    - assets/images/2.0x/lianxikefu.png
-    - assets/images/3.0x/lianxikefu.png
-
-    - assets/images/shezhi.png
-    - assets/images/2.0x/shezhi.png
-    - assets/images/3.0x/shezhi.png
-
-    - assets/images/shouhuodizhi.png
-    - assets/images/2.0x/shouhuodizhi.png
-    - assets/images/3.0x/shouhuodizhi.png
-
-    - assets/images/wodetanwei.png
-    - assets/images/2.0x/wodetanwei.png
-    - assets/images/3.0x/wodetanwei.png
-
-    - assets/images/wodeyinhangka.png
-    - assets/images/2.0x/wodeyinhangka.png
-    - assets/images/3.0x/wodeyinhangka.png
-
-    - assets/images/seeIcon.png
-    - assets/images/2.0x/seeIcon.png
-    - assets/images/3.0x/seeIcon.png
-
-    - assets/images/login_icon_guanbi.png
-    - assets/images/2.0x/login_icon_guanbi.png
-    - assets/images/3.0x/login_icon_guanbi.png
-
-    - assets/images/login_pic.png
-    - assets/images/2.0x/login_pic.png
-    - assets/images/3.0x/login_pic.png
-
-    - assets/images/noShopCart.png
-    - assets/images/2.0x/noShopCart.png
-    - assets/images/3.0x/noShopCart.png
-
-    - assets/images/noNet.png
-    - assets/images/2.0x/noNet.png
-    - assets/images/3.0x/noNet.png
-
-    - assets/images/avater_icon.png
-    - assets/images/2.0x/avater_icon.png
-    - assets/images/3.0x/avater_icon.png
-
-    - assets/images/mine_icon_mine_onclick.png
-    - assets/images/2.0x/mine_icon_mine_onclick.png
-    - assets/images/3.0x/mine_icon_mine_onclick.png
-
-    - assets/images/mine_icon_mine_click.png
-    - assets/images/2.0x/mine_icon_mine_click.png
-    - assets/images/3.0x/mine_icon_mine_click.png
-
-    - assets/images/mine_icon_store_onclick.png
-    - assets/images/2.0x/mine_icon_store_onclick.png
-    - assets/images/3.0x/mine_icon_store_onclick.png
-
-    - assets/images/mine_icon_store_click.png
-    - assets/images/2.0x/mine_icon_store_click.png
-    - assets/images/3.0x/mine_icon_store_click.png
-
-    - assets/images/icon_shoppingcar_click.png
-    - assets/images/2.0x/icon_shoppingcar_click.png
-    - assets/images/3.0x/icon_shoppingcar_click.png
-
-    - assets/images/icon_shoppingcar_onclick.png
-    - assets/images/2.0x/icon_shoppingcar_onclick.png
-    - assets/images/3.0x/icon_shoppingcar_onclick.png
-
-    - assets/images/designCourse.png
-    - assets/images/2.0x/designCourse.png
-    - assets/images/3.0x/designCourse.png
-
-    - assets/images/designReport.png
-    - assets/images/2.0x/designReport.png
-    - assets/images/3.0x/designReport.png
-
-    - assets/images/findDesigner.png
-    - assets/images/2.0x/findDesigner.png
-    - assets/images/3.0x/findDesigner.png
-
-    - assets/images/fastReport.png
-    - assets/images/2.0x/fastReport.png
-    - assets/images/3.0x/fastReport.png
-
-    - assets/images/privateSchool.png
-    - assets/images/2.0x/privateSchool.png
-    - assets/images/3.0x/privateSchool.png
-
-    - assets/images/planningCase.png
-    - assets/images/2.0x/planningCase.png
-    - assets/images/3.0x/planningCase.png
-
-    - assets/images/ylz_arrow_right.png
-    - assets/images/2.0x/ylz_arrow_right.png
-    - assets/images/3.0x/ylz_arrow_right.png
-
-    - assets/images/home_icon_tax_shape.png
-    - assets/images/2.0x/home_icon_tax_shape.png
-    - assets/images/3.0x/home_icon_tax_shape.png
-
-    - assets/images/chs_logo_hsa.png
-    - assets/images/2.0x/chs_logo_hsa.png
-    - assets/images/3.0x/chs_logo_hsa.png
-
-    - assets/images/ylz_message_logo.png
-    - assets/images/2.0x/ylz_message_logo.png
-    - assets/images/3.0x/ylz_message_logo.png
-
-    - assets/images/ylz_home_find.png
-    - assets/images/2.0x/ylz_home_find.png
-    - assets/images/3.0x/ylz_home_find.png
-
-    - assets/images/ylz_elec_code.png
-    - assets/images/2.0x/ylz_elec_code.png
-    - assets/images/3.0x/ylz_elec_code.png
-
-    - assets/images/ylz_eye_open.png
-    - assets/images/2.0x/ylz_eye_open.png
-    - assets/images/3.0x/ylz_eye_open.png
-
-    - assets/images/ylz_logo.png
-    - assets/images/2.0x/ylz_logo.png
-    - assets/images/3.0x/ylz_logo.png
-
-    - assets/images/ylz_home_scan.png
-    - assets/images/2.0x/ylz_home_scan.png
-    - assets/images/3.0x/ylz_home_scan.png
-
-    - assets/images/ylz_home_qrcode.png
-    - assets/images/2.0x/ylz_home_qrcode.png
-    - assets/images/3.0x/ylz_home_qrcode.png
-
-    - assets/images/ylz_home_care.png
-    - assets/images/2.0x/ylz_home_care.png
-    - assets/images/3.0x/ylz_home_care.png
-
-    - assets/images/ylz_blank_rectangle.png
-    - assets/images/2.0x/ylz_blank_rectangle.png
-    - assets/images/3.0x/ylz_blank_rectangle.png
-
-    - assets/images/ylz_blank_circular.jpg
-    - assets/images/2.0x/ylz_blank_circular.jpg
-
-    - assets/images/ylz_elec_code_supporting.png
-    - assets/images/2.0x/ylz_elec_code_supporting.png
-    - assets/images/3.0x/ylz_elec_code_supporting.png
-
-    - assets/images/ylz_elec_code_bg.png
-    - assets/images/2.0x/ylz_elec_code_bg.png
-    - assets/images/3.0x/ylz_elec_code_bg.png
-
-    - assets/images/ylz_elec_code_deal_record.png
-    - assets/images/2.0x/ylz_elec_code_deal_record.png
-    - assets/images/3.0x/ylz_elec_code_deal_record.png
-
-    - assets/images/ylz_elec_code_use_record.png
-    - assets/images/2.0x/ylz_elec_code_use_record.png
-    - assets/images/3.0x/ylz_elec_code_use_record.png
-
-    - assets/images/ylz_elec_code_dot.png
-    - assets/images/2.0x/ylz_elec_code_dot.png
-    - assets/images/3.0x/ylz_elec_code_dot.png
-
-    - assets/images/ylz_elec_code_fresh.png
-    - assets/images/2.0x/ylz_elec_code_fresh.png
-    - assets/images/3.0x/ylz_elec_code_fresh.png
-
-    - assets/images/ylz_elec_code_small_logo.png
-    - assets/images/2.0x/ylz_elec_code_small_logo.png
-    - assets/images/3.0x/ylz_elec_code_small_logo.png
-
-    - assets/images/ylz_black_back.png
-    - assets/images/2.0x/ylz_black_back.png
-    - assets/images/3.0x/ylz_black_back.png
-
-    - assets/images/ylz_failure_image.png
-    - assets/images/2.0x/ylz_failure_image.png
-    - assets/images/3.0x/ylz_failure_image.png
-
-    - assets/images/ylz_area_notice.png
-    - assets/images/2.0x/ylz_area_notice.png
-    - assets/images/3.0x/ylz_area_notice.png
-
-    - assets/images/ylz_area_bg.png
-    - assets/images/2.0x/ylz_area_bg.png
-    - assets/images/3.0x/ylz_area_bg.png
-
-    - assets/images/ylz_area_china.png
-    - assets/images/2.0x/ylz_area_china.png
-    - assets/images/3.0x/ylz_area_china.png
-
-    - assets/images/ylz_area_location.png
-    - assets/images/2.0x/ylz_area_location.png
-    - assets/images/3.0x/ylz_area_location.png
-
-    - assets/images/ylz_area_arrow.png
-    - assets/images/2.0x/ylz_area_arrow.png
-    - assets/images/3.0x/ylz_area_arrow.png
-
-    - assets/images/ylz_mine_list_about.png
-    - assets/images/2.0x/ylz_mine_list_about.png
-    - assets/images/3.0x/ylz_mine_list_about.png
-
-    - assets/images/ylz_mine_list_setting.png
-    - assets/images/2.0x/ylz_mine_list_setting.png
-    - assets/images/3.0x/ylz_mine_list_setting.png
-
-    - assets/images/ylz_mine_list_info.png
-    - assets/images/2.0x/ylz_mine_list_info.png
-    - assets/images/3.0x/ylz_mine_list_info.png
-
-    - assets/images/ylz_mine_list_notice.png
-    - assets/images/2.0x/ylz_mine_list_notice.png
-    - assets/images/3.0x/ylz_mine_list_notice.png
-
-    - assets/images/ylz_mine_list_help.png
-    - assets/images/2.0x/ylz_mine_list_help.png
-    - assets/images/3.0x/ylz_mine_list_help.png
-
-    - assets/images/ylz_mine_real_sign.png
-    - assets/images/2.0x/ylz_mine_real_sign.png
-    - assets/images/3.0x/ylz_mine_real_sign.png
-
-    - assets/images/ylz_mine_male_avater.png
-    - assets/images/2.0x/ylz_mine_male_avater.png
-    - assets/images/3.0x/ylz_mine_male_avater.png
-
-    - assets/images/ylz_mine_bg.png
-    - assets/images/2.0x/ylz_mine_bg.png
-    - assets/images/3.0x/ylz_mine_bg.png
-
-    - assets/images/ylz_mine_bank_card.png
-    - assets/images/2.0x/ylz_mine_bank_card.png
-    - assets/images/3.0x/ylz_mine_bank_card.png
-
-    - assets/images/ylz_mine_notice.png
-    - assets/images/2.0x/ylz_mine_notice.png
-    - assets/images/3.0x/ylz_mine_notice.png
-
-    - assets/images/ylz_mine_scan.png
-    - assets/images/2.0x/ylz_mine_scan.png
-    - assets/images/3.0x/ylz_mine_scan.png
-
-    - assets/images/ylz_mine_use_record.png
-    - assets/images/2.0x/ylz_mine_use_record.png
-    - assets/images/3.0x/ylz_mine_use_record.png
-
-    - assets/images/ylz_mine_deal_record.png
-    - assets/images/2.0x/ylz_mine_deal_record.png
-    - assets/images/3.0x/ylz_mine_deal_record.png
-
-    - assets/images/ylz_mine_baby_avater.png
-    - assets/images/2.0x/ylz_mine_baby_avater.png
-    - assets/images/3.0x/ylz_mine_baby_avater.png
-
-    - assets/images/ylz_mine_circle_add_place.png
-    - assets/images/2.0x/ylz_mine_circle_add_place.png
-    - assets/images/3.0x/ylz_mine_circle_add_place.png
-
-    - assets/images/ylz_mine_circle_add.png
-    - assets/images/2.0x/ylz_mine_circle_add.png
-    - assets/images/3.0x/ylz_mine_circle_add.png
-    -
-    - assets/images/mg_search.png
-    - assets/images/2.0x/mg_search.png
-    - assets/images/3.0x/mg_search.png
-
-    - assets/images/mg_watch_history.png
-    - assets/images/2.0x/mg_watch_history.png
-    - assets/images/3.0x/mg_watch_history.png
-
-    - assets/images/mg_filter.png
-    - assets/images/2.0x/mg_filter.png
-    - assets/images/3.0x/mg_filter.png
+    - assets/images/
+
+#    - assets/images/clickBack.png
+#    - assets/images/2.0x/clickBack.png
+#    - assets/images/3.0x/clickBack.png
+#
+#    - assets/images/aboutUs.png
+#    - assets/images/2.0x/aboutUs.png
+#    - assets/images/3.0x/aboutUs.png
+#
+#    - assets/images/lianxikefu.png
+#    - assets/images/2.0x/lianxikefu.png
+#    - assets/images/3.0x/lianxikefu.png
+#
+#    - assets/images/shezhi.png
+#    - assets/images/2.0x/shezhi.png
+#    - assets/images/3.0x/shezhi.png
+#
+#    - assets/images/shouhuodizhi.png
+#    - assets/images/2.0x/shouhuodizhi.png
+#    - assets/images/3.0x/shouhuodizhi.png
+#
+#    - assets/images/wodetanwei.png
+#    - assets/images/2.0x/wodetanwei.png
+#    - assets/images/3.0x/wodetanwei.png
+#
+#    - assets/images/wodeyinhangka.png
+#    - assets/images/2.0x/wodeyinhangka.png
+#    - assets/images/3.0x/wodeyinhangka.png
+#
+#    - assets/images/seeIcon.png
+#    - assets/images/2.0x/seeIcon.png
+#    - assets/images/3.0x/seeIcon.png
+#
+#    - assets/images/login_icon_guanbi.png
+#    - assets/images/2.0x/login_icon_guanbi.png
+#    - assets/images/3.0x/login_icon_guanbi.png
+#
+#    - assets/images/login_pic.png
+#    - assets/images/2.0x/login_pic.png
+#    - assets/images/3.0x/login_pic.png
+#
+#    - assets/images/noShopCart.png
+#    - assets/images/2.0x/noShopCart.png
+#    - assets/images/3.0x/noShopCart.png
+#
+#    - assets/images/noNet.png
+#    - assets/images/2.0x/noNet.png
+#    - assets/images/3.0x/noNet.png
+#
+#    - assets/images/avater_icon.png
+#    - assets/images/2.0x/avater_icon.png
+#    - assets/images/3.0x/avater_icon.png
+#
+#    - assets/images/mine_icon_mine_onclick.png
+#    - assets/images/2.0x/mine_icon_mine_onclick.png
+#    - assets/images/3.0x/mine_icon_mine_onclick.png
+#
+#    - assets/images/mine_icon_mine_click.png
+#    - assets/images/2.0x/mine_icon_mine_click.png
+#    - assets/images/3.0x/mine_icon_mine_click.png
+#
+#    - assets/images/mine_icon_store_onclick.png
+#    - assets/images/2.0x/mine_icon_store_onclick.png
+#    - assets/images/3.0x/mine_icon_store_onclick.png
+#
+#    - assets/images/mine_icon_store_click.png
+#    - assets/images/2.0x/mine_icon_store_click.png
+#    - assets/images/3.0x/mine_icon_store_click.png
+#
+#    - assets/images/icon_shoppingcar_click.png
+#    - assets/images/2.0x/icon_shoppingcar_click.png
+#    - assets/images/3.0x/icon_shoppingcar_click.png
+#
+#    - assets/images/icon_shoppingcar_onclick.png
+#    - assets/images/2.0x/icon_shoppingcar_onclick.png
+#    - assets/images/3.0x/icon_shoppingcar_onclick.png
+#
+#    - assets/images/designCourse.png
+#    - assets/images/2.0x/designCourse.png
+#    - assets/images/3.0x/designCourse.png
+#
+#    - assets/images/designReport.png
+#    - assets/images/2.0x/designReport.png
+#    - assets/images/3.0x/designReport.png
+#
+#    - assets/images/findDesigner.png
+#    - assets/images/2.0x/findDesigner.png
+#    - assets/images/3.0x/findDesigner.png
+#
+#    - assets/images/fastReport.png
+#    - assets/images/2.0x/fastReport.png
+#    - assets/images/3.0x/fastReport.png
+#
+#    - assets/images/privateSchool.png
+#    - assets/images/2.0x/privateSchool.png
+#    - assets/images/3.0x/privateSchool.png
+#
+#    - assets/images/planningCase.png
+#    - assets/images/2.0x/planningCase.png
+#    - assets/images/3.0x/planningCase.png
+#
+#    - assets/images/ylz_arrow_right.png
+#    - assets/images/2.0x/ylz_arrow_right.png
+#    - assets/images/3.0x/ylz_arrow_right.png
+#
+#    - assets/images/home_icon_tax_shape.png
+#    - assets/images/2.0x/home_icon_tax_shape.png
+#    - assets/images/3.0x/home_icon_tax_shape.png
+#
+#    - assets/images/chs_logo_hsa.png
+#    - assets/images/2.0x/chs_logo_hsa.png
+#    - assets/images/3.0x/chs_logo_hsa.png
+#
+#    - assets/images/ylz_message_logo.png
+#    - assets/images/2.0x/ylz_message_logo.png
+#    - assets/images/3.0x/ylz_message_logo.png
+#
+#    - assets/images/ylz_home_find.png
+#    - assets/images/2.0x/ylz_home_find.png
+#    - assets/images/3.0x/ylz_home_find.png
+#
+#    - assets/images/ylz_elec_code.png
+#    - assets/images/2.0x/ylz_elec_code.png
+#    - assets/images/3.0x/ylz_elec_code.png
+#
+#    - assets/images/ylz_eye_open.png
+#    - assets/images/2.0x/ylz_eye_open.png
+#    - assets/images/3.0x/ylz_eye_open.png
+#
+#    - assets/images/ylz_logo.png
+#    - assets/images/2.0x/ylz_logo.png
+#    - assets/images/3.0x/ylz_logo.png
+#
+#    - assets/images/ylz_home_scan.png
+#    - assets/images/2.0x/ylz_home_scan.png
+#    - assets/images/3.0x/ylz_home_scan.png
+#
+#    - assets/images/ylz_home_qrcode.png
+#    - assets/images/2.0x/ylz_home_qrcode.png
+#    - assets/images/3.0x/ylz_home_qrcode.png
+#
+#    - assets/images/ylz_home_care.png
+#    - assets/images/2.0x/ylz_home_care.png
+#    - assets/images/3.0x/ylz_home_care.png
+#
+#    - assets/images/ylz_blank_rectangle.png
+#    - assets/images/2.0x/ylz_blank_rectangle.png
+#    - assets/images/3.0x/ylz_blank_rectangle.png
+#
+#    - assets/images/ylz_blank_circular.jpg
+#    - assets/images/2.0x/ylz_blank_circular.jpg
+#
+#    - assets/images/ylz_elec_code_supporting.png
+#    - assets/images/2.0x/ylz_elec_code_supporting.png
+#    - assets/images/3.0x/ylz_elec_code_supporting.png
+#
+#    - assets/images/ylz_elec_code_bg.png
+#    - assets/images/2.0x/ylz_elec_code_bg.png
+#    - assets/images/3.0x/ylz_elec_code_bg.png
+#
+#    - assets/images/ylz_elec_code_deal_record.png
+#    - assets/images/2.0x/ylz_elec_code_deal_record.png
+#    - assets/images/3.0x/ylz_elec_code_deal_record.png
+#
+#    - assets/images/ylz_elec_code_use_record.png
+#    - assets/images/2.0x/ylz_elec_code_use_record.png
+#    - assets/images/3.0x/ylz_elec_code_use_record.png
+#
+#    - assets/images/ylz_elec_code_dot.png
+#    - assets/images/2.0x/ylz_elec_code_dot.png
+#    - assets/images/3.0x/ylz_elec_code_dot.png
+#
+#    - assets/images/ylz_elec_code_fresh.png
+#    - assets/images/2.0x/ylz_elec_code_fresh.png
+#    - assets/images/3.0x/ylz_elec_code_fresh.png
+#
+#    - assets/images/ylz_elec_code_small_logo.png
+#    - assets/images/2.0x/ylz_elec_code_small_logo.png
+#    - assets/images/3.0x/ylz_elec_code_small_logo.png
+#
+#    - assets/images/ylz_black_back.png
+#    - assets/images/2.0x/ylz_black_back.png
+#    - assets/images/3.0x/ylz_black_back.png
+#
+#    - assets/images/ylz_failure_image.png
+#    - assets/images/2.0x/ylz_failure_image.png
+#    - assets/images/3.0x/ylz_failure_image.png
+#
+#    - assets/images/ylz_area_notice.png
+#    - assets/images/2.0x/ylz_area_notice.png
+#    - assets/images/3.0x/ylz_area_notice.png
+#
+#    - assets/images/ylz_area_bg.png
+#    - assets/images/2.0x/ylz_area_bg.png
+#    - assets/images/3.0x/ylz_area_bg.png
+#
+#    - assets/images/ylz_area_china.png
+#    - assets/images/2.0x/ylz_area_china.png
+#    - assets/images/3.0x/ylz_area_china.png
+#
+#    - assets/images/ylz_area_location.png
+#    - assets/images/2.0x/ylz_area_location.png
+#    - assets/images/3.0x/ylz_area_location.png
+#
+#    - assets/images/ylz_area_arrow.png
+#    - assets/images/2.0x/ylz_area_arrow.png
+#    - assets/images/3.0x/ylz_area_arrow.png
+#
+#    - assets/images/ylz_mine_list_about.png
+#    - assets/images/2.0x/ylz_mine_list_about.png
+#    - assets/images/3.0x/ylz_mine_list_about.png
+#
+#    - assets/images/ylz_mine_list_setting.png
+#    - assets/images/2.0x/ylz_mine_list_setting.png
+#    - assets/images/3.0x/ylz_mine_list_setting.png
+#
+#    - assets/images/ylz_mine_list_info.png
+#    - assets/images/2.0x/ylz_mine_list_info.png
+#    - assets/images/3.0x/ylz_mine_list_info.png
+#
+#    - assets/images/ylz_mine_list_notice.png
+#    - assets/images/2.0x/ylz_mine_list_notice.png
+#    - assets/images/3.0x/ylz_mine_list_notice.png
+#
+#    - assets/images/ylz_mine_list_help.png
+#    - assets/images/2.0x/ylz_mine_list_help.png
+#    - assets/images/3.0x/ylz_mine_list_help.png
+#
+#    - assets/images/ylz_mine_real_sign.png
+#    - assets/images/2.0x/ylz_mine_real_sign.png
+#    - assets/images/3.0x/ylz_mine_real_sign.png
+#
+#    - assets/images/ylz_mine_male_avater.png
+#    - assets/images/2.0x/ylz_mine_male_avater.png
+#    - assets/images/3.0x/ylz_mine_male_avater.png
+#
+#    - assets/images/ylz_mine_bg.png
+#    - assets/images/2.0x/ylz_mine_bg.png
+#    - assets/images/3.0x/ylz_mine_bg.png
+#
+#    - assets/images/ylz_mine_bank_card.png
+#    - assets/images/2.0x/ylz_mine_bank_card.png
+#    - assets/images/3.0x/ylz_mine_bank_card.png
+#
+#    - assets/images/ylz_mine_notice.png
+#    - assets/images/2.0x/ylz_mine_notice.png
+#    - assets/images/3.0x/ylz_mine_notice.png
+#
+#    - assets/images/ylz_mine_scan.png
+#    - assets/images/2.0x/ylz_mine_scan.png
+#    - assets/images/3.0x/ylz_mine_scan.png
+#
+#    - assets/images/ylz_mine_use_record.png
+#    - assets/images/2.0x/ylz_mine_use_record.png
+#    - assets/images/3.0x/ylz_mine_use_record.png
+#
+#    - assets/images/ylz_mine_deal_record.png
+#    - assets/images/2.0x/ylz_mine_deal_record.png
+#    - assets/images/3.0x/ylz_mine_deal_record.png
+#
+#    - assets/images/ylz_mine_baby_avater.png
+#    - assets/images/2.0x/ylz_mine_baby_avater.png
+#    - assets/images/3.0x/ylz_mine_baby_avater.png
+#
+#    - assets/images/ylz_mine_circle_add_place.png
+#    - assets/images/2.0x/ylz_mine_circle_add_place.png
+#    - assets/images/3.0x/ylz_mine_circle_add_place.png
+#
+#    - assets/images/ylz_mine_circle_add.png
+#    - assets/images/2.0x/ylz_mine_circle_add.png
+#    - assets/images/3.0x/ylz_mine_circle_add.png
+#    -
+#    - assets/images/mg_search.png
+#    - assets/images/2.0x/mg_search.png
+#    - assets/images/3.0x/mg_search.png
+#
+#    - assets/images/mg_watch_history.png
+#    - assets/images/2.0x/mg_watch_history.png
+#    - assets/images/3.0x/mg_watch_history.png
+#
+#    - assets/images/mg_filter.png
+#    - assets/images/2.0x/mg_filter.png
+#    - assets/images/3.0x/mg_filter.png
+#
+#    - assets/images/mg_home_toutiao_logo.png
+#    - assets/images/2.0x/mg_home_toutiao_logo.png
+#    - assets/images/3.0x/mg_home_toutiao_logo.png
 
 
 #   An image asset can refer to one or more resolution-specific "variants", see

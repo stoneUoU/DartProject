@@ -17,8 +17,10 @@ class MGHomeRequest extends BaseRequest {
   String path() {
     if (pathCategory == 0) {
       return "/provide/home_nav";
-    } else {
+    } else if (pathCategory == 1) {
       return "/provide/home_data";
+    } else {
+      return "/provide/news";
     }
   }
 }

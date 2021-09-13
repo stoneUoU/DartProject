@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:dart_demo/base/config/YLZMacros.dart';
 import 'package:dart_demo/base/config/YLZStyle.dart';
 import 'package:dart_demo/base/navigator/HiNavigator.dart';
 import 'package:dart_demo/logic/mguo/model/mg_home_model.dart';
 import 'package:dart_demo/logic/mguo/model/mg_home_nav_model.dart';
+import 'package:dart_demo/logic/mguo/model/mg_marquee_model.dart';
 import 'package:dart_demo/logic/mguo/view/cell/mg_home_square_cell.dart';
 import 'package:dart_demo/logic/mguo/view/mg_footer_ad_widget.dart';
 import 'package:dart_demo/logic/mguo/view/mg_footer_button_widget.dart';
@@ -28,11 +31,15 @@ class _MGHomeTabPageState extends State<MGHomeTabPage> {
   late Future _futureBuilderFuture;
   ScrollController _scrollController = new ScrollController();
   MGHomeModel homeModel = MGHomeModel();
+  MGMarqueeModel _marqueeModel = MGMarqueeModel();
 
   @override
   void initState() {
     super.initState();
     _futureBuilderFuture = _start(widget.model.id ?? 0);
+    if ((widget.model.id ?? 0) == 0) {
+      _fetchDatas(1,1);
+    }
   }
 
   @override
@@ -63,9 +70,10 @@ class _MGHomeTabPageState extends State<MGHomeTabPage> {
 
   List<Widget> _buildWidget(MGHomeModel model) {
     List<Widget> widgetList = [];
+    log("________${_marqueeModel.top}");
     if (widget.model.id == 0) {
       //推荐页代码：
-      widgetList.add(_BannerHeaderGrid(homeModel: model, isRecommend: true));
+      widgetList.add(_BannerHeaderGrid(homeModel: model, isRecommend: true,marqueeModel: _marqueeModel));
       widgetList.add(_MovieHeaderGrid(
         homeModel: model,
       ));
@@ -94,8 +102,9 @@ class _MGHomeTabPageState extends State<MGHomeTabPage> {
       }
     } else {
       widgetList.add(_BannerHeaderGrid(
-        homeModel: model,
         isRecommend: false,
+        homeModel: model,
+        marqueeModel: _marqueeModel
       ));
       int maxLength = (model.video?.length ?? 0);
       for (int index = 0; index < maxLength; index++) {
@@ -121,13 +130,22 @@ class _MGHomeTabPageState extends State<MGHomeTabPage> {
     model = await MGHomeDao.dataLists(id);
     return model;
   }
+
+  _fetchDatas(int page,int limit) async {
+    MGMarqueeModel model = await MGHomeDao.dataMarquees(page, limit);
+    if (!mounted) return;
+    setState(() {
+      _marqueeModel = model;
+    });
+  }
 }
 
 class _BannerHeaderGrid extends StatelessWidget {
   final bool isRecommend;
   final MGHomeModel homeModel;
+  final MGMarqueeModel marqueeModel;
   const _BannerHeaderGrid(
-      {Key? key, required this.homeModel, required this.isRecommend})
+      {Key? key, required this.isRecommend, required this.homeModel,required this.marqueeModel})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -196,7 +214,7 @@ class _BannerHeaderGrid extends StatelessWidget {
                           builder: DotSwiperPaginationBuilder(
                               activeColor: Color(YLZColorLightBlueView)))),
                 ),
-                _buildUnderBannerContainer(context)
+                _buildUnderBannerContainer(context,marqueeModel)
               ],
             ),
           );
@@ -206,7 +224,7 @@ class _BannerHeaderGrid extends StatelessWidget {
     );
   }
 
-  Container _buildUnderBannerContainer(BuildContext context) {
+  Container _buildUnderBannerContainer(BuildContext context,MGMarqueeModel marqueeModel) {
     if (!isRecommend) {
       List<String> lists = [];
       int maxLength = (homeModel.video?.length ?? 0);
@@ -244,28 +262,37 @@ class _BannerHeaderGrid extends StatelessWidget {
         margin: EdgeInsets.only(top: 8),
         height: 28,
         child: Row(
-          children: [Container(width: 72, color: Color(MGColorMainViewTwo)),_buildComplexMarquee(context)],
+          children: [Container(width: 72, color: Color(MGColorMainViewTwo),child: Image.asset(
+            'assets/images/mg_home_toutiao_logo.png',
+          ),),_buildComplexMarquee(context,marqueeModel)],
         ),
       );
     }
   }
 
-  Widget _buildComplexMarquee(BuildContext context) {
-    return Container();
-    // width: ScreenW(context) - (36+72),padding: EdgeInsets.fromLTRB(16, 0, 16, 0),height: 28,child: Marquee(
-    // text: 'There once was a boy who told this story about a boy: ',
-    // style: TextStyle(fontWeight: FontWeight.bold),
-    // scrollAxis: Axis.vertical,
-    // crossAxisAlignment: CrossAxisAlignment.start,
-    // blankSpace: 20.0,
-    // velocity: 100.0,
-    // pauseAfterRound: Duration(seconds: 1),
-    // startPadding: 10.0,
-    // accelerationDuration: Duration(seconds: 1),
-    // accelerationCurve: Curves.linear,
-    // decelerationDuration: Duration(milliseconds: 500),
-    // decelerationCurve: Curves.easeOut,
-    // )
+  Widget _buildComplexMarquee(BuildContext context,MGMarqueeModel marqueeModel) {
+    return Container(width: ScreenW(context) - (36+72),padding: EdgeInsets.fromLTRB(16, 0, 16, 0),height: 28,child:Swiper(
+      itemCount: marqueeModel.top?.length ?? 0,
+      scrollDirection: Axis.vertical,
+      loop: true,
+      autoplay: true,
+      itemBuilder: (BuildContext context, int index) {
+        MGMarqueeTopModel topModel = marqueeModel.top![index];
+        return Container(
+          height: 28,
+          alignment: Alignment.center,
+          child: Text(
+            "${topModel.title}",
+            maxLines: 1,
+            overflow:TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.white,
+            ),
+          ),
+        );
+      },
+    ));
   }
 
   Container buildHeaderContainer() {
