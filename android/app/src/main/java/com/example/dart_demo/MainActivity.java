@@ -1,4 +1,4 @@
-package com.example.dart_demo;
+package com.example.FlutterProject;
 
 import io.flutter.embedding.android.FlutterActivity;
 

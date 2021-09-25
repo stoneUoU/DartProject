@@ -1,7 +1,7 @@
 import 'package:barcode_widget/barcode_widget.dart';
-import 'package:dart_demo/base/config/YLZMacros.dart';
-import 'package:dart_demo/base/config/YLZStyle.dart';
-import 'package:dart_demo/logic/home/view/cell/elec/YLZElecAreaWidget.dart';
+import 'package:FlutterProject/base/config/YLZMacros.dart';
+import 'package:FlutterProject/base/config/YLZStyle.dart';
+import 'package:FlutterProject/logic/home/view/cell/elec/YLZElecAreaWidget.dart';
 import 'package:flutter/material.dart';
 
 typedef void YLZElecCodeWidgetFreshClickListener();

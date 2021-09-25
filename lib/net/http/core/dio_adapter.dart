@@ -1,6 +1,6 @@
-import 'package:dart_demo/net/http/core/hi_error.dart';
-import 'package:dart_demo/net/http/core/hi_net_adapter.dart';
-import 'package:dart_demo/net/http/request/base_request.dart';
+import 'package:FlutterProject/net/http/core/hi_error.dart';
+import 'package:FlutterProject/net/http/core/hi_net_adapter.dart';
+import 'package:FlutterProject/net/http/request/base_request.dart';
 import 'package:dio/dio.dart';
 
 ///Dio适配器

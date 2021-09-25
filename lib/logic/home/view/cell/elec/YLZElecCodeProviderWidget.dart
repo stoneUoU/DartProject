@@ -1,7 +1,7 @@
 import 'package:barcode_widget/barcode_widget.dart';
-import 'package:dart_demo/base/config/YLZMacros.dart';
-import 'package:dart_demo/base/config/YLZStyle.dart';
-import 'package:dart_demo/provider/YLZCodeProvider.dart';
+import 'package:FlutterProject/base/config/YLZMacros.dart';
+import 'package:FlutterProject/base/config/YLZStyle.dart';
+import 'package:FlutterProject/provider/YLZCodeProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

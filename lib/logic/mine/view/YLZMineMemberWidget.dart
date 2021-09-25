@@ -1,4 +1,4 @@
-import 'package:dart_demo/base/config/YLZStyle.dart';
+import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:flutter/material.dart';
 
 import 'YLZMineMemberCellImageWidget.dart';

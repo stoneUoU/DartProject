@@ -1,5 +1,5 @@
-import 'package:dart_demo/net/http/core/hi_net_adapter.dart';
-import 'package:dart_demo/net/http/request/base_request.dart';
+import 'package:FlutterProject/net/http/core/hi_net_adapter.dart';
+import 'package:FlutterProject/net/http/request/base_request.dart';
 
 ///测试适配器，mock数据
 class MockAdapter extends HiNetAdapter {

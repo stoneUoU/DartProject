@@ -1,8 +1,8 @@
-import 'package:dart_demo/logic/home/model/YLZDynamicModel.dart';
-import 'package:dart_demo/logic/home/model/YLZModuleModel.dart';
-import 'package:dart_demo/net/http/core/hi_net.dart';
-import 'package:dart_demo/net/http/request/base_request.dart';
-import 'package:dart_demo/net/http/request/home_request.dart';
+import 'package:FlutterProject/logic/home/model/YLZDynamicModel.dart';
+import 'package:FlutterProject/logic/home/model/YLZModuleModel.dart';
+import 'package:FlutterProject/net/http/core/hi_net.dart';
+import 'package:FlutterProject/net/http/request/base_request.dart';
+import 'package:FlutterProject/net/http/request/home_request.dart';
 
 class HomeDao {
   static module(String version, int clntType) {

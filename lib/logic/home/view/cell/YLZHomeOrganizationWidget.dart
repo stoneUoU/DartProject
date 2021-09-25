@@ -1,4 +1,4 @@
-import 'package:dart_demo/logic/home/model/YLZModuleModel.dart';
+import 'package:FlutterProject/logic/home/model/YLZModuleModel.dart';
 import 'package:flutter/material.dart';
 
 class YLZHomeOrganizationWidget extends StatelessWidget {

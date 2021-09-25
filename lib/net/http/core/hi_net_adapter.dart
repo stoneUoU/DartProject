@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:dart_demo/net/http/request/base_request.dart';
+import 'package:FlutterProject/net/http/request/base_request.dart';
 
 ///网络请求抽象类
 abstract class HiNetAdapter {

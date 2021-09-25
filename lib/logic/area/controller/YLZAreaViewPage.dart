@@ -1,9 +1,9 @@
-import 'package:dart_demo/logic/area/model/YLZAreaModel.dart';
-import 'package:dart_demo/logic/area/model/YLZGeneralModel.dart';
-import 'package:dart_demo/logic/area/view/YLZAreaHeaderWidget.dart';
-import 'package:dart_demo/logic/area/view/YLZOpenListWidget.dart';
-import 'package:dart_demo/logic/area/view/YLZUnOpenListWidget.dart';
-import 'package:dart_demo/net/dao/area_dao.dart';
+import 'package:FlutterProject/logic/area/model/YLZAreaModel.dart';
+import 'package:FlutterProject/logic/area/model/YLZGeneralModel.dart';
+import 'package:FlutterProject/logic/area/view/YLZAreaHeaderWidget.dart';
+import 'package:FlutterProject/logic/area/view/YLZOpenListWidget.dart';
+import 'package:FlutterProject/logic/area/view/YLZUnOpenListWidget.dart';
+import 'package:FlutterProject/net/dao/area_dao.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';

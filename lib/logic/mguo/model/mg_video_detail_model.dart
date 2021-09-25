@@ -1,5 +1,5 @@
-import 'package:dart_demo/logic/mguo/model/mg_father_video_player_model.dart';
-import 'package:dart_demo/logic/mguo/model/mg_home_model.dart';
+import 'package:FlutterProject/logic/mguo/model/mg_father_video_player_model.dart';
+import 'package:FlutterProject/logic/mguo/model/mg_home_model.dart';
 
 /// name : "流星幻剑"
 /// msg : "2021"

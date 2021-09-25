@@ -1,6 +1,6 @@
-import 'package:dart_demo/base/config/YLZMacros.dart';
-import 'package:dart_demo/base/config/YLZStyle.dart';
-import 'package:dart_demo/logic/rainBow/model/YLZRainBowRotationModel.dart';
+import 'package:FlutterProject/base/config/YLZMacros.dart';
+import 'package:FlutterProject/base/config/YLZStyle.dart';
+import 'package:FlutterProject/logic/rainBow/model/YLZRainBowRotationModel.dart';
 import 'package:flutter/material.dart';
 
 class YLZRainBowMarqueeView extends StatefulWidget {

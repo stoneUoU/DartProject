@@ -1,10 +1,10 @@
-import 'package:dart_demo/base/config/YLZMacros.dart';
-import 'package:dart_demo/base/config/YLZStyle.dart';
-import 'package:dart_demo/logic/area/model/YLZGeneralModel.dart';
-import 'package:dart_demo/logic/mine/view/YLZMineElecWidget.dart';
-import 'package:dart_demo/logic/mine/view/YLZMineHeaderWidget.dart';
-import 'package:dart_demo/logic/mine/view/YLZMineListWidget.dart';
-import 'package:dart_demo/logic/mine/view/YLZMineMemberWidget.dart';
+import 'package:FlutterProject/base/config/YLZMacros.dart';
+import 'package:FlutterProject/base/config/YLZStyle.dart';
+import 'package:FlutterProject/logic/area/model/YLZGeneralModel.dart';
+import 'package:FlutterProject/logic/mine/view/YLZMineElecWidget.dart';
+import 'package:FlutterProject/logic/mine/view/YLZMineHeaderWidget.dart';
+import 'package:FlutterProject/logic/mine/view/YLZMineListWidget.dart';
+import 'package:FlutterProject/logic/mine/view/YLZMineMemberWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 

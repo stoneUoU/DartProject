@@ -1,9 +1,9 @@
-import 'package:dart_demo/base/config/YLZMacros.dart';
-import 'package:dart_demo/base/config/YLZStyle.dart';
-import 'package:dart_demo/logic/home/YLZHomeViewPage.dart';
-import 'package:dart_demo/logic/login/YLZCodeLoginPage.dart';
-import 'package:dart_demo/logic/rainBow/YLZRainBowPage.dart';
-import 'package:dart_demo/provider/YLZTabbarProvider.dart';
+import 'package:FlutterProject/base/config/YLZMacros.dart';
+import 'package:FlutterProject/base/config/YLZStyle.dart';
+import 'package:FlutterProject/logic/home/YLZHomeViewPage.dart';
+import 'package:FlutterProject/logic/login/YLZCodeLoginPage.dart';
+import 'package:FlutterProject/logic/rainBow/YLZRainBowPage.dart';
+import 'package:FlutterProject/provider/YLZTabbarProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_bottom_tab_bar/flutter_custom_bottom_tab_bar.dart';
 import 'package:provider/provider.dart';

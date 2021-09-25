@@ -1,11 +1,11 @@
 import 'dart:developer';
 
-import 'package:dart_demo/logic/mguo/model/mg_home_model.dart';
-import 'package:dart_demo/logic/mguo/model/mg_home_nav_model.dart';
-import 'package:dart_demo/logic/mguo/model/mg_marquee_model.dart';
-import 'package:dart_demo/net/http/core/hi_net.dart';
-import 'package:dart_demo/net/http/request/base_request.dart';
-import 'package:dart_demo/net/http/request/mg_home_request.dart';
+import 'package:FlutterProject/logic/mguo/model/mg_home_model.dart';
+import 'package:FlutterProject/logic/mguo/model/mg_home_nav_model.dart';
+import 'package:FlutterProject/logic/mguo/model/mg_marquee_model.dart';
+import 'package:FlutterProject/net/http/core/hi_net.dart';
+import 'package:FlutterProject/net/http/request/base_request.dart';
+import 'package:FlutterProject/net/http/request/mg_home_request.dart';
 
 class MGHomeDao {
   static navigator() {

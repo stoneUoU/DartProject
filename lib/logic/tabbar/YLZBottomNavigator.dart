@@ -1,9 +1,9 @@
-import 'package:dart_demo/base/config/YLZStyle.dart';
-import 'package:dart_demo/base/navigator/HiNavigator.dart';
-import 'package:dart_demo/logic/area/controller/YLZAreaViewPage.dart';
-import 'package:dart_demo/logic/mguo/controller/mg_home_view_page.dart';
-import 'package:dart_demo/logic/mine/controller/YLZMineViewPage.dart';
-import 'package:dart_demo/net/db/hi_cache.dart';
+import 'package:FlutterProject/base/config/YLZStyle.dart';
+import 'package:FlutterProject/base/navigator/HiNavigator.dart';
+import 'package:FlutterProject/logic/area/controller/YLZAreaViewPage.dart';
+import 'package:FlutterProject/logic/mguo/controller/mg_home_view_page.dart';
+import 'package:FlutterProject/logic/mine/controller/YLZMineViewPage.dart';
+import 'package:FlutterProject/net/db/hi_cache.dart';
 import 'package:flutter/material.dart';
 
 ///底部导航

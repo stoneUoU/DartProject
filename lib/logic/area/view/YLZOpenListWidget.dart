@@ -1,5 +1,5 @@
-import 'package:dart_demo/base/config/YLZStyle.dart';
-import 'package:dart_demo/logic/area/model/YLZAreaModel.dart';
+import 'package:FlutterProject/base/config/YLZStyle.dart';
+import 'package:FlutterProject/logic/area/model/YLZAreaModel.dart';
 import 'package:flutter/material.dart';
 
 class YLZOpenListWidget extends StatelessWidget {
