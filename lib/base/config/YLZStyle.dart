@@ -67,6 +67,27 @@ const int MGColorHomeViewPurple = 0xff746cff;
 
 const int MGColorHomeViewPink = 0xffc003f8;
 
+/// 闽政通淡蓝色
+const int YLZColorMZTBlueView = 0xff2171f6;
+
+const int YLZColorMZTCheckView = 0xffeff5f3;
+
+const int YLZColorMZTGreenView = 0xff6ab069;
+
+const int YLZColorMZTOrangeView = 0xffF7ce44;
+
+const int YLZColorMZTRedView = 0xffeb3223;
+
+const int YLZColorMZTLightBlueView = 0xffe5ecf8;
+
+const int YLZColorMZTLightGoldView = 0xfffcf3ba;
+
+const int YLZColorMZTGradientOneView = 0xffecbc6b;
+
+const int YLZColorMZTGradientTwoView = 0xfff6eb9c;
+
+const int YLZColorMZTGradientThreeView = 0xffe48344;
+
 const int colorC14 = 0xffE6A23C;
 const int colorC15 = 0xffFEFBF2;
 const int colorC16 = 0xffFFF4D9;

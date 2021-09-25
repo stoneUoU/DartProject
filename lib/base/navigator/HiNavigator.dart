@@ -1,3 +1,4 @@
+import 'package:FlutterProject/logic/healthCode/controller/YLZHealthCodeViewPage.dart';
 import 'package:FlutterProject/logic/home/YLZElecCodeViewPage.dart';
 import 'package:FlutterProject/logic/home/YLZScanViewPage.dart';
 import 'package:FlutterProject/logic/login/YLZCodeLoginPage.dart';
@@ -38,6 +39,7 @@ enum RouteStatus {
   elecCode,
   scan,
   videoPlay,
+  healthCode,
   unknown
 }
 
@@ -59,6 +61,8 @@ RouteStatus getStatus(MaterialPage page) {
     return RouteStatus.scan;
   } else if (page.child is MGHomePlayerPage) {
     return RouteStatus.videoPlay;
+  } else if (page.child is YLZHealthCodeViewPage) {
+    return RouteStatus.healthCode;
   } else {
     return RouteStatus.unknown;
   }

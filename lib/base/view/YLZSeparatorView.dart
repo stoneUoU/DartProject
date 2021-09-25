@@ -13,7 +13,7 @@ class YLZSeparatorView extends StatelessWidget {
         final boxWidth = constraints.constrainWidth();
         final dashWidth = 10.0;
         final dashHeight = height;
-        final dashCount = (boxWidth / (2 * dashWidth)).floor();
+        final dashCount = (boxWidth / (1.5 * dashWidth)).floor();
         return Flex(
           children: List.generate(dashCount, (_) {
             return SizedBox(

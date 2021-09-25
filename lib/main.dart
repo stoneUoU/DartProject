@@ -1,5 +1,6 @@
 import 'package:FlutterProject/base/config/YLZTheme.dart';
 import 'package:FlutterProject/base/navigator/HiNavigator.dart';
+import 'package:FlutterProject/logic/healthCode/controller/YLZHealthCodeViewPage.dart';
 import 'package:FlutterProject/logic/home/YLZElecCodeViewPage.dart';
 import 'package:FlutterProject/logic/home/YLZScanViewPage.dart';
 import 'package:FlutterProject/logic/login/YLZCodeLoginPage.dart';
@@ -100,7 +101,7 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
     //   }
     // });
   }
-  RouteStatus _routeStatus = RouteStatus.home;
+  RouteStatus _routeStatus = RouteStatus.healthCode;
   List<MaterialPage> pages = [];
 
   @override
@@ -133,6 +134,8 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
       page = pageWrap(YLZScanViewPage());
     } else if (routeStatus == RouteStatus.videoPlay) {
       page = pageWrap(MGHomePlayerPage(id: _args?["id"]));
+    } else if (routeStatus == RouteStatus.healthCode) {
+      page = pageWrap(YLZHealthCodeViewPage());
     }
     //重新创建一个数组，否则pages因引用没有改变路由不会生效
     tempPages = [...tempPages, page];

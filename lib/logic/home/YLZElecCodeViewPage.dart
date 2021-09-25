@@ -70,7 +70,7 @@ class _YLZElecCodeViewPageState extends State<YLZElecCodeViewPage> {
     return new Container(
         width: ScreenW(context),
         height: ScreenH(context) -
-            (kBottomNavigationBarHeight +
+            (kToolbarHeight +
                 StatusH(context) +
                 TabbarSafeBottomM(context)),
         color: Colors.white,
