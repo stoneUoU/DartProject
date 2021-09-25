@@ -39,7 +39,6 @@ static  final String assets_images_ylz_elec_code_fresh="assets/images/ylz_elec_c
 static  final String assets_images_ylz_mine_notice="assets/images/ylz_mine_notice.png";
 static  final String assets_images_ylz_mine_list_notice="assets/images/ylz_mine_list_notice.png";
 static  final String assets_images_ylz_failure_image="assets/images/ylz_failure_image.png";
-static  final String assets_images_mg_home_toutiao_logo@3x="assets/images/mg_home_toutiao_logo@3x.png";
 static  final String assets_images_mg_home_toutiao_logo="assets/images/mg_home_toutiao_logo.png";
 static  final String assets_images_ylz_message_logo="assets/images/ylz_message_logo.png";
 static  final String assets_images_ylz_area_arrow="assets/images/ylz_area_arrow.png";
