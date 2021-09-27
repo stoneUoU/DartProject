@@ -13,6 +13,7 @@ import 'package:FlutterProject/net/db/hi_cache.dart';
 import 'package:FlutterProject/provider/MGVideoDetailProvider.dart';
 import 'package:FlutterProject/provider/YLZCodeProvider.dart';
 import 'package:FlutterProject/provider/YLZCounter.dart';
+import 'package:FlutterProject/provider/YLZHealthCodeProvider.dart';
 import 'package:FlutterProject/provider/YLZTabbarProvider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,8 @@ class _APPState extends State<APP> {
               ChangeNotifierProvider(create: (_) => YLZCounter()),
               ChangeNotifierProvider(create: (_) => YLZTabbarProvider()),
               ChangeNotifierProvider(create: (_) => YLZCodeProvider()),
-              ChangeNotifierProvider(create: (_) => MGVideoDetailProvider())
+              ChangeNotifierProvider(create: (_) => MGVideoDetailProvider()),
+              ChangeNotifierProvider(create: (_) => YLZHealthCodeProvider())
             ],
             child: ScreenUtilInit(
                 designSize: Size(1125, 2436),

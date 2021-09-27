@@ -4,31 +4,17 @@ import 'package:FlutterProject/base/config/YLZMacros.dart';
 import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/base/view/YLZSeparatorView.dart';
 import 'package:FlutterProject/logic/healthCode/view/YLZHealthCodeTimerWidget.dart';
+import 'package:FlutterProject/provider/YLZHealthCodeProvider.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class YLZHealthCodeWidget extends StatefulWidget {
-  final Key key;
-  const YLZHealthCodeWidget(this.key) : super(key: key);
-  @override
-  YLZHealthCodeWidgetState createState() => YLZHealthCodeWidgetState();
-}
-
-class YLZHealthCodeWidgetState extends State<YLZHealthCodeWidget> {
-  /**
-   * 0 : 绿码
-   * 1 : 橙码
-   * 2 : 红码
-   */
+class YLZHealthCodeProviderWidget extends StatelessWidget {
+  YLZHealthCodeProviderWidget({Key? key}) : super(key: key);
   int clickNum = 0;
-  void generateClickNum(int clickNum) {
-    setState(() {
-      this.clickNum = clickNum;
-    });
-  }
-
   //生成提示文字：
-  TextSpan generateLabel() {
+  TextSpan generateLabel(BuildContext context) {
+    this.clickNum = context.watch<YLZHealthCodeProvider>().clickNum;
     switch (this.clickNum) {
       case 0:
         return TextSpan(
@@ -57,7 +43,8 @@ class YLZHealthCodeWidgetState extends State<YLZHealthCodeWidget> {
     }
   }
 
-  Color generateColor() {
+  Color generateColor(BuildContext context) {
+    this.clickNum = context.watch<YLZHealthCodeProvider>().clickNum;
     switch (this.clickNum) {
       case 0:
         return Color(YLZColorMZTGreenView);
@@ -80,18 +67,6 @@ class YLZHealthCodeWidgetState extends State<YLZHealthCodeWidget> {
       }
     }
     return result;
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
   }
 
   @override
@@ -122,7 +97,7 @@ class YLZHealthCodeWidgetState extends State<YLZHealthCodeWidget> {
                                 color: Color(YLZColorTitleOne),
                                 fontSize: 18,
                               )),
-                          generateLabel(),
+                          generateLabel(context),
                         ],
                       ),
                     ),
@@ -159,7 +134,7 @@ class YLZHealthCodeWidgetState extends State<YLZHealthCodeWidget> {
                                 borderRadius: new BorderRadius.all(
                                     new Radius.circular(10.0)),
                               ),
-                              color: generateColor(),
+                              color: generateColor(context),
                               barcode: Barcode.qrCode(
                                 errorCorrectLevel:
                                     BarcodeQRCorrectionLevel.high,

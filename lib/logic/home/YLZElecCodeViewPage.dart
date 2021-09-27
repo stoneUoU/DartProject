@@ -70,9 +70,7 @@ class _YLZElecCodeViewPageState extends State<YLZElecCodeViewPage> {
     return new Container(
         width: ScreenW(context),
         height: ScreenH(context) -
-            (kToolbarHeight +
-                StatusH(context) +
-                TabbarSafeBottomM(context)),
+            (kToolbarHeight + StatusH(context) + TabbarSafeBottomM(context)),
         color: Colors.white,
         child: CustomScrollView(
           slivers: [

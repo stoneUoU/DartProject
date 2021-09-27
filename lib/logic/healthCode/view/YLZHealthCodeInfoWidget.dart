@@ -77,7 +77,7 @@ class _YLZHealthCodeInfoWidgetState extends State<YLZHealthCodeInfoWidget> {
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 12, 0, 0),
                   child: Text(
-                    this.isOn ? "姓名:    林磊" : "姓名:    *磊",
+                    this.isOn ? "姓名： 彭于晏" : "姓名： 彭*晏",
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
@@ -85,8 +85,8 @@ class _YLZHealthCodeInfoWidgetState extends State<YLZHealthCodeInfoWidget> {
                   margin: EdgeInsets.fromLTRB(0, 12, 0, 0),
                   child: Text(
                     this.isOn
-                        ? "身份证号:    362324199610016010"
-                        : "身份证号:    3623241996****6010",
+                        ? "身份证号:    362324199509185186"
+                        : "身份证号:    362324********5186",
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
@@ -112,7 +112,7 @@ class _YLZHealthCodeInfoWidgetState extends State<YLZHealthCodeInfoWidget> {
                   ),
                   onTap: () {
                     this.clickNum = this.clickNum + 1;
-                    if (this.clickNum > 0) {
+                    if (this.clickNum > 2) {
                       this.clickNum = 0;
                     }
                     if (widget.healthCodeInfoWidgetClickListener != null) {
