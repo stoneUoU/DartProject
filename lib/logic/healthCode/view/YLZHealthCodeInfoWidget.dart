@@ -33,6 +33,7 @@ class _YLZHealthCodeInfoWidgetState extends State<YLZHealthCodeInfoWidget> {
                 Container(
                   margin: EdgeInsets.only(top: 16),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
                         width: 36,

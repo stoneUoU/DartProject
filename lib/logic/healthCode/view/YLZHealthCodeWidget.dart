@@ -164,7 +164,7 @@ class YLZHealthCodeWidgetState extends State<YLZHealthCodeWidget> {
                                 errorCorrectLevel:
                                     BarcodeQRCorrectionLevel.high,
                               ),
-                              data: "${_randomBit(18)}",
+                              data: "${_randomBit(100)}",
                               width: 218,
                               height: 218,
                             ),
