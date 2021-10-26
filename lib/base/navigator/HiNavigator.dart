@@ -6,6 +6,8 @@ import 'package:FlutterProject/logic/login/YLZSmsLoginPage.dart';
 import 'package:FlutterProject/logic/mguo/controller/mg_home_player_page.dart';
 import 'package:FlutterProject/logic/rainBow/YLZReportDetailPage.dart';
 import 'package:FlutterProject/logic/rainBow/YLZReportListPage.dart';
+import 'package:FlutterProject/logic/topics/controller/YLZTopicListViewPage.dart';
+import 'package:FlutterProject/logic/topics/controller/YLZTopicDetailViewPage.dart';
 import 'package:FlutterProject/logic/tabbar/YLZBottomNavigator.dart';
 import 'package:flutter/material.dart';
 import 'package:singleton/singleton.dart';
@@ -40,6 +42,8 @@ enum RouteStatus {
   scan,
   videoPlay,
   healthCode,
+  topicList,
+  topicDetail,
   unknown
 }
 
@@ -63,6 +67,10 @@ RouteStatus getStatus(MaterialPage page) {
     return RouteStatus.videoPlay;
   } else if (page.child is YLZHealthCodeViewPage) {
     return RouteStatus.healthCode;
+  } else if (page.child is YLZTopicListViewPage) {
+    return RouteStatus.topicList;
+  } else if (page.child is YLZTopicDetailViewPage) {
+    return RouteStatus.topicDetail;
   } else {
     return RouteStatus.unknown;
   }

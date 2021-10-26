@@ -1,6 +1,7 @@
 import 'package:FlutterProject/base/config/YLZHudTips.dart';
 import 'package:FlutterProject/base/config/YLZMacros.dart';
 import 'package:FlutterProject/base/config/YLZStyle.dart';
+import 'package:FlutterProject/base/config/YLZUnFixHeaderDelegate.dart';
 import 'package:FlutterProject/base/navigator/HiNavigator.dart';
 import 'package:FlutterProject/logic/rainBow/model/YLZRainBowModel.dart';
 import 'package:FlutterProject/logic/rainBow/model/YLZRainBowRotationModel.dart';
@@ -148,7 +149,7 @@ class _YYLZRainBowPageState extends State<YLZRainBowPage>
     List<NewsList> newsLists = rotationModel.newsList!;
     return SliverPersistentHeader(
         pinned: false,
-        delegate: _UnFixHeaderDelegate(
+        delegate: YLZUnFixHeaderDelegate(
             295.0,
             295.0,
             Container(
@@ -176,7 +177,7 @@ class _YYLZRainBowPageState extends State<YLZRainBowPage>
   Widget _makeFixedHeader(BuildContext context) {
     return SliverPersistentHeader(
         pinned: false,
-        delegate: _UnFixHeaderDelegate(
+        delegate: YLZUnFixHeaderDelegate(
             10.0,
             10.0,
             new Container(
@@ -300,32 +301,4 @@ class _YYLZRainBowPageState extends State<YLZRainBowPage>
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
-}
-
-class _UnFixHeaderDelegate extends SliverPersistentHeaderDelegate {
-  _UnFixHeaderDelegate(
-    @required this.minHeight,
-    @required this.maxHeight,
-    @required this.child,
-  );
-  final double minHeight;
-  final double maxHeight;
-  final Widget child;
-
-  @override
-  double get minExtent => minHeight;
-
-  @override
-  double get maxExtent => maxHeight;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return new Container(child: child);
-  }
-
-  @override
-  bool shouldRebuild(_UnFixHeaderDelegate oldDelegate) {
-    return false;
-  }
 }

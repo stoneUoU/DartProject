@@ -88,6 +88,8 @@ const int YLZColorMZTGradientTwoView = 0xfff6eb9c;
 
 const int YLZColorMZTGradientThreeView = 0xffe48344;
 
+const int YLZSwiperPaginationActiveColor = 0xffD7603B;
+
 const int colorC14 = 0xffE6A23C;
 const int colorC15 = 0xffFEFBF2;
 const int colorC16 = 0xffFFF4D9;

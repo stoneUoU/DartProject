@@ -9,6 +9,8 @@ import 'package:FlutterProject/logic/mguo/controller/mg_home_player_page.dart';
 import 'package:FlutterProject/logic/rainBow/YLZReportDetailPage.dart';
 import 'package:FlutterProject/logic/rainBow/YLZReportListPage.dart';
 import 'package:FlutterProject/logic/tabbar/YLZBottomNavigator.dart';
+import 'package:FlutterProject/logic/topics/controller/YLZTopicDetailViewPage.dart';
+import 'package:FlutterProject/logic/topics/controller/YLZTopicListViewPage.dart';
 import 'package:FlutterProject/net/db/hi_cache.dart';
 import 'package:FlutterProject/provider/MGVideoDetailProvider.dart';
 import 'package:FlutterProject/provider/YLZCodeProvider.dart';
@@ -103,7 +105,8 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
     //   }
     // });
   }
-  RouteStatus _routeStatus = RouteStatus.healthCode;
+
+  RouteStatus _routeStatus = RouteStatus.topicList;
   List<MaterialPage> pages = [];
 
   @override
@@ -138,6 +141,12 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
       page = pageWrap(MGHomePlayerPage(id: _args?["id"]));
     } else if (routeStatus == RouteStatus.healthCode) {
       page = pageWrap(YLZHealthCodeViewPage());
+    } else if (routeStatus == RouteStatus.topicList) {
+      page = pageWrap(YLZTopicListViewPage());
+    } else if (routeStatus == RouteStatus.topicDetail) {
+      page = pageWrap(YLZTopicDetailViewPage(
+        topicId: _args?["topicId"],
+      ));
     }
     //重新创建一个数组，否则pages因引用没有改变路由不会生效
     tempPages = [...tempPages, page];
