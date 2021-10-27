@@ -3,6 +3,7 @@ import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/logic/topics/model/YLZDetailModel.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -25,6 +26,7 @@ class _YLZTopicDetailViewPageState extends State<YLZTopicDetailViewPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     if (!mounted) return;
     _futureBuilderFuture = _request();
   }
@@ -89,7 +91,7 @@ class _YLZTopicDetailViewPageState extends State<YLZTopicDetailViewPage> {
               style: TextStyle(
                   fontSize: 18,
                   color: Color(YLZColorTitleOne),
-                  fontWeight: FontWeight.w800)),
+                  fontWeight: FontWeight.w500)),
         ),
         Container(
           margin: EdgeInsets.fromLTRB(16, 12, 16, 16),
@@ -105,6 +107,7 @@ class _YLZTopicDetailViewPageState extends State<YLZTopicDetailViewPage> {
                 ),
               )),
               Container(
+                margin: EdgeInsets.only(left: 12),
                 child: Image.asset("assets/images/topic_liurang.png"),
               ),
               Container(
@@ -125,7 +128,7 @@ class _YLZTopicDetailViewPageState extends State<YLZTopicDetailViewPage> {
             physics: BouncingScrollPhysics(),
             scrollDirection: Axis.vertical,
             child: Html(
-              data: detailModel.content!.replaceAll("\/", ""),
+              data: detailModel.content,
               style: {
                 "table": Style(
                   backgroundColor: Color.fromARGB(0x50, 0xee, 0xee, 0xee),
@@ -145,7 +148,7 @@ class _YLZTopicDetailViewPageState extends State<YLZTopicDetailViewPage> {
                 'p': Style(
                     fontSize: FontSize.large,
                     color: Color(YLZColorTitleOne),
-                    fontWeight: FontWeight.w800)
+                    fontWeight: FontWeight.w500)
               },
               onLinkTap: (url, _, __, ___) {
                 print("Opening $url...");

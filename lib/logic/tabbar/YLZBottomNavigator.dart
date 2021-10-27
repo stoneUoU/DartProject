@@ -1,8 +1,8 @@
 import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/base/navigator/HiNavigator.dart';
 import 'package:FlutterProject/logic/area/controller/YLZAreaViewPage.dart';
-import 'package:FlutterProject/logic/mguo/controller/mg_home_view_page.dart';
 import 'package:FlutterProject/logic/mine/controller/YLZMineViewPage.dart';
+import 'package:FlutterProject/logic/topics/controller/YLZTopicListViewPage.dart';
 import 'package:FlutterProject/net/db/hi_cache.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +27,7 @@ class _YLZBottomNavigatorState extends State<YLZBottomNavigator> {
       // YLZHomeViewPage(onJumpTo: (int i) {
       //   this._onJumpTo(context, i);
       // }),
-      MGHomeViewPage(),
+      YLZTopicListViewPage(),
       YLZAreaViewPage(onJumpTo: (int i) {
         this._onJumpTo(context, i);
       }),
@@ -46,12 +46,12 @@ class _YLZBottomNavigatorState extends State<YLZBottomNavigator> {
         physics: NeverScrollableScrollPhysics(),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color(MGColorMainView),
+        backgroundColor: Colors.white,
         currentIndex: _currentIndex,
         onTap: (index) => _onJumpTo(context, index),
         type: BottomNavigationBarType.fixed,
         selectedItemColor: _activeColor,
-        unselectedItemColor: Colors.white,
+        unselectedItemColor: Color(YLZColorTitleOne),
         items: [
           _bottomItem('首页', 'assets/images/mine_icon_store_onclick.png',
               'assets/images/mine_icon_store_click.png', 0),
@@ -67,7 +67,7 @@ class _YLZBottomNavigatorState extends State<YLZBottomNavigator> {
   _bottomItem(String title, String icon, String activeIcon, int index) {
     return BottomNavigationBarItem(
         icon: Image(
-          image:AssetImage(icon),
+          image: AssetImage(icon),
           width: 20,
           height: 20,
         ),

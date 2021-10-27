@@ -59,13 +59,16 @@ class _YLZTopicCellWidgetState extends State<YLZTopicCellWidget> {
                                 style: TextStyle(
                                     fontSize: 18,
                                     color: Color(YLZColorTitleOne),
-                                    fontWeight: FontWeight.w800)),
+                                    fontWeight: FontWeight.w500)),
                           ),
+                          //${widget.listModel.desc}
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 12, 0, 0),
-                            child: Text("${widget.listModel.desc}",
-                                maxLines: 1,
-                                textAlign: TextAlign.center,
+                            child: Text(
+                                "看完之后大受震撼，冲在这么多国手捧场的情况下，还是愿意给及格分，而且有的东西也的确能让人思考的，以下是几点感想：1.有的人只可共患难，有的人只可共享福，有的人既可以共患难，也可以共享福",
+                                maxLines: 2,
+                                textAlign: TextAlign.left,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontSize: 13,
                                   color: Color(YLZColorTitleThree),

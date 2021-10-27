@@ -11,7 +11,7 @@ class AreaDao {
   static _sendArea() async {
     BaseRequest request;
     request = AreaRequest();
-    request.add("data", {});
+    request.add("data", {"ver": "1.3.4", "clntType": 2});
     var result = await HiNet().fire(request);
     YLZAreaModel model = YLZAreaModel.fromJson(result["data"]);
     return model;

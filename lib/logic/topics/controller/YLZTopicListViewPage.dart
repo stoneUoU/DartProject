@@ -7,6 +7,7 @@ import 'package:FlutterProject/logic/topics/view/YLZTopicCellWidget.dart';
 import 'package:FlutterProject/logic/topics/view/YLZTopicSwiperView.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
@@ -32,6 +33,7 @@ class _YLZTopicListViewPageState extends State<YLZTopicListViewPage>
   void initState() {
     // TODO: implement initState
     super.initState();
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     if (!mounted) return;
     _futureBuilderFuture = _request(1, 0);
   }
@@ -65,13 +67,7 @@ class _YLZTopicListViewPageState extends State<YLZTopicListViewPage>
     return Column(
       children: [
         YLZTopicNavigationWidget(context: context),
-        new Container(
-          width: ScreenW(context),
-          height: ScreenH(context) -
-              TabbarSafeBottomM(context) -
-              StatusH(context) -
-              kToolbarHeight,
-          color: Colors.white,
+        new Expanded(
           child: EasyRefresh.custom(
             controller: easyRefreshController,
             //上面创建的刷新控制器
@@ -133,7 +129,6 @@ class _YLZTopicListViewPageState extends State<YLZTopicListViewPage>
                   YLZTopicSwiperView(
                     dataList: topModels,
                     clickListener: (int index) {
-                      print(index);
                       HiNavigator().onJumpTo(RouteStatus.topicDetail, args: {
                         "topicId": index,
                       });
@@ -176,16 +171,13 @@ class _YLZTopicListViewPageState extends State<YLZTopicListViewPage>
     dio = new Dio();
     response =
         await dio.post("https://mgapp.appearoo.top/api.php${url}", data: data);
-    print("https://mgapp.appearoo.top/api.php${url}");
     List listRs = response.data["data"]["list"];
     if (loadMore == 0) {
       topModels.clear();
       listModels.clear();
       List topRs = response.data["data"]["top"];
-      print(topRs);
       for (var i = 0; i < topRs.length; i++) {
         YLZTopModel rs = YLZTopModel.fromJson(topRs[i]);
-        print(topModels);
         topModels.add(rs);
       }
     }
@@ -231,7 +223,7 @@ class YLZTopicNavigationWidget extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 20,
                       color: Colors.black,
-                      fontWeight: FontWeight.w800)),
+                      fontWeight: FontWeight.w500)),
             ),
             Positioned(
                 child: Image.asset("assets/images/top_search.png"),
