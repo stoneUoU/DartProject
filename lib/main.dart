@@ -106,7 +106,7 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
     // });
   }
 
-  RouteStatus _routeStatus = RouteStatus.home;
+  RouteStatus _routeStatus = RouteStatus.healthCode;
   List<MaterialPage> pages = [];
 
   @override

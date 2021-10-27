@@ -78,7 +78,7 @@ class _YLZHealthCodeInfoWidgetState extends State<YLZHealthCodeInfoWidget> {
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 12, 0, 0),
                   child: Text(
-                    this.isOn ? "姓名： 彭于晏" : "姓名： 彭*晏",
+                    this.isOn ? "姓名： 林磊" : "姓名： 林*",
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
