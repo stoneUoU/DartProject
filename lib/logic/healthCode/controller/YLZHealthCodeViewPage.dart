@@ -43,7 +43,9 @@ class _YLZHealthCodeViewPageState extends State<YLZHealthCodeViewPage> {
     return new Container(
       child: Column(
         children: [
-          YLZHealthCodeNavigationWidget(),
+          YLZHealthCodeNavigationWidget(clickListener: (int index) {
+            Navigator.pop(context);
+          }),
           new Container(
               width: ScreenW(context),
               height: ScreenH(context) -

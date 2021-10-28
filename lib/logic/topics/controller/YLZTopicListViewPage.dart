@@ -226,7 +226,12 @@ class YLZTopicNavigationWidget extends StatelessWidget {
                       fontWeight: FontWeight.w500)),
             ),
             Positioned(
-                child: Image.asset("assets/images/top_search.png"),
+                child: InkWell(
+                  child: Image.asset("assets/images/top_search.png"),
+                  onTap: () {
+                    HiNavigator().onJumpTo(RouteStatus.healthCode);
+                  },
+                ),
                 right: 16,
                 top: 16)
           ])

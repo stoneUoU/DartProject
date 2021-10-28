@@ -2,10 +2,14 @@ import 'package:FlutterProject/base/config/YLZMacros.dart';
 import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:flutter/material.dart';
 
+typedef void YLZHealthCodeNavigationWidgetClickListener(int index);
+
 class YLZHealthCodeNavigationWidget extends StatelessWidget {
-  const YLZHealthCodeNavigationWidget({
-    Key? key,
-  }) : super(key: key);
+  final YLZHealthCodeNavigationWidgetClickListener clickListener;
+
+  const YLZHealthCodeNavigationWidget({Key? key, required this.clickListener})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -58,10 +62,17 @@ class YLZHealthCodeNavigationWidget extends StatelessWidget {
                         height: 16,
                         color: Color(YLZColorTitleThree),
                       ),
-                      Container(
-                        child: Image.asset(
-                          'assets/images/ylz_mirco_shut.png',
+                      InkWell(
+                        child: Container(
+                          child: Image.asset(
+                            'assets/images/ylz_mirco_shut.png',
+                          ),
                         ),
+                        onTap: () {
+                          if (this.clickListener != null) {
+                            this.clickListener(0);
+                          }
+                        },
                       )
                     ],
                   ),
