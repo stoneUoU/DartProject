@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:common_utils/common_utils.dart';
 import 'package:FlutterProject/base/config/YLZMacros.dart';
 import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/base/view/YLZNormalView.dart';
@@ -13,9 +12,10 @@ import 'package:FlutterProject/logic/mguo/model/mg_video_detail_model.dart';
 import 'package:FlutterProject/logic/mguo/model/mg_video_parse_model.dart';
 import 'package:FlutterProject/logic/mguo/model/mg_video_player_model.dart';
 import 'package:FlutterProject/logic/mguo/view/mg_video_widget.dart';
-import 'package:FlutterProject/net/dao/mg_video_dao.dart';
+import 'package:FlutterProject/net/dao/mguo/mg_video_dao.dart';
 import 'package:FlutterProject/net/db/hi_cache.dart';
 import 'package:FlutterProject/provider/MGVideoDetailProvider.dart';
+import 'package:common_utils/common_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

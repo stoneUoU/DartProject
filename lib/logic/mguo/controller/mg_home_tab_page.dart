@@ -11,7 +11,7 @@ import 'package:FlutterProject/logic/mguo/view/mg_footer_ad_widget.dart';
 import 'package:FlutterProject/logic/mguo/view/mg_footer_button_widget.dart';
 import 'package:FlutterProject/logic/mguo/view/mg_footer_feedback_widget.dart';
 import 'package:FlutterProject/logic/mguo/view/mg_home_header_widget.dart';
-import 'package:FlutterProject/net/dao/mg_home_dao.dart';
+import 'package:FlutterProject/net/dao/mguo/mg_home_dao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
@@ -38,7 +38,7 @@ class _MGHomeTabPageState extends State<MGHomeTabPage> {
     super.initState();
     _futureBuilderFuture = _start(widget.model.id ?? 0);
     if ((widget.model.id ?? 0) == 0) {
-      _fetchDatas(1,1);
+      _fetchDatas(1, 1);
     }
   }
 
@@ -73,7 +73,8 @@ class _MGHomeTabPageState extends State<MGHomeTabPage> {
     log("________${_marqueeModel.top}");
     if (widget.model.id == 0) {
       //推荐页代码：
-      widgetList.add(_BannerHeaderGrid(homeModel: model, isRecommend: true,marqueeModel: _marqueeModel));
+      widgetList.add(_BannerHeaderGrid(
+          homeModel: model, isRecommend: true, marqueeModel: _marqueeModel));
       widgetList.add(_MovieHeaderGrid(
         homeModel: model,
       ));
@@ -102,10 +103,7 @@ class _MGHomeTabPageState extends State<MGHomeTabPage> {
       }
     } else {
       widgetList.add(_BannerHeaderGrid(
-        isRecommend: false,
-        homeModel: model,
-        marqueeModel: _marqueeModel
-      ));
+          isRecommend: false, homeModel: model, marqueeModel: _marqueeModel));
       int maxLength = (model.video?.length ?? 0);
       for (int index = 0; index < maxLength; index++) {
         Video? video = model.video?[index];
@@ -131,7 +129,7 @@ class _MGHomeTabPageState extends State<MGHomeTabPage> {
     return model;
   }
 
-  _fetchDatas(int page,int limit) async {
+  _fetchDatas(int page, int limit) async {
     MGMarqueeModel model = await MGHomeDao.dataMarquees(page, limit);
     if (!mounted) return;
     setState(() {
@@ -145,7 +143,10 @@ class _BannerHeaderGrid extends StatelessWidget {
   final MGHomeModel homeModel;
   final MGMarqueeModel marqueeModel;
   const _BannerHeaderGrid(
-      {Key? key, required this.isRecommend, required this.homeModel,required this.marqueeModel})
+      {Key? key,
+      required this.isRecommend,
+      required this.homeModel,
+      required this.marqueeModel})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -214,7 +215,7 @@ class _BannerHeaderGrid extends StatelessWidget {
                           builder: DotSwiperPaginationBuilder(
                               activeColor: Color(YLZColorLightBlueView)))),
                 ),
-                _buildUnderBannerContainer(context,marqueeModel)
+                _buildUnderBannerContainer(context, marqueeModel)
               ],
             ),
           );
@@ -224,7 +225,8 @@ class _BannerHeaderGrid extends StatelessWidget {
     );
   }
 
-  Container _buildUnderBannerContainer(BuildContext context,MGMarqueeModel marqueeModel) {
+  Container _buildUnderBannerContainer(
+      BuildContext context, MGMarqueeModel marqueeModel) {
     if (!isRecommend) {
       List<String> lists = [];
       int maxLength = (homeModel.video?.length ?? 0);
@@ -262,37 +264,49 @@ class _BannerHeaderGrid extends StatelessWidget {
         margin: EdgeInsets.only(top: 8),
         height: 28,
         child: Row(
-          children: [Container(width: 72, color: Color(MGColorMainViewTwo),child: Image.asset(
-            'assets/images/mg_home_toutiao_logo.png',
-          ),),_buildComplexMarquee(context,marqueeModel)],
+          children: [
+            Container(
+              width: 72,
+              color: Color(MGColorMainViewTwo),
+              child: Image.asset(
+                'assets/images/mg_home_toutiao_logo.png',
+              ),
+            ),
+            _buildComplexMarquee(context, marqueeModel)
+          ],
         ),
       );
     }
   }
 
-  Widget _buildComplexMarquee(BuildContext context,MGMarqueeModel marqueeModel) {
-    return Container(width: ScreenW(context) - (36+72),padding: EdgeInsets.fromLTRB(16, 0, 16, 0),height: 28,child:Swiper(
-      itemCount: marqueeModel.top?.length ?? 0,
-      scrollDirection: Axis.vertical,
-      loop: true,
-      autoplay: true,
-      itemBuilder: (BuildContext context, int index) {
-        MGMarqueeTopModel topModel = marqueeModel.top![index];
-        return Container(
-          height: 28,
-          alignment: Alignment.center,
-          child: Text(
-            "${topModel.title}",
-            maxLines: 1,
-            overflow:TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.white,
-            ),
-          ),
-        );
-      },
-    ));
+  Widget _buildComplexMarquee(
+      BuildContext context, MGMarqueeModel marqueeModel) {
+    return Container(
+        width: ScreenW(context) - (36 + 72),
+        padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+        height: 28,
+        child: Swiper(
+          itemCount: marqueeModel.top?.length ?? 0,
+          scrollDirection: Axis.vertical,
+          loop: true,
+          autoplay: true,
+          itemBuilder: (BuildContext context, int index) {
+            MGMarqueeTopModel topModel = marqueeModel.top![index];
+            return Container(
+              height: 28,
+              alignment: Alignment.center,
+              child: Text(
+                "${topModel.title}",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
+              ),
+            );
+          },
+        ));
   }
 
   Container buildHeaderContainer() {

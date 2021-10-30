@@ -5,7 +5,7 @@ import 'package:FlutterProject/logic/topics/model/YLZListModel.dart';
 import 'package:FlutterProject/logic/topics/model/YLZTopModel.dart';
 import 'package:FlutterProject/logic/topics/view/YLZTopicCellWidget.dart';
 import 'package:FlutterProject/logic/topics/view/YLZTopicSwiperView.dart';
-import 'package:dio/dio.dart';
+import 'package:FlutterProject/net/dao/mguo/mg_topics_dao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -21,7 +21,6 @@ class YLZTopicListViewPage extends StatefulWidget {
 
 class _YLZTopicListViewPageState extends State<YLZTopicListViewPage>
     with AutomaticKeepAliveClientMixin {
-  late Dio dio;
   List<YLZTopModel> topModels = [];
   List<YLZListModel> listModels = [];
   late Future _futureBuilderFuture;
@@ -35,7 +34,7 @@ class _YLZTopicListViewPageState extends State<YLZTopicListViewPage>
     super.initState();
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     if (!mounted) return;
-    _futureBuilderFuture = _request(1, 0);
+    _futureBuilderFuture = _request(1, false);
   }
 
   @override
@@ -92,13 +91,13 @@ class _YLZTopicListViewPageState extends State<YLZTopicListViewPage>
             onRefresh: () async {
               setState(() {
                 _pageIndex = 1;
-                _futureBuilderFuture = _request(_pageIndex, 0);
+                _futureBuilderFuture = _request(_pageIndex, false);
               });
             },
             onLoad: () async {
               setState(() {
                 _pageIndex++;
-                _futureBuilderFuture = _request(_pageIndex, 1);
+                _futureBuilderFuture = _request(_pageIndex, true);
               });
             },
             slivers: _buildSlivers(context),
@@ -164,18 +163,14 @@ class _YLZTopicListViewPageState extends State<YLZTopicListViewPage>
         });
   }
 
-  Future _request(int pageindex, int loadMore) async {
-    String url = "/provide/news"; //图片轮播+跑马灯
-    var data = {"page": pageindex, "limit": 10};
-    Response response;
-    dio = new Dio();
-    response =
-        await dio.post("https://mgapp.appearoo.top/api.php${url}", data: data);
-    List listRs = response.data["data"]["list"];
-    if (loadMore == 0) {
+  Future _request(int pageIndex, bool loadMore) async {
+    Map feedBacks = Map();
+    var result = await MGTopicDao.list(pageIndex);
+    List listRs = result["data"]["list"];
+    if (!loadMore) {
       topModels.clear();
       listModels.clear();
-      List topRs = response.data["data"]["top"];
+      List topRs = result["data"]["top"];
       for (var i = 0; i < topRs.length; i++) {
         YLZTopModel rs = YLZTopModel.fromJson(topRs[i]);
         topModels.add(rs);
@@ -185,9 +180,9 @@ class _YLZTopicListViewPageState extends State<YLZTopicListViewPage>
       YLZListModel rs = YLZListModel.fromJson(listRs[i]);
       listModels.add(rs);
     }
-    response.data["top"] = topModels;
-    response.data["list"] = listModels;
-    return response;
+    feedBacks["top"] = topModels;
+    feedBacks["list"] = listModels;
+    return feedBacks;
   }
 
   @override

@@ -6,11 +6,11 @@ abstract class BaseRequest {
   var useHttps = true;
 
   String authority() {
-    return "fuwu.nhsa.gov.cn";
+    return "mgapp.appearoo.top";
   }
 
   String authorityPath() {
-    return "/ebus/fuwu/api";
+    return "/api.php";
   }
 
   HttpMethod httpMethod();

@@ -23,6 +23,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import 'logic/topics/controller/YLZMovieDetailViewPage.dart';
+
 void main() {
   runApp(APP());
 }
@@ -106,7 +108,7 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
     // });
   }
 
-  RouteStatus _routeStatus = RouteStatus.home;
+  RouteStatus _routeStatus = RouteStatus.movieDetail;
   List<MaterialPage> pages = [];
 
   @override
@@ -146,6 +148,10 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
     } else if (routeStatus == RouteStatus.topicDetail) {
       page = pageWrap(YLZTopicDetailViewPage(
         topicId: _args?["topicId"],
+      ));
+    } else if (routeStatus == RouteStatus.movieDetail) {
+      page = pageWrap(YLZMovieDetailViewPage(
+        movieId: 520,
       ));
     }
     //重新创建一个数组，否则pages因引用没有改变路由不会生效

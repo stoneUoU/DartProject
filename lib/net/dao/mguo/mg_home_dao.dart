@@ -1,11 +1,9 @@
-import 'dart:developer';
-
 import 'package:FlutterProject/logic/mguo/model/mg_home_model.dart';
 import 'package:FlutterProject/logic/mguo/model/mg_home_nav_model.dart';
 import 'package:FlutterProject/logic/mguo/model/mg_marquee_model.dart';
 import 'package:FlutterProject/net/http/core/hi_net.dart';
 import 'package:FlutterProject/net/http/request/base_request.dart';
-import 'package:FlutterProject/net/http/request/mg_home_request.dart';
+import 'package:FlutterProject/net/http/request/mguo/mg_home_request.dart';
 
 class MGHomeDao {
   static navigator() {
@@ -16,8 +14,8 @@ class MGHomeDao {
     return _sendDataLists(id);
   }
 
-  static dataMarquees(int page,int limit) {
-    return _sendDataMarquees(page,limit);
+  static dataMarquees(int page, int limit) {
+    return _sendDataMarquees(page, limit);
   }
 
   static _sendNavigator() async {
@@ -43,7 +41,7 @@ class MGHomeDao {
     return model;
   }
 
-  static _sendDataMarquees(int page,int limit) async {
+  static _sendDataMarquees(int page, int limit) async {
     MGHomeRequest request;
     MGMarqueeModel model = MGMarqueeModel();
     request = MGHomeRequest();

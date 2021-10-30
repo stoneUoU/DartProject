@@ -4,7 +4,7 @@ import 'package:FlutterProject/logic/mguo/controller/mg_home_tab_page.dart';
 import 'package:FlutterProject/logic/mguo/model/mg_home_nav_model.dart';
 import 'package:FlutterProject/logic/mguo/view/mg_home_navigation_widget.dart';
 import 'package:FlutterProject/logic/mguo/view/mg_top_tab_widget.dart';
-import 'package:FlutterProject/net/dao/mg_home_dao.dart';
+import 'package:FlutterProject/net/dao/mguo/mg_home_dao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

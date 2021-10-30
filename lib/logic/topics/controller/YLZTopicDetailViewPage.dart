@@ -1,7 +1,7 @@
 import 'package:FlutterProject/base/config/YLZMacros.dart';
 import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/logic/topics/model/YLZDetailModel.dart';
-import 'package:dio/dio.dart';
+import 'package:FlutterProject/net/dao/mguo/mg_topics_dao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -18,17 +18,14 @@ class YLZTopicDetailViewPage extends StatefulWidget {
 }
 
 class _YLZTopicDetailViewPageState extends State<YLZTopicDetailViewPage> {
-  late Dio dio;
   late Future _futureBuilderFuture;
-  late YLZDetailModel detailModel;
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     if (!mounted) return;
-    _futureBuilderFuture = _request();
+    _futureBuilderFuture = _start();
   }
 
   @override
@@ -39,7 +36,8 @@ class _YLZTopicDetailViewPageState extends State<YLZTopicDetailViewPage> {
             future: _futureBuilderFuture,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return _buildContainerWidget();
+                YLZDetailModel model = snapshot.data as YLZDetailModel;
+                return _buildContainerWidget(model);
               } else {
                 return Center(child: SpinKitFadingCircle(
                   itemBuilder: (_, int index) {
@@ -56,7 +54,7 @@ class _YLZTopicDetailViewPageState extends State<YLZTopicDetailViewPage> {
     );
   }
 
-  Widget _buildContainerWidget() {
+  Widget _buildContainerWidget(YLZDetailModel detailModel) {
     return Column(
       children: [
         Container(
@@ -127,48 +125,49 @@ class _YLZTopicDetailViewPageState extends State<YLZTopicDetailViewPage> {
             padding: EdgeInsets.fromLTRB(15, 0, 15, 16),
             physics: BouncingScrollPhysics(),
             scrollDirection: Axis.vertical,
-            child: Html(
-              data: detailModel.content,
-              style: {
-                "table": Style(
-                  backgroundColor: Color.fromARGB(0x50, 0xee, 0xee, 0xee),
-                ),
-                "tr": Style(
-                  border: Border(bottom: BorderSide(color: Colors.grey)),
-                ),
-                "th": Style(
-                  padding: EdgeInsets.all(6),
-                  backgroundColor: Colors.grey,
-                ),
-                "td": Style(
-                  padding: EdgeInsets.all(6),
-                  alignment: Alignment.topLeft,
-                ),
-                'h5': Style(maxLines: 2, textOverflow: TextOverflow.ellipsis),
-                'p': Style(
-                    fontSize: FontSize.large,
-                    color: Color(YLZColorTitleOne),
-                    fontWeight: FontWeight.w500)
-              },
-              onLinkTap: (url, _, __, ___) {
-                print("Opening $url...");
-              },
-              onImageTap: (src, _, __, ___) {},
-            ),
+            child: buildHtmlContainer(detailModel),
           ),
         )
       ],
     );
   }
 
-  Future _request() async {
-    String url = "/provide/new_detail"; //图片轮播+跑马灯
-    var data = {"id": widget.topicId};
-    Response response;
-    dio = new Dio();
-    response =
-        await dio.post("https://mgapp.appearoo.top/api.php${url}", data: data);
-    this.detailModel = YLZDetailModel.fromJson(response.data["info"]);
-    return response;
+  Widget buildHtmlContainer(YLZDetailModel detailModel) {
+    if (detailModel.content == null) {
+      return Container();
+    }
+    return Html(
+      data: detailModel.content,
+      style: {
+        "table": Style(
+          backgroundColor: Color.fromARGB(0x50, 0xee, 0xee, 0xee),
+        ),
+        "tr": Style(
+          border: Border(bottom: BorderSide(color: Colors.grey)),
+        ),
+        "th": Style(
+          padding: EdgeInsets.all(6),
+          backgroundColor: Colors.grey,
+        ),
+        "td": Style(
+          padding: EdgeInsets.all(6),
+          alignment: Alignment.topLeft,
+        ),
+        'h5': Style(maxLines: 2, textOverflow: TextOverflow.ellipsis),
+        'p': Style(
+            fontSize: FontSize.large,
+            color: Color(YLZColorTitleOne),
+            fontWeight: FontWeight.w500)
+      },
+      onLinkTap: (url, _, __, ___) {
+        print("Opening $url...");
+      },
+      onImageTap: (src, _, __, ___) {},
+    );
+  }
+
+  Future _start() async {
+    YLZDetailModel detailModel = await MGTopicDao.detail(widget.topicId);
+    return detailModel;
   }
 }

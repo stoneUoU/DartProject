@@ -1,6 +1,6 @@
 import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/base/navigator/HiNavigator.dart';
-import 'package:FlutterProject/logic/area/controller/YLZAreaViewPage.dart';
+import 'package:FlutterProject/logic/mguo/controller/mg_home_view_page.dart';
 import 'package:FlutterProject/logic/mine/controller/YLZMineViewPage.dart';
 import 'package:FlutterProject/logic/topics/controller/YLZTopicListViewPage.dart';
 import 'package:FlutterProject/net/db/hi_cache.dart';
@@ -27,10 +27,8 @@ class _YLZBottomNavigatorState extends State<YLZBottomNavigator> {
       // YLZHomeViewPage(onJumpTo: (int i) {
       //   this._onJumpTo(context, i);
       // }),
+      MGHomeViewPage(),
       YLZTopicListViewPage(),
-      YLZAreaViewPage(onJumpTo: (int i) {
-        this._onJumpTo(context, i);
-      }),
       YLZMineViewPage()
     ];
     //页面第一次打开时通知打开的是那个tab

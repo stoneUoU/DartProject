@@ -2,7 +2,7 @@ import 'package:FlutterProject/logic/mguo/model/mg_ad_model.dart';
 import 'package:FlutterProject/logic/mguo/model/mg_video_decode_model.dart';
 import 'package:FlutterProject/logic/mguo/model/mg_video_detail_model.dart';
 import 'package:FlutterProject/net/http/core/hi_net.dart';
-import 'package:FlutterProject/net/http/request/mg_video_request.dart';
+import 'package:FlutterProject/net/http/request/mguo/mg_video_request.dart';
 
 class MGHomeVideoDao {
   static videoInfo(int id) {
