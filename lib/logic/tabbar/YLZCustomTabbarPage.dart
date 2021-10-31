@@ -1,7 +1,7 @@
 import 'package:FlutterProject/base/config/YLZMacros.dart';
 import 'package:FlutterProject/base/config/YLZStyle.dart';
-import 'package:FlutterProject/logic/home/YLZHomeViewPage.dart';
-import 'package:FlutterProject/logic/login/YLZCodeLoginPage.dart';
+import 'package:FlutterProject/logic/chsHome/YLZHomeViewPage.dart';
+import 'package:FlutterProject/logic/mguo/login/MGCodeLoginPage.dart';
 import 'package:FlutterProject/logic/rainBow/YLZRainBowPage.dart';
 import 'package:FlutterProject/provider/YLZTabbarProvider.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +63,7 @@ class _YLZCustomTabBarPageState extends State<YLZCustomTabBarPage>
           children: <Widget>[
             YLZHomeViewPage(onJumpTo: (int i) {}),
             YLZRainBowPage(),
-            YLZCodeLoginPage()
+            MGCodeLoginPage()
           ],
         ));
   }

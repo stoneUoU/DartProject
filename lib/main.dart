@@ -1,16 +1,17 @@
 import 'package:FlutterProject/base/config/YLZTheme.dart';
 import 'package:FlutterProject/base/navigator/HiNavigator.dart';
+import 'package:FlutterProject/logic/chsHome/YLZElecCodeViewPage.dart';
+import 'package:FlutterProject/logic/chsHome/YLZScanViewPage.dart';
 import 'package:FlutterProject/logic/healthCode/controller/YLZHealthCodeViewPage.dart';
-import 'package:FlutterProject/logic/home/YLZElecCodeViewPage.dart';
-import 'package:FlutterProject/logic/home/YLZScanViewPage.dart';
-import 'package:FlutterProject/logic/login/YLZCodeLoginPage.dart';
-import 'package:FlutterProject/logic/login/YLZSmsLoginPage.dart';
-import 'package:FlutterProject/logic/mguo/controller/mg_home_player_page.dart';
+import 'package:FlutterProject/logic/mguo/home/controller/mg_home_player_page.dart';
+import 'package:FlutterProject/logic/mguo/login/MGCodeLoginPage.dart';
+import 'package:FlutterProject/logic/mguo/login/MGSmsLoginPage.dart';
+import 'package:FlutterProject/logic/mguo/topics/controller/MGMovieDetailViewPage.dart';
+import 'package:FlutterProject/logic/mguo/topics/controller/MGTopicDetailViewPage.dart';
+import 'package:FlutterProject/logic/mguo/topics/controller/MGTopicListViewPage.dart';
 import 'package:FlutterProject/logic/rainBow/YLZReportDetailPage.dart';
 import 'package:FlutterProject/logic/rainBow/YLZReportListPage.dart';
 import 'package:FlutterProject/logic/tabbar/YLZBottomNavigator.dart';
-import 'package:FlutterProject/logic/topics/controller/YLZTopicDetailViewPage.dart';
-import 'package:FlutterProject/logic/topics/controller/YLZTopicListViewPage.dart';
 import 'package:FlutterProject/net/db/hi_cache.dart';
 import 'package:FlutterProject/provider/MGVideoDetailProvider.dart';
 import 'package:FlutterProject/provider/YLZCodeProvider.dart';
@@ -22,8 +23,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-
-import 'logic/topics/controller/YLZMovieDetailViewPage.dart';
 
 void main() {
   runApp(APP());
@@ -108,7 +107,7 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
     // });
   }
 
-  RouteStatus _routeStatus = RouteStatus.movieDetail;
+  RouteStatus _routeStatus = RouteStatus.home;
   List<MaterialPage> pages = [];
 
   @override
@@ -125,9 +124,9 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
       pages.clear();
       page = pageWrap(YLZBottomNavigator());
     } else if (routeStatus == RouteStatus.smsLogin) {
-      page = pageWrap(YLZSmsLoginPage());
+      page = pageWrap(MGSmsLoginPage());
     } else if (routeStatus == RouteStatus.codeLogin) {
-      page = pageWrap(YLZCodeLoginPage(
+      page = pageWrap(MGCodeLoginPage(
           onCodeLoginPageListener: _args?["onCodeLoginPageListener"]));
     } else if (routeStatus == RouteStatus.reportList) {
       page = pageWrap(YLZReportListPage());
@@ -144,14 +143,14 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
     } else if (routeStatus == RouteStatus.healthCode) {
       page = pageWrap(YLZHealthCodeViewPage());
     } else if (routeStatus == RouteStatus.topicList) {
-      page = pageWrap(YLZTopicListViewPage());
+      page = pageWrap(MGTopicListViewPage());
     } else if (routeStatus == RouteStatus.topicDetail) {
-      page = pageWrap(YLZTopicDetailViewPage(
+      page = pageWrap(MGTopicDetailViewPage(
         topicId: _args?["topicId"],
       ));
     } else if (routeStatus == RouteStatus.movieDetail) {
-      page = pageWrap(YLZMovieDetailViewPage(
-        movieId: 520,
+      page = pageWrap(MGMovieDetailViewPage(
+        movieId: _args?["movieId"],
       ));
     }
     //重新创建一个数组，否则pages因引用没有改变路由不会生效

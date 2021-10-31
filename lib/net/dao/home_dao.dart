@@ -1,5 +1,5 @@
-import 'package:FlutterProject/logic/home/model/YLZDynamicModel.dart';
-import 'package:FlutterProject/logic/home/model/YLZModuleModel.dart';
+import 'package:FlutterProject/logic/chsHome/model/YLZDynamicModel.dart';
+import 'package:FlutterProject/logic/chsHome/model/YLZModuleModel.dart';
 import 'package:FlutterProject/net/http/core/hi_net.dart';
 import 'package:FlutterProject/net/http/request/base_request.dart';
 import 'package:FlutterProject/net/http/request/home_request.dart';

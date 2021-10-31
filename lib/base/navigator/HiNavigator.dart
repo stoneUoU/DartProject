@@ -1,15 +1,15 @@
+import 'package:FlutterProject/logic/chsHome/YLZElecCodeViewPage.dart';
+import 'package:FlutterProject/logic/chsHome/YLZScanViewPage.dart';
 import 'package:FlutterProject/logic/healthCode/controller/YLZHealthCodeViewPage.dart';
-import 'package:FlutterProject/logic/home/YLZElecCodeViewPage.dart';
-import 'package:FlutterProject/logic/home/YLZScanViewPage.dart';
-import 'package:FlutterProject/logic/login/YLZCodeLoginPage.dart';
-import 'package:FlutterProject/logic/login/YLZSmsLoginPage.dart';
-import 'package:FlutterProject/logic/mguo/controller/mg_home_player_page.dart';
+import 'package:FlutterProject/logic/mguo/home/controller/mg_home_player_page.dart';
+import 'package:FlutterProject/logic/mguo/login/MGCodeLoginPage.dart';
+import 'package:FlutterProject/logic/mguo/login/MGSmsLoginPage.dart';
+import 'package:FlutterProject/logic/mguo/topics/controller/MGMovieDetailViewPage.dart';
+import 'package:FlutterProject/logic/mguo/topics/controller/MGTopicDetailViewPage.dart';
+import 'package:FlutterProject/logic/mguo/topics/controller/MGTopicListViewPage.dart';
 import 'package:FlutterProject/logic/rainBow/YLZReportDetailPage.dart';
 import 'package:FlutterProject/logic/rainBow/YLZReportListPage.dart';
 import 'package:FlutterProject/logic/tabbar/YLZBottomNavigator.dart';
-import 'package:FlutterProject/logic/topics/controller/YLZMovieDetailViewPage.dart';
-import 'package:FlutterProject/logic/topics/controller/YLZTopicDetailViewPage.dart';
-import 'package:FlutterProject/logic/topics/controller/YLZTopicListViewPage.dart';
 import 'package:flutter/material.dart';
 import 'package:singleton/singleton.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -51,9 +51,9 @@ enum RouteStatus {
 
 ///获取page对应的RouteStatus
 RouteStatus getStatus(MaterialPage page) {
-  if (page.child is YLZSmsLoginPage) {
+  if (page.child is MGSmsLoginPage) {
     return RouteStatus.smsLogin;
-  } else if (page.child is YLZCodeLoginPage) {
+  } else if (page.child is MGCodeLoginPage) {
     return RouteStatus.codeLogin;
   } else if (page.child is YLZReportDetailPage) {
     return RouteStatus.reportDetail;
@@ -69,11 +69,11 @@ RouteStatus getStatus(MaterialPage page) {
     return RouteStatus.videoPlay;
   } else if (page.child is YLZHealthCodeViewPage) {
     return RouteStatus.healthCode;
-  } else if (page.child is YLZTopicListViewPage) {
+  } else if (page.child is MGTopicListViewPage) {
     return RouteStatus.topicList;
-  } else if (page.child is YLZTopicDetailViewPage) {
+  } else if (page.child is MGTopicDetailViewPage) {
     return RouteStatus.topicDetail;
-  } else if (page.child is YLZMovieDetailViewPage) {
+  } else if (page.child is MGMovieDetailViewPage) {
     return RouteStatus.movieDetail;
   } else {
     return RouteStatus.unknown;
@@ -99,6 +99,7 @@ class HiNavigator extends _RouteJumpListener {
   late RouteJumpListener _routeJump;
   List<RouteChangeListener> _listeners = [];
   late RouteStatusInfo _current;
+
   //首页底部tab
   RouteStatusInfo? _bottomTab;
 
