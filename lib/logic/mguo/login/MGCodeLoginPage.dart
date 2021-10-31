@@ -1,9 +1,18 @@
+import 'dart:convert';
+
 import 'package:FlutterProject/base/config/YLZMacros.dart';
 import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/base/extent/YLZTextFieldExtent.dart';
+import 'package:FlutterProject/base/extent/YLZValidatedExtent.dart';
 import 'package:FlutterProject/base/navigator/HiNavigator.dart';
+import 'package:FlutterProject/net/dao/mguo/mg_login_dao.dart';
 import 'package:FlutterProject/net/db/hi_cache.dart';
+import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import 'model/mg_login_model.dart';
 
 typedef void OnCodeLoginPageListener(bool isSuccess);
 
@@ -30,6 +39,7 @@ class _MGCodeLoginPageState extends State<MGCodeLoginPage> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
   }
 
   @override
@@ -43,8 +53,6 @@ class _MGCodeLoginPageState extends State<MGCodeLoginPage> {
   Widget _getBody() {
     return GestureDetector(
         onTap: () {
-          // 按下
-          print("按下了哈哈哈哈哈");
           _telFocusNode.unfocus();
           _codeFocusNode.unfocus();
         },
@@ -110,7 +118,8 @@ class _MGCodeLoginPageState extends State<MGCodeLoginPage> {
                               width: ScreenW(context) - 30,
                               child: new RaisedButton(
                                 onPressed: () {
-                                  _loginNet("15717914505", "000000");
+                                  _loginNet(
+                                      telController.text, codeController.text);
                                 },
                                 shape: StadiumBorder(),
                                 child: new Text("登录",
@@ -264,23 +273,29 @@ class _MGCodeLoginPageState extends State<MGCodeLoginPage> {
   }
 
   Future<Null> _loginNet(String telStr, String codeStr) async {
-    // if (!YLZValidatedExtent.MobileIsValidated(telStr)) {
-    //   return;
-    // } else if (!YLZValidatedExtent.LoginCodeIsValidated(codeStr)) {
-    //   return;
-    // } else {
-    //   var data = {
-    //     "username": telStr,
-    //     "password": "AAAAAAAAA",
-    //     "registration_id": ""
-    //   };
-    // }
-    HiCache.getInstance()
-        .setString("access_token_12", "19E179E5DC29C05E65B90CDE57A1C7E5");
-    Navigator.pop(context);
-    if (widget.onCodeLoginPageListener != null) {
-      widget.onCodeLoginPageListener!(true);
+    if (!YLZValidatedExtent.MobileIsValidated(telStr)) {
+      Fluttertoast.showToast(msg: "请输入正确的手机号！", gravity: ToastGravity.CENTER);
+      return;
+    } else if (!YLZValidatedExtent.LoginCodeIsValidated(codeStr)) {
+      Fluttertoast.showToast(msg: "请输入密码！", gravity: ToastGravity.CENTER);
+      return;
+    } else {
+      var result =
+          await MGLoginDao.login(telStr, EncryptUtil.encodeMd5(codeStr));
+      if (result["code"] != 1) {
+        Fluttertoast.showToast(
+            msg: result["msg"] ?? "登录失败！", gravity: ToastGravity.CENTER);
+        return;
+      }
+      MGLoginModel model = MGLoginModel.fromJson(result["result"]);
+      Fluttertoast.showToast(
+          msg: result["msg"] ?? "登录成功！", gravity: ToastGravity.CENTER);
+      HiCache.getInstance()
+          .setString("personalInfo", json.encode(model.toJson()));
+      Navigator.pop(context);
+      if (widget.onCodeLoginPageListener != null) {
+        widget.onCodeLoginPageListener!(true);
+      }
     }
-    ;
   }
 }

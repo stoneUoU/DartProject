@@ -9,7 +9,7 @@ class MGFooterFeedBackWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: ScreenW(context),
-      height: 78,
+      height: 64,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(6.0)),
         gradient: LinearGradient(

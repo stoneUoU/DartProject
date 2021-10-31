@@ -1,17 +1,22 @@
+import 'dart:convert';
+
 import 'package:FlutterProject/base/config/YLZMacros.dart';
 import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/base/navigator/HiNavigator.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_ad_model.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_home_model.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_video_detail_model.dart';
+import 'package:FlutterProject/logic/mguo/login/model/mg_login_model.dart';
 import 'package:FlutterProject/logic/mguo/topics/model/MGCommentModel.dart';
 import 'package:FlutterProject/net/dao/mguo/mg_movie_dao.dart';
+import 'package:FlutterProject/net/db/hi_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class MGMovieDetailViewPage extends StatefulWidget {
   int movieId;
@@ -23,11 +28,11 @@ class MGMovieDetailViewPage extends StatefulWidget {
 }
 
 class _MGMovieDetailViewPageState extends State<MGMovieDetailViewPage> {
-  late Future _futureBuilderFuture;
   EasyRefreshController easyRefreshController = new EasyRefreshController();
   late MGVideoDetailModel detailModel;
   List<MGCommentModel> commentModels = [];
   int _pageIndex = 1;
+  late Future _futureBuilderFuture;
 
   @override
   void initState() {
@@ -128,7 +133,11 @@ class _MGMovieDetailViewPageState extends State<MGMovieDetailViewPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          YLZMovieTopInfoWidget(detailModel: detailModel, context: context),
+          YLZMovieTopInfoWidget(
+            detailModel: detailModel,
+            context: context,
+            movieId: widget.movieId,
+          ),
           YLZMovieFansWidget(),
           Container(
             decoration: new BoxDecoration(
@@ -139,29 +148,7 @@ class _MGMovieDetailViewPageState extends State<MGMovieDetailViewPage> {
           ),
           YLZMoviePlotWidget(detailModel: detailModel),
           YLZMovieActorWidget(detailModel: detailModel),
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  child: Text("圈友评",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Color(YLZColorTitleOne),
-                          fontWeight: FontWeight.bold)),
-                ),
-                Container(
-                  child: Text("全部影评:6233",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 12, color: Color(YLZColorTitleOne))),
-                )
-              ],
-            ),
-          )
+          YLZFriendCommetWidget(commentModels: this.commentModels)
         ],
       ),
       padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
@@ -285,7 +272,7 @@ class _MGMovieDetailViewPageState extends State<MGMovieDetailViewPage> {
                 ),
                 Container(
                   margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  height: 0.5,
+                  height: i == commentModels.length - 1 ? 0 : 0.5,
                   color: Colors.red,
                 )
               ],
@@ -297,8 +284,12 @@ class _MGMovieDetailViewPageState extends State<MGMovieDetailViewPage> {
   }
 
   Future _request(int pageIndex, bool loadMore) async {
-    //widget.movieId
-    MGVideoDetailModel detailModel = await MGMovieDao.videoInfo(widget.movieId);
+    String personalInfo = HiCache.getInstance().get("personalInfo") ?? "";
+    Map<String, dynamic> map = json.decode(personalInfo);
+    MGLoginModel model = MGLoginModel.fromJson(map);
+
+    MGVideoDetailModel detailModel =
+        await MGMovieDao.videoInfo(widget.movieId, model.token ?? "");
     MGAdModel adModel = await MGMovieDao.videoAds("ios_video_ad");
     var result = await MGMovieDao.videoCommentList(widget.movieId, pageIndex);
     List listRs = result["list"];
@@ -310,6 +301,42 @@ class _MGMovieDetailViewPageState extends State<MGMovieDetailViewPage> {
       commentModels.add(rs);
     }
     return [detailModel, adModel];
+  }
+}
+
+class YLZFriendCommetWidget extends StatelessWidget {
+  final List<MGCommentModel> commentModels;
+
+  const YLZFriendCommetWidget({Key? key, required this.commentModels})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (commentModels.length == 0) {
+      return Container();
+    }
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            child: Text("圈友评",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Color(YLZColorTitleOne),
+                    fontWeight: FontWeight.bold)),
+          ),
+          Container(
+            child: Text("全部影评:6233",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 12, color: Color(YLZColorTitleOne))),
+          )
+        ],
+      ),
+    );
   }
 }
 
@@ -518,14 +545,16 @@ class YLZMovieFansWidget extends StatelessWidget {
 }
 
 class YLZMovieTopInfoWidget extends StatelessWidget {
-  const YLZMovieTopInfoWidget({
-    Key? key,
-    required this.detailModel,
-    required this.context,
-  }) : super(key: key);
+  const YLZMovieTopInfoWidget(
+      {Key? key,
+      required this.detailModel,
+      required this.context,
+      required this.movieId})
+      : super(key: key);
 
   final MGVideoDetailModel detailModel;
   final BuildContext context;
+  final int movieId;
 
   @override
   Widget build(BuildContext context) {
@@ -546,6 +575,7 @@ class YLZMovieTopInfoWidget extends StatelessWidget {
             width: 92,
           ),
           Container(
+              width: (ScreenW(context) - (48 + 92)),
               margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -583,7 +613,7 @@ class YLZMovieTopInfoWidget extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 10, color: Color(YLZColorTitleThree))),
                   ),
-                  Container(
+                  Expanded(
                     child: Text("主演：${this.detailModel.actor}",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -595,30 +625,37 @@ class YLZMovieTopInfoWidget extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Container(
-                          width: (ScreenW(context) - (48 + 92 + 16)) / 3,
-                          height: 26,
-                          decoration: new BoxDecoration(
-                            color: Color(YLZColorMZTLightBlueView),
-                            borderRadius:
-                                new BorderRadius.all(new Radius.circular(4.0)),
-                          ),
-                          child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                    "assets/images/mg_movie_un_like.png"),
-                                Text(
-                                  "  收藏",
-                                  style: TextStyle(
-                                    color: Color(YLZColorTitleOne),
-                                    fontSize: 14,
-                                  ),
-                                )
-                              ],
+                        InkWell(
+                          child: Container(
+                            width: (ScreenW(context) - (48 + 92 + 16)) / 3,
+                            height: 26,
+                            decoration: new BoxDecoration(
+                              color: Color(YLZColorMZTLightBlueView),
+                              borderRadius: new BorderRadius.all(
+                                  new Radius.circular(4.0)),
+                            ),
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(detailModel.isCollect ?? false
+                                      ? "assets/images/mg_movie_like.png"
+                                      : "assets/images/mg_movie_un_like.png"),
+                                  Text(
+                                    "  收藏",
+                                    style: TextStyle(
+                                      color: Color(YLZColorTitleOne),
+                                      fontSize: 14,
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
+                          onTap: () {
+                            funcWithCollectLogic(
+                                detailModel.isCollect ?? false);
+                          },
                         ),
                         Container(
                           margin: EdgeInsets.only(left: 8),
@@ -680,6 +717,37 @@ class YLZMovieTopInfoWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  funcWithCollectLogic(bool collected) async {
+    String personalInfo = HiCache.getInstance().get("personalInfo") ?? "";
+    Map<String, dynamic> map = json.decode(personalInfo);
+    MGLoginModel model = MGLoginModel.fromJson(map);
+
+    if (!collected) {
+      var result =
+          await MGMovieDao.videoAddCollect(this.movieId, model.token ?? "");
+      if (result["code"] == 1) {
+        Fluttertoast.showToast(
+            msg: result["msg"] ?? "收藏成功！", gravity: ToastGravity.CENTER);
+        return;
+      } else {
+        Fluttertoast.showToast(
+            msg: result["msg"] ?? "收藏失败！", gravity: ToastGravity.CENTER);
+      }
+    } else {
+      var result =
+          await MGMovieDao.videoCancelCollect(this.movieId, model.token ?? "");
+      if (result["code"] == 1) {
+        Fluttertoast.showToast(
+            msg: result["msg"] ?? "取消收藏成功！", gravity: ToastGravity.CENTER);
+        ;
+        return;
+      } else {
+        Fluttertoast.showToast(
+            msg: result["msg"] ?? "取消收藏失败！", gravity: ToastGravity.CENTER);
+      }
+    }
   }
 }
 

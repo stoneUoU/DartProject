@@ -4,32 +4,33 @@ import 'package:FlutterProject/net/http/core/hi_net.dart';
 import 'package:FlutterProject/net/http/request/mguo/mg_movie_request.dart';
 
 class MGMovieDao {
-  static videoInfo(int id) {
-    return _sendVideoInfo(id);
+  static videoInfo(int id, String token) {
+    return _sendVideoInfo(id, token);
   }
 
   static videoAds(String flag) {
     return _sendVideoAds(flag);
   }
 
-  static videoAddCollect(String flag) {
-    return _sendVideoAddCollect(flag);
+  static videoAddCollect(int id, String token) {
+    return _sendVideoAddCollect(id, token);
   }
 
-  static videoCancelCollect(String flag) {
-    return _sendVideoCancelCollect(flag);
+  static videoCancelCollect(int id, String token) {
+    return _sendVideoCancelCollect(id, token);
   }
 
   static videoCommentList(int movieId, int pageIndex) {
     return _sendVideoCommentList(movieId, pageIndex);
   }
 
-  static _sendVideoInfo(int id) async {
+  static _sendVideoInfo(int id, String token) async {
     MGMovieRequest request;
     MGVideoDetailModel model = MGVideoDetailModel();
     request = MGMovieRequest();
     request.pathCategory = 0;
     request.add("id", id);
+    request.add("token", token);
     var result = await HiNet().fire(request);
     model = MGVideoDetailModel.fromJson(result);
     // print("res____${model.toJson()}");
@@ -47,26 +48,26 @@ class MGMovieDao {
     return model;
   }
 
-  static _sendVideoAddCollect(String flag) async {
+  static _sendVideoAddCollect(int id, String token) async {
     MGMovieRequest request;
     MGAdModel model = MGAdModel();
     request = MGMovieRequest();
     request.pathCategory = 2;
-    request.add("flag", flag);
+    request.add("id", id);
+    request.add("token", token);
     var result = await HiNet().fire(request);
-    model = MGAdModel.fromJson(result["data"]);
-    return model;
+    return result;
   }
 
-  static _sendVideoCancelCollect(String flag) async {
+  static _sendVideoCancelCollect(int id, String token) async {
     MGMovieRequest request;
     MGAdModel model = MGAdModel();
     request = MGMovieRequest();
-    request.pathCategory = 2;
-    request.add("flag", flag);
+    request.pathCategory = 3;
+    request.add("ids", id);
+    request.add("token", token);
     var result = await HiNet().fire(request);
-    model = MGAdModel.fromJson(result["data"]);
-    return model;
+    return result;
   }
 
   static _sendVideoCommentList(int movieId, int pageIndex) async {

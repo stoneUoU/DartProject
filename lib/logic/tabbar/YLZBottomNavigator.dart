@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/base/navigator/HiNavigator.dart';
 import 'package:FlutterProject/logic/mguo/home/controller/mg_home_view_page.dart';
+import 'package:FlutterProject/logic/mguo/login/model/mg_login_model.dart';
 import 'package:FlutterProject/logic/mguo/topics/controller/MGTopicListViewPage.dart';
 import 'package:FlutterProject/logic/mine/controller/YLZMineViewPage.dart';
 import 'package:FlutterProject/net/db/hi_cache.dart';
@@ -79,8 +82,8 @@ class _YLZBottomNavigatorState extends State<YLZBottomNavigator> {
 
   void _onJumpTo(BuildContext context, int index) {
     if (index == 1 || index == 2) {
-      String value = HiCache.getInstance().get("access_token_12") ?? "";
-      if (value.length == 0) {
+      String personalInfo = HiCache.getInstance().get("personalInfo") ?? "";
+      if (personalInfo.length == 0) {
         HiNavigator().onJumpTo(RouteStatus.codeLogin, args: {
           "onCodeLoginPageListener": (bool isSuccess) {
             if (isSuccess) {
@@ -93,6 +96,8 @@ class _YLZBottomNavigatorState extends State<YLZBottomNavigator> {
           }
         });
       } else {
+        Map<String, dynamic> map = json.decode(personalInfo);
+        MGLoginModel model = MGLoginModel.fromJson(map);
         _controller.jumpToPage(index);
         setState(() {
           //控制选中第一个tab

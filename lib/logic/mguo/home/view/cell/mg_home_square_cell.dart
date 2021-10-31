@@ -1,3 +1,4 @@
+import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_home_model.dart';
 import 'package:flutter/material.dart';
 
@@ -44,7 +45,7 @@ class MgHomeSquareCell extends StatelessWidget {
           height: 36,
           child: Text(
             "${videoModel?.name ?? ""}",
-            style: TextStyle(color: Colors.white, fontSize: 14),
+            style: TextStyle(color: Color(YLZColorTitleOne), fontSize: 14),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

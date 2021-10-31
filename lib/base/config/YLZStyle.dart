@@ -43,6 +43,8 @@ const int YLZColorTitleThree = 0xff909399;
 
 const int YLZColorTitleFour = 0xffC0C4CC;
 
+const int YLZColorTitleFive = 0xffB0B8CF;
+
 const int YLZColorGoldView = 0xffE6A23C;
 
 const int YLZColorLightGoldView = 0xffFFF7ED;

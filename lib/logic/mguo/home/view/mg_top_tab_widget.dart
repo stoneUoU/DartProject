@@ -23,7 +23,7 @@ class MGTopTabWidget extends StatelessWidget {
     return TabBar(
         controller: controller,
         isScrollable: true,
-        labelColor: Colors.white,
+        labelColor: Color(YLZColorLightBlueView),
         unselectedLabelColor: unselectedLabelColor,
         labelStyle: TextStyle(fontSize: 20),
         unselectedLabelStyle: TextStyle(fontSize: fontSize),

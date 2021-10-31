@@ -1,5 +1,6 @@
 import 'package:FlutterProject/logic/mguo/home/model/mg_home_model.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_home_nav_model.dart';
+import 'package:FlutterProject/logic/mguo/home/model/mg_home_slide_model.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_marquee_model.dart';
 import 'package:FlutterProject/net/http/core/hi_net.dart';
 import 'package:FlutterProject/net/http/request/base_request.dart';
@@ -10,8 +11,12 @@ class MGHomeDao {
     return _sendNavigator();
   }
 
-  static dataLists(int id) {
-    return _sendDataLists(id);
+  static dataRecommendLists(int id, int page) {
+    return _sendDataRecommendLists(id, page);
+  }
+
+  static dataMoreColumnLists(int type_id, String order) {
+    return _sendDataMoreColumnLists(type_id, order);
   }
 
   static dataMarquees(int page, int limit) {
@@ -30,14 +35,33 @@ class MGHomeDao {
     return list;
   }
 
-  static _sendDataLists(int id) async {
+  static _sendDataRecommendLists(int id, int page) async {
     MGHomeRequest request;
-    MGHomeModel model = MGHomeModel();
     request = MGHomeRequest();
     request.pathCategory = 1;
     request.add("id", id);
+    request.add("page", page);
     var result = await HiNet().fire(request);
-    model = MGHomeModel.fromJson(result);
+    if (id == 0) {
+      MGHomeModel model = MGHomeModel();
+      model = MGHomeModel.fromJson(result);
+      return model;
+    } else {
+      MGSlideListModel slideListModel = MGSlideListModel.fromJson(result);
+      return slideListModel;
+    }
+  }
+
+  static _sendDataMoreColumnLists(int type_id, String order) async {
+    MGHomeRequest request;
+    MGHomeModel model = MGHomeModel();
+    request = MGHomeRequest();
+    request.pathCategory = 2;
+    request.add("type_id", type_id);
+    request.add("order", order);
+    var result = await HiNet().fire(request);
+    model = MGHomeModel.fromJson(result["data"]);
+
     return model;
   }
 
@@ -45,7 +69,7 @@ class MGHomeDao {
     MGHomeRequest request;
     MGMarqueeModel model = MGMarqueeModel();
     request = MGHomeRequest();
-    request.pathCategory = 2;
+    request.pathCategory = 3;
     request.add("page", page);
     request.add("limit", limit);
     var result = await HiNet().fire(request);

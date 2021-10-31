@@ -1,6 +1,6 @@
 import 'package:FlutterProject/net/http/request/base_request.dart';
 
-class MGHomeRequest extends BaseRequest {
+class MGLoginRequest extends BaseRequest {
   int pathCategory = 0;
 
   @override
@@ -16,13 +16,11 @@ class MGHomeRequest extends BaseRequest {
   @override
   String path() {
     if (pathCategory == 0) {
-      return "/provide/home_nav";
+      return "/provide/login";
     } else if (pathCategory == 1) {
-      return "/provide/home_data";
-    } else if (pathCategory == 2) {
-      return "/vod/top2";
+      return "/provide/reg";
     } else {
-      return "/provide/news";
+      return "/provide/regcode";
     }
   }
 }

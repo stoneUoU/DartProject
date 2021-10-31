@@ -1,18 +1,19 @@
-import 'dart:developer';
-
 import 'package:FlutterProject/base/config/YLZMacros.dart';
 import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/base/navigator/HiNavigator.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_home_model.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_home_nav_model.dart';
+import 'package:FlutterProject/logic/mguo/home/model/mg_home_slide_model.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_marquee_model.dart';
 import 'package:FlutterProject/logic/mguo/home/view/cell/mg_home_square_cell.dart';
 import 'package:FlutterProject/logic/mguo/home/view/mg_footer_ad_widget.dart';
 import 'package:FlutterProject/logic/mguo/home/view/mg_footer_button_widget.dart';
 import 'package:FlutterProject/logic/mguo/home/view/mg_footer_feedback_widget.dart';
 import 'package:FlutterProject/logic/mguo/home/view/mg_home_header_widget.dart';
+import 'package:FlutterProject/logic/mguo/home/view/mg_home_more_column_header_widget.dart';
 import 'package:FlutterProject/net/dao/mguo/mg_home_dao.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
@@ -32,11 +33,12 @@ class _MGHomeTabPageState extends State<MGHomeTabPage> {
   ScrollController _scrollController = new ScrollController();
   MGHomeModel homeModel = MGHomeModel();
   MGMarqueeModel _marqueeModel = MGMarqueeModel();
+  int page = 1;
 
   @override
   void initState() {
     super.initState();
-    _futureBuilderFuture = _start(widget.model.id ?? 0);
+    _futureBuilderFuture = _start(widget.model.id ?? 0, page);
     if ((widget.model.id ?? 0) == 0) {
       _fetchDatas(1, 1);
     }
@@ -50,16 +52,25 @@ class _MGHomeTabPageState extends State<MGHomeTabPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             MGHomeModel model = snapshot.data! as MGHomeModel;
+            homeModel = model;
             return contentChild(model);
           } else {
-            return Container();
+            return Center(child: SpinKitFadingCircle(
+              itemBuilder: (_, int index) {
+                return DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: index.isEven ? Colors.red : Colors.green,
+                  ),
+                );
+              },
+            ));
           }
         });
   }
 
   Widget contentChild(MGHomeModel homeModel) {
     return Container(
-      color: Color(MGColorMainView),
+      color: Colors.white,
       child: CustomScrollView(
         slivers: _buildWidget(homeModel),
         reverse: false,
@@ -70,7 +81,6 @@ class _MGHomeTabPageState extends State<MGHomeTabPage> {
 
   List<Widget> _buildWidget(MGHomeModel model) {
     List<Widget> widgetList = [];
-    log("________${_marqueeModel.top}");
     if (widget.model.id == 0) {
       //推荐页代码：
       widgetList.add(_BannerHeaderGrid(
@@ -90,6 +100,7 @@ class _MGHomeTabPageState extends State<MGHomeTabPage> {
       for (int index = 0; index < maxLength; index++) {
         Video? video = model.video?[index];
         video?.indexSection = index;
+        video?.headType = 0;
         widgetList.add(_VideoHeaderGrid(
           video: video ?? Video(),
         ));
@@ -104,28 +115,43 @@ class _MGHomeTabPageState extends State<MGHomeTabPage> {
     } else {
       widgetList.add(_BannerHeaderGrid(
           isRecommend: false, homeModel: model, marqueeModel: _marqueeModel));
-      int maxLength = (model.video?.length ?? 0);
-      for (int index = 0; index < maxLength; index++) {
-        Video? video = model.video?[index];
-        video?.indexSection = index;
+      //渲染data里面的数据：
+      widgetList.add(_MoreColumnHeaderGrid(homeModel: model));
+
+      if (model.news!.length > 0) {
+        print("AAAAAA");
+        Video video = Video();
+        video.headType = 2;
+        video.indexSection = 6;
+        video.setData(model.news!);
+        video.setName("今日最新");
         widgetList.add(_VideoHeaderGrid(
-          video: video ?? Video(),
+          video: video,
         ));
-        if (index == maxLength - 1) {
-          widgetList.add(_MGFooterGrid(video: video ?? Video(), isFinal: true));
-        } else {
-          Video? videoModel = model.video?[index + 1];
-          widgetList
-              .add(_MGFooterGrid(video: videoModel ?? Video(), isFinal: false));
-        }
       }
+      Video video = Video();
+      video.headType = 1;
+      video.indexSection = 6;
+      video.setData(model.data!);
+      video.setName(model.typeName ?? "");
+      widgetList.add(_VideoHeaderGrid(
+        video: video,
+      ));
     }
     return widgetList;
   }
 
-  Future _start(int id) async {
+  Future _start(int id, int page) async {
     MGHomeModel model;
-    model = await MGHomeDao.dataLists(id);
+    if (id == 0) {
+      model = await MGHomeDao.dataRecommendLists(id, page);
+    } else {
+      //这里有轮播图片:
+      MGSlideListModel slideListModel =
+          await MGHomeDao.dataRecommendLists(id, page);
+      model = await MGHomeDao.dataMoreColumnLists(id, "all");
+      model.setSlide(slideListModel.slide ?? []);
+    }
     return model;
   }
 
@@ -161,7 +187,7 @@ class _BannerHeaderGrid extends StatelessWidget {
 
   SliverGrid buildSliverGrid(BuildContext context) {
     double cellWidth = ((MediaQuery.of(context).size.width));
-    double desiredCellHeight = isRecommend ? 216 : 232;
+    double desiredCellHeight = isRecommend ? 216 : 224;
     double childAspectRatio = cellWidth / desiredCellHeight;
     return SliverGrid(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -172,7 +198,7 @@ class _BannerHeaderGrid extends StatelessWidget {
       delegate: SliverChildBuilderDelegate(
         (context, index) {
           return Container(
-            color: Color(MGColorMainView),
+            color: Colors.white,
             padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
             child: Column(
               children: [
@@ -184,7 +210,7 @@ class _BannerHeaderGrid extends StatelessWidget {
                           topRight: Radius.circular(10.0))),
                   child: Swiper(
                       itemBuilder: (BuildContext context, int index) {
-                        Slide sildeModel = homeModel.slide![index];
+                        MGSlideModel sildeModel = homeModel.slide![index];
                         return ClipRRect(
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(10.0),
@@ -199,8 +225,7 @@ class _BannerHeaderGrid extends StatelessWidget {
                       // viewportFraction: 0.8,
                       // scale: 0.9,
                       onTap: (index) {
-                        Slide sildeModel = homeModel.slide![index];
-                        // print("sildeModel______${sildeModel.id}");
+                        MGSlideModel sildeModel = homeModel.slide![index];
                         // HiNavigator().onJumpTo(RouteStatus.scan);
                         HiNavigator().onJumpTo(RouteStatus.movieDetail,
                             args: {"movieId": sildeModel.id});
@@ -227,34 +252,31 @@ class _BannerHeaderGrid extends StatelessWidget {
   Container _buildUnderBannerContainer(
       BuildContext context, MGMarqueeModel marqueeModel) {
     if (!isRecommend) {
-      List<String> lists = [];
-      int maxLength = (homeModel.video?.length ?? 0);
-      for (int index = 0; index < maxLength; index++) {
-        Video? video = homeModel.video?[index];
-        lists.add(video?.name ?? "");
-      }
       return Container(
         margin: EdgeInsets.only(top: 8),
-        height: 44,
+        height: 36,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
-            String listString = lists[index];
+            String listString = homeModel.categorys![index];
             return Container(
                 decoration: new BoxDecoration(
-                    color: Color(MGColorMainViewTwo),
+                    color: Color(MGColorMainViewThree),
                     borderRadius: BorderRadius.all(Radius.circular(6.0))),
                 margin: EdgeInsets.only(right: 10),
                 child: Container(
                     alignment: Alignment.center,
                     child: Text(
                       "${listString}",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      style: TextStyle(
+                          color: Color(YLZColorTitleFive),
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
                     )),
-                width: 88,
-                height: 44);
+                width: 60,
+                height: 36);
           },
-          itemCount: lists.length,
+          itemCount: homeModel.categorys!.length,
         ),
       );
     } else {
@@ -309,7 +331,7 @@ class _BannerHeaderGrid extends StatelessWidget {
   }
 
   Container buildHeaderContainer() {
-    return Container(height: 10.0, color: Color(MGColorMainView));
+    return Container(height: 10.0, color: Colors.white);
   }
 }
 
@@ -383,7 +405,8 @@ class _MovieHeaderGrid extends StatelessWidget {
                           height: 36,
                           child: Text(
                             "${videoModel.name}",
-                            style: TextStyle(color: Colors.white, fontSize: 14),
+                            style: TextStyle(
+                                color: Color(YLZColorTitleOne), fontSize: 14),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -410,12 +433,23 @@ class _MovieHeaderGrid extends StatelessWidget {
     return Container(
       alignment: Alignment.centerLeft,
       height: 44,
-      color: Color(MGColorMainView),
+      color: Colors.white,
       child: Padding(
         padding: EdgeInsets.only(left: 16),
-        child: Text(
-          "推荐电影",
-          style: TextStyle(color: Colors.white, fontSize: 16),
+        child: Row(
+          children: [
+            Container(
+                child: Image.asset(
+              'assets/images/mg_home_tuijian_icon.png',
+            )),
+            Container(
+              margin: EdgeInsets.only(left: 12.0),
+              child: Text(
+                "推荐电影",
+                style: TextStyle(color: Color(YLZColorTitleOne), fontSize: 16),
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -468,12 +502,23 @@ class _TvHeaderGrid extends StatelessWidget {
     return Container(
       alignment: Alignment.centerLeft,
       height: 44,
-      color: Color(MGColorMainView),
+      color: Colors.white,
       child: Padding(
         padding: EdgeInsets.only(left: 16),
-        child: Text(
-          "电视剧",
-          style: TextStyle(color: Colors.white, fontSize: 16),
+        child: Row(
+          children: [
+            Container(
+                child: Image.asset(
+              'assets/images/mg_home_opera_icon.png',
+            )),
+            Container(
+              margin: EdgeInsets.only(left: 12.0),
+              child: Text(
+                "电视剧",
+                style: TextStyle(color: Color(YLZColorTitleOne), fontSize: 16),
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -637,5 +682,82 @@ class _MGFooterGrid extends StatelessWidget {
 
   Container buildHeaderContainer() {
     return Container(height: 0, color: Colors.transparent);
+  }
+}
+
+class _MoreColumnHeaderGrid extends StatefulWidget {
+  final MGHomeModel homeModel;
+
+  const _MoreColumnHeaderGrid({Key? key, required this.homeModel})
+      : super(key: key);
+
+  @override
+  _MoreColumnHeaderGridState createState() => _MoreColumnHeaderGridState();
+}
+
+class _MoreColumnHeaderGridState extends State<_MoreColumnHeaderGrid> {
+  /**
+   * index 0  排行榜
+   * index 1  高分榜
+   * index 2  热度榜
+   ***/
+  int index = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverStickyHeader(
+        header: MGHomeMoreColumnHeaderWidget(
+          homeModel: widget.homeModel,
+          clickListener: (int idx) {
+            setState(() {
+              index = idx;
+            });
+          },
+        ),
+        sliver: SliverPadding(
+          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+          sliver: buildSliverGrid(context), //SliverGrid和GridView类似)
+          //一组sliver类型的小部件
+        ));
+  }
+
+  SliverGrid buildSliverGrid(BuildContext context) {
+    double cellWidth = (MediaQuery.of(context).size.width - 52) / 3;
+    double desiredCellHeight = 196;
+    double childAspectRatio = cellWidth / desiredCellHeight;
+
+    List<VideoModel> list = [];
+    switch (this.index) {
+      case 0:
+        list = widget.homeModel.topAll ?? [];
+        break;
+      case 1:
+        list = widget.homeModel.topScore ?? [];
+        break;
+      default:
+        list = widget.homeModel.topHit ?? [];
+        break;
+    }
+
+    return SliverGrid(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 10.0,
+          mainAxisSpacing: 16.0,
+          childAspectRatio: childAspectRatio),
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          VideoModel videoModel = list[index];
+          return InkWell(
+              child: MgHomeSquareCell(
+                  videoModel: videoModel, cellWidth: cellWidth),
+              onTap: () {
+                HiNavigator().onJumpTo(RouteStatus.movieDetail,
+                    args: {"movieId": videoModel.id});
+              });
+        },
+        childCount: list.length,
+      ),
+    );
   }
 }

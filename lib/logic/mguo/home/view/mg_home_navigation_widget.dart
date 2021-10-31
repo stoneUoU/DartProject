@@ -22,7 +22,7 @@ class MGHomeNavigatorWidgetState extends State<MGHomeNavigatorWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(MGColorMainView),
+      color: Colors.white,
       width: ScreenW(context),
       height: StatusH(context) + NaviH,
       child: Column(
@@ -71,7 +71,6 @@ class MGHomeNavigatorWidgetState extends State<MGHomeNavigatorWidget> {
   }
 
   Container _buildRightContainer(int index) {
-    print("AAAAAAAAA_______${index}");
     if (index == 0) {
       return Container(
         margin: EdgeInsets.fromLTRB(0, 0, 16, 0),
@@ -113,7 +112,8 @@ class MGHomeNavigatorWidgetState extends State<MGHomeNavigatorWidget> {
               padding: EdgeInsets.only(left: 6),
               child: Text(
                 "筛选",
-                style: TextStyle(color: Colors.white, fontSize: 16),
+                style:
+                    TextStyle(color: Color(YLZColorTitleThree), fontSize: 16),
               ),
             ),
             Container(

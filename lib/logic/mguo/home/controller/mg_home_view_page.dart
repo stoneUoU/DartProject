@@ -59,13 +59,13 @@ class _MGHomeViewPageState extends State<MGHomeViewPage>
                     children: [
                       MGHomeNavigatorWidget(homeNavigatorWidgetStateKey),
                       Container(
-                        color: Color(MGColorMainView),
+                        color: Colors.white,
                         width: ScreenW(context),
                         child: _tabBar(),
                       ),
                       Flexible(
                           child: Container(
-                              color: Color(MGColorMainView),
+                              color: Colors.white,
                               child: TabBarView(
                                   controller: _controller,
                                   children: modelList.map((tab) {
