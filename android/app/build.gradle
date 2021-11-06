@@ -29,18 +29,42 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.FlutterProject"
+        applicationId "com.video.meng.guo"
         minSdkVersion 19
         targetSdkVersion 30
+        versionCode 1
+        versionName "1.0.0"
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
-
-    buildTypes {
+    signingConfigs {
         release {
+            try {
+                storeFile file("./keystore/meng_key_store.jks")
+                storePassword "guo666666"
+                keyAlias "meng_video"
+                keyPassword "guo666666"
+            } catch (ex) {
+                throw new InvalidUserDataException(ex.toString())
+            }
+        }
+        debug {
+            storeFile file("./keystore/meng_key_store.jks")
+            storePassword "guo666666"
+            keyAlias "meng_video"
+            keyPassword "guo666666"
+        }
+    }
+    buildTypes {
+        debug {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
+        }
+        release {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.release
         }
     }
 }

@@ -1,4 +1,5 @@
 import 'package:FlutterProject/base/config/YLZMacros.dart';
+import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/base/config/YLZUnFixHeaderDelegate.dart';
 import 'package:FlutterProject/base/navigator/HiNavigator.dart';
 import 'package:FlutterProject/logic/mguo/topics/model/MGListModel.dart';
@@ -6,6 +7,7 @@ import 'package:FlutterProject/logic/mguo/topics/model/MGTopModel.dart';
 import 'package:FlutterProject/logic/mguo/topics/view/MGTopicCellWidget.dart';
 import 'package:FlutterProject/logic/mguo/topics/view/MGTopicSwiperView.dart';
 import 'package:FlutterProject/net/dao/mguo/mg_topics_dao.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -24,7 +26,6 @@ class _MGTopicListViewPageState extends State<MGTopicListViewPage>
   List<MGTopModel> topModels = [];
   List<MGListModel> listModels = [];
   late Future _futureBuilderFuture;
-
   int _pageIndex = 1;
   EasyRefreshController easyRefreshController = new EasyRefreshController();
 
@@ -39,13 +40,21 @@ class _MGTopicListViewPageState extends State<MGTopicListViewPage>
 
   @override
   Widget build(BuildContext context) {
+    // isConnected().then((result) {
+    //   if (result) {
+    //
+    //   } else {
+    //     return Container();
+    //   }
+    // });
     return Container(
       child: new Scaffold(
         body: FutureBuilder(
             future: _futureBuilderFuture,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return generateSliverView();
+                bool sign = snapshot.data as bool;
+                return generateSliverView(sign);
               } else {
                 return Center(child: SpinKitFadingCircle(
                   itemBuilder: (_, int index) {
@@ -62,49 +71,106 @@ class _MGTopicListViewPageState extends State<MGTopicListViewPage>
     );
   }
 
-  Widget generateSliverView() {
-    return Column(
-      children: [
-        YLZTopicNavigationWidget(context: context),
-        new Expanded(
-          child: EasyRefresh.custom(
-            controller: easyRefreshController,
-            //上面创建的刷新控制器
-            header: ClassicalHeader(
-                refreshText: "下拉可以  刷新",
-                refreshReadyText: "松开立即刷新",
-                refreshingText: "正在刷新数据中" + "...",
-                refreshedText: "刷新完成",
-                bgColor: Colors.transparent,
-                textColor: Colors.black87,
-                infoColor: Colors.black54),
-            //自定义刷新头（如果想更改背景色等，可以在小括号内设置属性，都有哪些属性，可以点击这个类自行查看）
-            footer: ClassicalFooter(
-                loadText: "上拉可以加载更多",
-                loadReadyText: "松开立即加载更多",
-                loadingText: "加载数据中" + "...",
-                loadedText: "加载完成",
-                noMoreText: "暂无更多数据",
-                bgColor: Colors.transparent,
-                textColor: Colors.black87),
-            //自定义加载尾（如果想更改背景色等，可以在小括号内设置属性，都有哪些属性，可以点击这个类自行查看）
-            onRefresh: () async {
-              setState(() {
-                _pageIndex = 1;
-                _futureBuilderFuture = _request(_pageIndex, false);
-              });
-            },
-            onLoad: () async {
-              setState(() {
-                _pageIndex++;
-                _futureBuilderFuture = _request(_pageIndex, true);
-              });
-            },
-            slivers: _buildSlivers(context),
-          ),
-        )
-      ],
-    );
+  // Future<bool> isConnected() async {
+  //   var connectivityResult = await (Connectivity().checkConnectivity());
+  //   return connectivityResult != ConnectivityResult.none;
+  // }
+
+  Widget generateSliverView(bool sign) {
+    if (sign) {
+      return Column(
+        children: [
+          YLZTopicNavigationWidget(context: context),
+          new Expanded(
+            child: EasyRefresh.custom(
+              controller: easyRefreshController,
+              //上面创建的刷新控制器
+              header: ClassicalHeader(
+                  refreshText: "下拉可以  刷新",
+                  refreshReadyText: "松开立即刷新",
+                  refreshingText: "正在刷新数据中" + "...",
+                  refreshedText: "刷新完成",
+                  bgColor: Colors.transparent,
+                  textColor: Colors.black87,
+                  infoColor: Colors.black54),
+              //自定义刷新头（如果想更改背景色等，可以在小括号内设置属性，都有哪些属性，可以点击这个类自行查看）
+              footer: ClassicalFooter(
+                  loadText: "上拉可以加载更多",
+                  loadReadyText: "松开立即加载更多",
+                  loadingText: "加载数据中" + "...",
+                  loadedText: "加载完成",
+                  noMoreText: "暂无更多数据",
+                  bgColor: Colors.transparent,
+                  textColor: Colors.black87),
+              //自定义加载尾（如果想更改背景色等，可以在小括号内设置属性，都有哪些属性，可以点击这个类自行查看）
+              onRefresh: () async {
+                setState(() {
+                  _pageIndex = 1;
+                  _futureBuilderFuture = _request(_pageIndex, false);
+                });
+              },
+              onLoad: () async {
+                setState(() {
+                  _pageIndex++;
+                  _futureBuilderFuture = _request(_pageIndex, true);
+                });
+              },
+              slivers: _buildSlivers(context),
+            ),
+          )
+        ],
+      );
+    } else {
+      return Column(
+        children: [
+          YLZTopicNavigationWidget(context: context),
+          new Expanded(
+            child: Center(
+              child: Container(
+                height: 120,
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Text("抱歉，暂为连接到网络！",
+                        style: TextStyle(
+                            color: Color(YLZColorTitleOne),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold)),
+                    InkWell(
+                      child: Container(
+                        margin: EdgeInsets.only(top: 24),
+                        width: 144,
+                        height: 36,
+                        decoration: new BoxDecoration(
+                          color: Color(YLZColorLightBlueView),
+                          borderRadius:
+                              new BorderRadius.all(new Radius.circular(4.0)),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "刷新界面",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ),
+                      onTap: () {
+                        setState(() {
+                          _pageIndex = 1;
+                          _futureBuilderFuture = _request(_pageIndex, false);
+                        });
+                      },
+                    )
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+      );
+    }
   }
 
   List<Widget> _buildSlivers(BuildContext context) {
@@ -164,25 +230,30 @@ class _MGTopicListViewPageState extends State<MGTopicListViewPage>
   }
 
   Future _request(int pageIndex, bool loadMore) async {
-    Map feedBacks = Map();
-    var result = await MGTopicDao.list(pageIndex);
-    List listRs = result["data"]["list"];
-    if (!loadMore) {
-      topModels.clear();
-      listModels.clear();
-      List topRs = result["data"]["top"];
-      for (var i = 0; i < topRs.length; i++) {
-        MGTopModel rs = MGTopModel.fromJson(topRs[i]);
-        topModels.add(rs);
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    bool sign = false;
+    if (connectivityResult != ConnectivityResult.none) {
+      var result = await MGTopicDao.list(pageIndex);
+      List listRs = result["data"]["list"];
+      if (!loadMore) {
+        topModels.clear();
+        listModels.clear();
+        List topRs = result["data"]["top"];
+        for (var i = 0; i < topRs.length; i++) {
+          MGTopModel rs = MGTopModel.fromJson(topRs[i]);
+          topModels.add(rs);
+        }
       }
+      for (var i = 0; i < listRs.length; i++) {
+        MGListModel rs = MGListModel.fromJson(listRs[i]);
+        listModels.add(rs);
+      }
+      sign = true;
+      return sign;
+    } else {
+      sign = false;
+      return sign;
     }
-    for (var i = 0; i < listRs.length; i++) {
-      MGListModel rs = MGListModel.fromJson(listRs[i]);
-      listModels.add(rs);
-    }
-    feedBacks["top"] = topModels;
-    feedBacks["list"] = listModels;
-    return feedBacks;
   }
 
   @override
@@ -224,7 +295,7 @@ class YLZTopicNavigationWidget extends StatelessWidget {
                 child: InkWell(
                   child: Image.asset("assets/images/top_search.png"),
                   onTap: () {
-                    HiNavigator().onJumpTo(RouteStatus.healthCode);
+                    // HiNavigator().onJumpTo(RouteStatus.healthCode);
                   },
                 ),
                 right: 16,

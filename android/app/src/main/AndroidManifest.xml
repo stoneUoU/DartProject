@@ -9,8 +9,9 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature android:name="android.hardware.camera.flash" />
    <application
-        android:label="FlutterProject"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:label="萌果资讯"
+        android:screenOrientation="portrait">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
