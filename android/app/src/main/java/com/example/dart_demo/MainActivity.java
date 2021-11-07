@@ -1,4 +1,4 @@
-package com.example.FlutterProject;
+package com.video.meng.guo;
 
 import io.flutter.embedding.android.FlutterActivity;
 
