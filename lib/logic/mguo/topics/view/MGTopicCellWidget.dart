@@ -143,6 +143,18 @@ class _MGTopicCellWidgetState extends State<MGTopicCellWidget> {
         fit: BoxFit.fill,
       );
     } else {
+      if (model.imgs![0].contains("www.xigtv.com/")) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(5.0),
+          child: new FadeInImage.assetNetwork(
+            placeholder: "assets/images/ylz_blank_rectangle.png",
+            fadeInDuration: const Duration(seconds: 1), // 持续时间，默认 700 ms
+            image:
+                "${model.imgs![0].toString().replaceAll("www.xigtv.com/", "")}",
+            fit: BoxFit.cover,
+          ),
+        );
+      }
       return ClipRRect(
         borderRadius: BorderRadius.circular(5.0),
         child: new FadeInImage.assetNetwork(

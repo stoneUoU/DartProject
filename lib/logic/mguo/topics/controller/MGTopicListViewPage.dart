@@ -47,26 +47,33 @@ class _MGTopicListViewPageState extends State<MGTopicListViewPage>
     //     return Container();
     //   }
     // });
-    return Container(
-      child: new Scaffold(
-        body: FutureBuilder(
-            future: _futureBuilderFuture,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                bool sign = snapshot.data as bool;
-                return generateSliverView(sign);
-              } else {
-                return Center(child: SpinKitFadingCircle(
-                  itemBuilder: (_, int index) {
-                    return DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: index.isEven ? Colors.red : Colors.green,
-                      ),
-                    );
-                  },
-                ));
-              }
-            }),
+    return WillPopScope(
+      onWillPop: () {
+        print("退出");
+        SystemNavigator.pop();
+        return new Future.value(false);
+      },
+      child: Container(
+        child: new Scaffold(
+          body: FutureBuilder(
+              future: _futureBuilderFuture,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  bool sign = snapshot.data as bool;
+                  return generateSliverView(sign);
+                } else {
+                  return Center(child: SpinKitFadingCircle(
+                    itemBuilder: (_, int index) {
+                      return DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: index.isEven ? Colors.red : Colors.green,
+                        ),
+                      );
+                    },
+                  ));
+                }
+              }),
+        ),
       ),
     );
   }
@@ -117,6 +124,20 @@ class _MGTopicListViewPageState extends State<MGTopicListViewPage>
               },
               slivers: _buildSlivers(context),
             ),
+          ),
+          InkWell(
+            child: Container(
+              width: ScreenW(context),
+              color: Colors.white,
+              padding: EdgeInsets.all(12),
+              alignment: Alignment.center,
+              child: Text("《隐私政策》",
+                  style: TextStyle(
+                    color: Color(YLZColorBlueView),
+                    fontSize: 14,
+                  )),
+            ),
+            onTap: () {},
           )
         ],
       );
@@ -167,6 +188,20 @@ class _MGTopicListViewPageState extends State<MGTopicListViewPage>
                 ),
               ),
             ),
+          ),
+          InkWell(
+            child: Container(
+              width: ScreenW(context),
+              color: Colors.white,
+              padding: EdgeInsets.all(12),
+              alignment: Alignment.center,
+              child: Text("《隐私政策》",
+                  style: TextStyle(
+                    color: Color(YLZColorBlueView),
+                    fontSize: 14,
+                  )),
+            ),
+            onTap: () {},
           )
         ],
       );

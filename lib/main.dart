@@ -7,6 +7,8 @@ import 'package:FlutterProject/logic/mguo/home/controller/mg_home_player_page.da
 import 'package:FlutterProject/logic/mguo/login/MGCodeLoginPage.dart';
 import 'package:FlutterProject/logic/mguo/login/MGSmsLoginPage.dart';
 import 'package:FlutterProject/logic/mguo/topics/controller/MGMovieDetailViewPage.dart';
+import 'package:FlutterProject/logic/mguo/topics/controller/MGPrivacyPolicyDetailViewPage.dart';
+import 'package:FlutterProject/logic/mguo/topics/controller/MGPrivacyPolicyViewPage.dart';
 import 'package:FlutterProject/logic/mguo/topics/controller/MGTopicDetailViewPage.dart';
 import 'package:FlutterProject/logic/mguo/topics/controller/MGTopicListViewPage.dart';
 import 'package:FlutterProject/logic/rainBow/YLZReportDetailPage.dart';
@@ -89,6 +91,8 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<APPRoutePath> {
   final GlobalKey<NavigatorState> navigatorKey;
   Map? _args;
+  late RouteStatus _routeStatus;
+
   //为Navigator设置一个key，必要的时候可以通过navigatorKey.currentState来获取到NavigatorState对象
   APPRouteDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
     //实现路由跳转逻辑
@@ -106,12 +110,13 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
     //   }
     // });
   }
-
-  RouteStatus _routeStatus = RouteStatus.topicList;
   List<MaterialPage> pages = [];
-
   @override
   Widget build(BuildContext context) {
+    bool isAgree = HiCache.getInstance().get("isAgree") == null
+        ? false
+        : HiCache.getInstance().get("isAgree") as bool;
+    _routeStatus = isAgree ? RouteStatus.topicList : RouteStatus.privacyPolicy;
     var index = getPageIndex(pages, routeStatus);
     List<MaterialPage> tempPages = pages;
     if (index != -1) {
@@ -152,6 +157,10 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
       page = pageWrap(MGMovieDetailViewPage(
         movieId: _args?["movieId"],
       ));
+    } else if (routeStatus == RouteStatus.privacyPolicy) {
+      page = pageWrap(MGPrivacyPolicyViewPage());
+    } else if (routeStatus == RouteStatus.privacyPolicyDetail) {
+      page = pageWrap(MGPrivacyPolicyDetailViewPage());
     }
     //重新创建一个数组，否则pages因引用没有改变路由不会生效
     tempPages = [...tempPages, page];

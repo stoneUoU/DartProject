@@ -56,6 +56,30 @@ class _MGTopicSwiperView extends State<MGTopicSwiperView> {
         fit: BoxFit.fill,
       );
     } else {
+      if (topModel.img.toString().contains("www.xigtv.com/")) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(5.0),
+          child: new FadeInImage.assetNetwork(
+            placeholder: "assets/images/ylz_blank_rectangle.png",
+            fadeInDuration: const Duration(seconds: 1), // 持续时间，默认 700 ms
+            image:
+                "${topModel.img.toString().replaceAll("www.xigtv.com/", "")}",
+            fit: BoxFit.cover,
+          ),
+        );
+      }
+      if (!(topModel.img.toString().contains("https://") ||
+          topModel.img.toString().contains("http://"))) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(5.0),
+          child: new FadeInImage.assetNetwork(
+            placeholder: "assets/images/ylz_blank_rectangle.png",
+            fadeInDuration: const Duration(seconds: 1), // 持续时间，默认 700 ms
+            image: "https:${topModel.img.toString()}",
+            fit: BoxFit.cover,
+          ),
+        );
+      }
       return ClipRRect(
         borderRadius: BorderRadius.circular(5.0),
         child: new FadeInImage.assetNetwork(

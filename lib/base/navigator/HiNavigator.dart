@@ -5,6 +5,8 @@ import 'package:FlutterProject/logic/mguo/home/controller/mg_home_player_page.da
 import 'package:FlutterProject/logic/mguo/login/MGCodeLoginPage.dart';
 import 'package:FlutterProject/logic/mguo/login/MGSmsLoginPage.dart';
 import 'package:FlutterProject/logic/mguo/topics/controller/MGMovieDetailViewPage.dart';
+import 'package:FlutterProject/logic/mguo/topics/controller/MGPrivacyPolicyDetailViewPage.dart';
+import 'package:FlutterProject/logic/mguo/topics/controller/MGPrivacyPolicyViewPage.dart';
 import 'package:FlutterProject/logic/mguo/topics/controller/MGTopicDetailViewPage.dart';
 import 'package:FlutterProject/logic/mguo/topics/controller/MGTopicListViewPage.dart';
 import 'package:FlutterProject/logic/rainBow/YLZReportDetailPage.dart';
@@ -46,6 +48,8 @@ enum RouteStatus {
   topicList,
   topicDetail,
   movieDetail,
+  privacyPolicy,
+  privacyPolicyDetail,
   unknown
 }
 
@@ -75,6 +79,10 @@ RouteStatus getStatus(MaterialPage page) {
     return RouteStatus.topicDetail;
   } else if (page.child is MGMovieDetailViewPage) {
     return RouteStatus.movieDetail;
+  } else if (page.child is MGPrivacyPolicyViewPage) {
+    return RouteStatus.privacyPolicy;
+  } else if (page.child is MGPrivacyPolicyDetailViewPage) {
+    return RouteStatus.privacyPolicyDetail;
   } else {
     return RouteStatus.unknown;
   }

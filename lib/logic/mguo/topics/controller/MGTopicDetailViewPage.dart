@@ -69,13 +69,16 @@ class _MGTopicDetailViewPageState extends State<MGTopicDetailViewPage> {
                 Container(width: ScreenW(context), height: kToolbarHeight),
                 Positioned(
                     child: InkWell(
-                      child: Image.asset("assets/images/topic_back.png"),
+                      child: Container(
+                        child: Image.asset("assets/images/topic_back.png"),
+                        padding: EdgeInsets.fromLTRB(16, 20, 36, 20),
+                      ),
                       onTap: () {
                         Navigator.pop(context);
                       },
                     ),
-                    left: 16,
-                    top: 20)
+                    left: 0,
+                    top: 0)
               ])
             ],
           ),
@@ -137,8 +140,12 @@ class _MGTopicDetailViewPageState extends State<MGTopicDetailViewPage> {
     if (detailModel.content == null) {
       return Container();
     }
+    print(
+        "id=${detailModel.id}   ${detailModel.content.toString().replaceAll("<img src=", "<img src=http:")}");
     return Html(
-      data: detailModel.content,
+      data: detailModel.content
+          .toString()
+          .replaceAll("<img src=\"", "<img src=\"http:"),
       style: {
         "table": Style(
           backgroundColor: Color.fromARGB(0x50, 0xee, 0xee, 0xee),
