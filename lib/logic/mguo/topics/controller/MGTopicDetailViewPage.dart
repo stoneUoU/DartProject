@@ -140,8 +140,6 @@ class _MGTopicDetailViewPageState extends State<MGTopicDetailViewPage> {
     if (detailModel.content == null) {
       return Container();
     }
-    print(
-        "id=${detailModel.id}   ${detailModel.content.toString().replaceAll("<img src=", "<img src=http:")}");
     return Html(
       data: detailModel.content
           .toString()

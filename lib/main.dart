@@ -37,7 +37,6 @@ class APP extends StatefulWidget {
 
 class _APPState extends State<APP> {
   APPRouteDelegate _routeDelegate = APPRouteDelegate();
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<HiCache>(
@@ -50,6 +49,11 @@ class _APPState extends State<APP> {
               : Scaffold(
                   body: Center(child: CircularProgressIndicator()),
                 );
+          bool isAgree = HiCache.getInstance().get("isAgree") == null
+              ? false
+              : HiCache.getInstance().get("isAgree") as bool;
+          _routeDelegate.routeStatus =
+              isAgree ? RouteStatus.topicList : RouteStatus.privacyPolicy;
           return MultiProvider(
             providers: [
               ChangeNotifierProvider(create: (_) => YLZCounter()),
@@ -91,7 +95,7 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<APPRoutePath> {
   final GlobalKey<NavigatorState> navigatorKey;
   Map? _args;
-  late RouteStatus _routeStatus;
+  late RouteStatus routeStatus;
 
   //为Navigator设置一个key，必要的时候可以通过navigatorKey.currentState来获取到NavigatorState对象
   APPRouteDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
@@ -99,7 +103,7 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
     HiNavigator().registerRouteJump(
         RouteJumpListener(onJumpTo: (RouteStatus routeStatus, {Map? args}) {
       _args = args;
-      _routeStatus = routeStatus;
+      this.routeStatus = routeStatus;
       notifyListeners();
     }));
     //设置网络错误拦截器
@@ -113,10 +117,6 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
   List<MaterialPage> pages = [];
   @override
   Widget build(BuildContext context) {
-    bool isAgree = HiCache.getInstance().get("isAgree") == null
-        ? false
-        : HiCache.getInstance().get("isAgree") as bool;
-    _routeStatus = isAgree ? RouteStatus.topicList : RouteStatus.privacyPolicy;
     var index = getPageIndex(pages, routeStatus);
     List<MaterialPage> tempPages = pages;
     if (index != -1) {
@@ -188,9 +188,9 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
     );
   }
 
-  RouteStatus get routeStatus {
-    return _routeStatus;
-  }
+  // RouteStatus get routeStatus {
+  //   return routeStatus;
+  // }
 
   @override
   Future<void> setNewRoutePath(APPRoutePath path) async {}

@@ -41,22 +41,31 @@ class MGPrivacyPolicyViewPage extends StatelessWidget {
                             child: RichText(
                               text: TextSpan(
                                   text:
-                                      "     请你务必审慎阅读、充分理解“隐私政策”各项条款，包括但不限 于；我们需要你的设备信息、操作 日志等个人信息。 你可阅读",
+                                      "     请你务必审慎阅读、充分理解\"隐私政策\"各项条款，包括但不限于：我们需要你的设备信息、操作 日志等个人信息。 \n     你可阅读",
                                   style: TextStyle(
-                                      color: Colors.black, fontSize: 14),
+                                      height: 1.5,
+                                      color: Color(YLZColorTitleOne),
+                                      fontSize: 14),
                                   children: [
                                     TextSpan(
                                         text: "《隐私政策》",
                                         style: TextStyle(
+                                          height: 1.5,
                                           color: Color(YLZColorBlueView),
                                           fontSize: 14,
                                         ),
                                         recognizer: TapGestureRecognizer()
-                                          ..onTap = () {}),
+                                          ..onTap = () {
+                                            HiNavigator().onJumpTo(RouteStatus
+                                                .privacyPolicyDetail);
+                                          }),
                                     TextSpan(
-                                        text: "了解详细信息。如果你同意，请点击“同意”开始接受我们的服务。",
+                                        text:
+                                            "了解详细信息。如果你同意，请点击\"同意\"开始接受我们的服务。",
                                         style: TextStyle(
-                                            color: Colors.black, fontSize: 14)),
+                                            height: 1.6,
+                                            color: Color(YLZColorTitleOne),
+                                            fontSize: 14)),
                                   ]),
                             ),
                           ),

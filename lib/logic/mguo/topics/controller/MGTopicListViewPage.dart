@@ -129,7 +129,8 @@ class _MGTopicListViewPageState extends State<MGTopicListViewPage>
             child: Container(
               width: ScreenW(context),
               color: Colors.white,
-              padding: EdgeInsets.all(12),
+              padding: EdgeInsets.fromLTRB(
+                  0, 12, 0, TabbarSafeBottomM(context) + 12),
               alignment: Alignment.center,
               child: Text("《隐私政策》",
                   style: TextStyle(
@@ -137,7 +138,9 @@ class _MGTopicListViewPageState extends State<MGTopicListViewPage>
                     fontSize: 14,
                   )),
             ),
-            onTap: () {},
+            onTap: () {
+              HiNavigator().onJumpTo(RouteStatus.privacyPolicyDetail);
+            },
           )
         ],
       );
@@ -193,7 +196,8 @@ class _MGTopicListViewPageState extends State<MGTopicListViewPage>
             child: Container(
               width: ScreenW(context),
               color: Colors.white,
-              padding: EdgeInsets.all(12),
+              padding: EdgeInsets.fromLTRB(
+                  0, 12, 0, TabbarSafeBottomM(context) + 12),
               alignment: Alignment.center,
               child: Text("《隐私政策》",
                   style: TextStyle(
@@ -201,7 +205,9 @@ class _MGTopicListViewPageState extends State<MGTopicListViewPage>
                     fontSize: 14,
                   )),
             ),
-            onTap: () {},
+            onTap: () {
+              HiNavigator().onJumpTo(RouteStatus.privacyPolicyDetail);
+            },
           )
         ],
       );
