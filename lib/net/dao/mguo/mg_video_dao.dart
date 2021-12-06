@@ -1,6 +1,6 @@
-import 'package:FlutterProject/logic/mguo/home/model/mg_ad_model.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_video_decode_model.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_video_detail_model.dart';
+import 'package:FlutterProject/logic/mguo/topics/model/m_g_ad_models.dart';
 import 'package:FlutterProject/net/http/core/hi_net.dart';
 import 'package:FlutterProject/net/http/request/mguo/mg_video_request.dart';
 
@@ -41,12 +41,13 @@ class MGHomeVideoDao {
 
   static _sendVideoAds(String flag) async {
     MGVideoRequest request;
-    MGAdModel model = MGAdModel();
+    MGAdModels model = MGAdModels();
     request = MGVideoRequest();
     request.pathCategory = 2;
     request.add("flag", flag);
     var result = await HiNet().fire(request);
-    model = MGAdModel.fromJson(result["data"]);
+    model = MGAdModels.fromJson(result);
+    print("ads ____ ${result}");
     return model;
   }
 }

@@ -16,6 +16,14 @@ class MGLoginDao {
     return _sendRegisterSmsCode(user_name);
   }
 
+  static forgetPwd(String user_name, String user_pwd, String code) {
+    return _sendForgetPwd(user_name, user_pwd, code);
+  }
+
+  static forgetPwdSmsCode(String user_name) {
+    return _sendForgetPwdSmsCode(user_name);
+  }
+
   static _sendLogin(String user_name, String user_pwd) async {
     BaseRequest request;
     request = MGLoginRequest();
@@ -43,6 +51,26 @@ class MGLoginDao {
     request = MGLoginRequest();
     request.pathCategory = 2;
     request.add("user_name", user_name);
+    var result = await HiNet().fire(request);
+    return result;
+  }
+
+  static _sendForgetPwdSmsCode(String user_name) async {
+    MGLoginRequest request;
+    request = MGLoginRequest();
+    request.pathCategory = 3;
+    request.add("user_name", user_name);
+    var result = await HiNet().fire(request);
+    return result;
+  }
+
+  static _sendForgetPwd(String user_name, String user_pwd, String code) async {
+    MGLoginRequest request;
+    request = MGLoginRequest();
+    request.pathCategory = 4;
+    request.add("user_name", user_name);
+    request.add("user_pwd", user_pwd);
+    request.add("code", code);
     var result = await HiNet().fire(request);
     return result;
   }

@@ -6,7 +6,8 @@ abstract class BaseRequest {
   var useHttps = true;
 
   String authority() {
-    return "www.xigtv.com";
+    return "mgapp.appearoo.top";
+    // return "www.xigtv.com";
   }
 
   String authorityPath() {

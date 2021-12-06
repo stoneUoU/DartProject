@@ -227,7 +227,7 @@ class _BannerHeaderGrid extends StatelessWidget {
                       onTap: (index) {
                         MGSlideModel sildeModel = homeModel.slide![index];
                         // HiNavigator().onJumpTo(RouteStatus.scan);
-                        HiNavigator().onJumpTo(RouteStatus.movieDetail,
+                        HiNavigator().onJumpTo(RouteStatus.videoPlay,
                             args: {"movieId": sildeModel.id});
                         // args: {"id": 42484});
                       },
@@ -415,7 +415,8 @@ class _MovieHeaderGrid extends StatelessWidget {
                     ),
                   ),
                   onTap: () {
-                    HiNavigator().onJumpTo(RouteStatus.movieDetail,
+                    print("AAAAAAAAAAA");
+                    HiNavigator().onJumpTo(RouteStatus.videoPlay,
                         args: {"movieId": videoModel.id});
                   },
                 );
@@ -487,8 +488,9 @@ class _TvHeaderGrid extends StatelessWidget {
               child: MgHomeNormalCell(
                   videoModel: videoModel, cellWidth: cellWidth),
               onTap: () {
-                HiNavigator().onJumpTo(RouteStatus.movieDetail,
-                    args: {"movieId": videoModel?.id ?? 0});
+                HiNavigator().onJumpTo(RouteStatus.register);
+                // HiNavigator().onJumpTo(RouteStatus.videoPlay,
+                //     args: {"movieId": videoModel?.id ?? 0});
                 // HiNavigator()
                 //     .onJumpTo(RouteStatus.videoPlay, args: {"id": 42484});
               });
@@ -576,7 +578,7 @@ class _VideoHeaderGrid extends StatelessWidget {
                 child: MgHomeSquareCell(
                     videoModel: videoModel, cellWidth: cellWidth),
                 onTap: () {
-                  HiNavigator().onJumpTo(RouteStatus.movieDetail,
+                  HiNavigator().onJumpTo(RouteStatus.videoPlay,
                       args: {"movieId": videoModel?.id ?? 0});
                 });
           },
@@ -752,7 +754,7 @@ class _MoreColumnHeaderGridState extends State<_MoreColumnHeaderGrid> {
               child: MgHomeSquareCell(
                   videoModel: videoModel, cellWidth: cellWidth),
               onTap: () {
-                HiNavigator().onJumpTo(RouteStatus.movieDetail,
+                HiNavigator().onJumpTo(RouteStatus.videoPlay,
                     args: {"movieId": videoModel.id});
               });
         },

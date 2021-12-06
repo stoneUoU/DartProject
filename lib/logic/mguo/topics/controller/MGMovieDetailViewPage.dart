@@ -3,13 +3,14 @@ import 'dart:convert';
 import 'package:FlutterProject/base/config/YLZMacros.dart';
 import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/base/navigator/HiNavigator.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_ad_model.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_home_model.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_video_detail_model.dart';
 import 'package:FlutterProject/logic/mguo/login/model/mg_login_model.dart';
 import 'package:FlutterProject/logic/mguo/topics/model/MGCommentModel.dart';
+import 'package:FlutterProject/logic/mguo/topics/model/m_g_ad_models.dart';
 import 'package:FlutterProject/net/dao/mguo/mg_movie_dao.dart';
 import 'package:FlutterProject/net/db/hi_cache.dart';
+import 'package:FlutterProject/provider/MGMovieDetailProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -17,6 +18,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
 class MGMovieDetailViewPage extends StatefulWidget {
   int movieId;
@@ -53,7 +55,7 @@ class _MGMovieDetailViewPageState extends State<MGMovieDetailViewPage> {
               if (snapshot.hasData) {
                 List dataList = (snapshot.data as List).cast();
                 MGVideoDetailModel model = dataList[0] as MGVideoDetailModel;
-                MGAdModel adModel = dataList[1] as MGAdModel;
+                MGAdModels adModel = dataList[1] as MGAdModels;
                 this.detailModel = model;
                 return generateSliverView();
               } else {
@@ -290,7 +292,7 @@ class _MGMovieDetailViewPageState extends State<MGMovieDetailViewPage> {
 
     MGVideoDetailModel detailModel =
         await MGMovieDao.videoInfo(widget.movieId, model.token ?? "");
-    MGAdModel adModel = await MGMovieDao.videoAds("ios_video_ad");
+    MGAdModels adModel = await MGMovieDao.videoAds("ios_video_ad");
     var result = await MGMovieDao.videoCommentList(widget.movieId, pageIndex);
     List listRs = result["list"];
     if (!loadMore) {
@@ -300,6 +302,7 @@ class _MGMovieDetailViewPageState extends State<MGMovieDetailViewPage> {
       MGCommentModel rs = MGCommentModel.fromJson(listRs[i]);
       commentModels.add(rs);
     }
+    context.read<MGMovieDetailProvider>().fireMovieDetail(detailModel);
     return [detailModel, adModel];
   }
 }
@@ -417,7 +420,7 @@ class YLZMovieActorWidget extends StatelessWidget {
                     ),
                   ),
                   onTap: () {
-                    HiNavigator().onJumpTo(RouteStatus.movieDetail,
+                    HiNavigator().onJumpTo(RouteStatus.videoPlay,
                         args: {"moiveId": videoModel.id});
                   },
                 );
@@ -558,6 +561,8 @@ class YLZMovieTopInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MGVideoDetailModel detailModel =
+        context.watch<MGMovieDetailProvider>().detailModel;
     return Container(
       height: 136,
       child: Row(
@@ -728,6 +733,8 @@ class YLZMovieTopInfoWidget extends StatelessWidget {
       var result =
           await MGMovieDao.videoAddCollect(this.movieId, model.token ?? "");
       if (result["code"] == 1) {
+        detailModel.isCollect = true;
+        context.read<MGMovieDetailProvider>().fireMovieDetail(detailModel);
         Fluttertoast.showToast(
             msg: result["msg"] ?? "收藏成功！", gravity: ToastGravity.CENTER);
         return;
@@ -739,9 +746,10 @@ class YLZMovieTopInfoWidget extends StatelessWidget {
       var result =
           await MGMovieDao.videoCancelCollect(this.movieId, model.token ?? "");
       if (result["code"] == 1) {
+        detailModel.isCollect = false;
+        context.read<MGMovieDetailProvider>().fireMovieDetail(detailModel);
         Fluttertoast.showToast(
             msg: result["msg"] ?? "取消收藏成功！", gravity: ToastGravity.CENTER);
-        ;
         return;
       } else {
         Fluttertoast.showToast(

@@ -19,8 +19,13 @@ class MGLoginRequest extends BaseRequest {
       return "/provide/login";
     } else if (pathCategory == 1) {
       return "/provide/reg";
-    } else {
+    } else if (pathCategory == 2) {
       return "/provide/regcode";
+    } else if (pathCategory == 3) {
+      //获取重置密码验证码:
+      return "/provide/setpass_code";
+    } else {
+      return "/provide/editpwd";
     }
   }
 }

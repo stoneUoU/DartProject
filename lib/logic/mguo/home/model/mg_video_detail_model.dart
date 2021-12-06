@@ -106,10 +106,18 @@ class MGVideoDetailModel {
   bool? get isCollect => _isCollect;
 
   bool? get isPurchase => _isPurchase;
+
   bool? get isVip => _isVip;
+
   bool? get isSharevip => _isSharevip;
+
   bool? get openSharevip => _openSharevip;
+
   List<VideoModel>? get likes => _likes;
+
+  set isCollect(value) {
+    _isCollect = value;
+  }
 
   MGVideoDetailModel(
       {String? name,

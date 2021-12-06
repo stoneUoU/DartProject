@@ -128,8 +128,7 @@ class MGPrivacyPolicyViewPage extends StatelessWidget {
                                   onTap: () {
                                     HiCache.getInstance()
                                         .setBool("isAgree", true);
-                                    HiNavigator()
-                                        .onJumpTo(RouteStatus.topicList);
+                                    HiNavigator().onJumpTo(RouteStatus.home);
                                   },
                                 ),
                               ],

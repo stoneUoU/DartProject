@@ -29,7 +29,7 @@ class _MGHomeViewPageState extends State<MGHomeViewPage>
     // TODO: implement initState
     super.initState();
     _futureBuilderFuture = _start();
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
   }
 
   @override

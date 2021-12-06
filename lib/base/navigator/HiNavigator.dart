@@ -3,7 +3,8 @@ import 'package:FlutterProject/logic/chsHome/YLZScanViewPage.dart';
 import 'package:FlutterProject/logic/healthCode/controller/YLZHealthCodeViewPage.dart';
 import 'package:FlutterProject/logic/mguo/home/controller/mg_home_player_page.dart';
 import 'package:FlutterProject/logic/mguo/login/MGCodeLoginPage.dart';
-import 'package:FlutterProject/logic/mguo/login/MGSmsLoginPage.dart';
+import 'package:FlutterProject/logic/mguo/login/MGForgetPwdPage.dart';
+import 'package:FlutterProject/logic/mguo/login/MGRegisterPage.dart';
 import 'package:FlutterProject/logic/mguo/topics/controller/MGMovieDetailViewPage.dart';
 import 'package:FlutterProject/logic/mguo/topics/controller/MGPrivacyPolicyDetailViewPage.dart';
 import 'package:FlutterProject/logic/mguo/topics/controller/MGPrivacyPolicyViewPage.dart';
@@ -36,8 +37,8 @@ int getPageIndex(List<MaterialPage> pages, RouteStatus routeStatus) {
 
 ///自定义路由封装，路由状态
 enum RouteStatus {
-  smsLogin,
   codeLogin,
+  register,
   reportDetail,
   reportList,
   home,
@@ -50,15 +51,16 @@ enum RouteStatus {
   movieDetail,
   privacyPolicy,
   privacyPolicyDetail,
+  forgetPwd,
   unknown
 }
 
 ///获取page对应的RouteStatus
 RouteStatus getStatus(MaterialPage page) {
-  if (page.child is MGSmsLoginPage) {
-    return RouteStatus.smsLogin;
-  } else if (page.child is MGCodeLoginPage) {
+  if (page.child is MGCodeLoginPage) {
     return RouteStatus.codeLogin;
+  } else if (page.child is MGRegisterPage) {
+    return RouteStatus.register;
   } else if (page.child is YLZReportDetailPage) {
     return RouteStatus.reportDetail;
   } else if (page.child is YLZReportListPage) {
@@ -83,6 +85,8 @@ RouteStatus getStatus(MaterialPage page) {
     return RouteStatus.privacyPolicy;
   } else if (page.child is MGPrivacyPolicyDetailViewPage) {
     return RouteStatus.privacyPolicyDetail;
+  } else if (page.child is MGForgetPwdPage) {
+    return RouteStatus.forgetPwd;
   } else {
     return RouteStatus.unknown;
   }

@@ -124,23 +124,6 @@ class _MGTopicListViewPageState extends State<MGTopicListViewPage>
               },
               slivers: _buildSlivers(context),
             ),
-          ),
-          InkWell(
-            child: Container(
-              width: ScreenW(context),
-              color: Colors.white,
-              padding: EdgeInsets.fromLTRB(
-                  0, 12, 0, TabbarSafeBottomM(context) + 12),
-              alignment: Alignment.center,
-              child: Text("《隐私政策》",
-                  style: TextStyle(
-                    color: Color(YLZColorBlueView),
-                    fontSize: 14,
-                  )),
-            ),
-            onTap: () {
-              HiNavigator().onJumpTo(RouteStatus.privacyPolicyDetail);
-            },
           )
         ],
       );
@@ -191,23 +174,6 @@ class _MGTopicListViewPageState extends State<MGTopicListViewPage>
                 ),
               ),
             ),
-          ),
-          InkWell(
-            child: Container(
-              width: ScreenW(context),
-              color: Colors.white,
-              padding: EdgeInsets.fromLTRB(
-                  0, 12, 0, TabbarSafeBottomM(context) + 12),
-              alignment: Alignment.center,
-              child: Text("《隐私政策》",
-                  style: TextStyle(
-                    color: Color(YLZColorBlueView),
-                    fontSize: 14,
-                  )),
-            ),
-            onTap: () {
-              HiNavigator().onJumpTo(RouteStatus.privacyPolicyDetail);
-            },
           )
         ],
       );

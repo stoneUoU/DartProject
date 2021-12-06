@@ -42,7 +42,7 @@ class MGHomeNavigatorWidgetState extends State<MGHomeNavigatorWidget> {
                           alignment: Alignment.center,
                           child: Text(
                             "Mac Pro",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Color(YLZColorTitleOne)),
                           ),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16.0),
@@ -82,6 +82,10 @@ class MGHomeNavigatorWidgetState extends State<MGHomeNavigatorWidget> {
               width: 22,
               height: 22,
               margin: EdgeInsets.only(right: 16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(11.0),
+                color: Colors.greenAccent,
+              ),
               child: Image.asset(
                 'assets/images/mg_watch_history.png',
               ),

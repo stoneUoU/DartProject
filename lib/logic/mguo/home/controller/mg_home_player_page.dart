@@ -12,6 +12,7 @@ import 'package:FlutterProject/logic/mguo/home/model/mg_video_detail_model.dart'
 import 'package:FlutterProject/logic/mguo/home/model/mg_video_parse_model.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_video_player_model.dart';
 import 'package:FlutterProject/logic/mguo/home/view/mg_video_widget.dart';
+import 'package:FlutterProject/logic/mguo/topics/model/m_g_ad_models.dart';
 import 'package:FlutterProject/net/dao/mguo/mg_video_dao.dart';
 import 'package:FlutterProject/net/db/hi_cache.dart';
 import 'package:FlutterProject/provider/MGVideoDetailProvider.dart';
@@ -23,9 +24,9 @@ import 'package:provider/provider.dart';
 import 'package:rsa_util/rsa_util.dart';
 
 class MGHomePlayerPage extends StatefulWidget {
-  final int id;
+  final int movieId;
 
-  const MGHomePlayerPage({Key? key, required this.id}) : super(key: key);
+  const MGHomePlayerPage({Key? key, required this.movieId}) : super(key: key);
 
   @override
   _MGHomePlayerPageState createState() => _MGHomePlayerPageState();
@@ -65,7 +66,8 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
               if (snapshot.hasData) {
                 List dataList = (snapshot.data as List).cast();
                 MGVideoDetailModel model = dataList[0] as MGVideoDetailModel;
-                MGAdModel adModel = dataList[1] as MGAdModel;
+                MGAdModels adModels = dataList[1] as MGAdModels;
+                MGAdModel adModel = adModels.data ?? MGAdModel();
                 //进行数据处理：
                 MGVideoDetailModel modelAfterDeal = dealRecord(model);
                 return _buildWidget(modelAfterDeal, adModel);
@@ -302,6 +304,7 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
 
   Container _buildAdsWidget(MGAdModel adModel) {
     if (adShow) {
+      print("adModel.img__________${adModel}");
       return Container(
         padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
         child: Stack(
@@ -642,7 +645,7 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
           "playerUrl": endUrlStringList[1].toString(),
           "isMovie": model.isMovie,
           "show": playerInfoModel.show,
-          "videoId": widget.id,
+          "videoId": widget.movieId,
           "selected": j == selectedRow
         };
         sectionUrlModelList.add(endUrlMap);
@@ -663,8 +666,9 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
   }
 
   Future _start() async {
-    MGVideoDetailModel detailModel = await MGHomeVideoDao.videoInfo(widget.id);
-    MGAdModel adModel = await MGHomeVideoDao.videoAds("test");
+    MGVideoDetailModel detailModel =
+        await MGHomeVideoDao.videoInfo(widget.movieId);
+    MGAdModels adModel = await MGHomeVideoDao.videoAds("ios_video_ad");
     return [detailModel, adModel];
   }
 

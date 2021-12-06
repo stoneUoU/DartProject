@@ -5,7 +5,8 @@ import 'package:FlutterProject/logic/chsHome/YLZScanViewPage.dart';
 import 'package:FlutterProject/logic/healthCode/controller/YLZHealthCodeViewPage.dart';
 import 'package:FlutterProject/logic/mguo/home/controller/mg_home_player_page.dart';
 import 'package:FlutterProject/logic/mguo/login/MGCodeLoginPage.dart';
-import 'package:FlutterProject/logic/mguo/login/MGSmsLoginPage.dart';
+import 'package:FlutterProject/logic/mguo/login/MGForgetPwdPage.dart';
+import 'package:FlutterProject/logic/mguo/login/MGRegisterPage.dart';
 import 'package:FlutterProject/logic/mguo/topics/controller/MGMovieDetailViewPage.dart';
 import 'package:FlutterProject/logic/mguo/topics/controller/MGPrivacyPolicyDetailViewPage.dart';
 import 'package:FlutterProject/logic/mguo/topics/controller/MGPrivacyPolicyViewPage.dart';
@@ -15,6 +16,7 @@ import 'package:FlutterProject/logic/rainBow/YLZReportDetailPage.dart';
 import 'package:FlutterProject/logic/rainBow/YLZReportListPage.dart';
 import 'package:FlutterProject/logic/tabbar/YLZBottomNavigator.dart';
 import 'package:FlutterProject/net/db/hi_cache.dart';
+import 'package:FlutterProject/provider/MGMovieDetailProvider.dart';
 import 'package:FlutterProject/provider/MGVideoDetailProvider.dart';
 import 'package:FlutterProject/provider/YLZCodeProvider.dart';
 import 'package:FlutterProject/provider/YLZCounter.dart';
@@ -53,14 +55,15 @@ class _APPState extends State<APP> {
               ? false
               : HiCache.getInstance().get("isAgree") as bool;
           _routeDelegate.routeStatus =
-              isAgree ? RouteStatus.topicList : RouteStatus.privacyPolicy;
+              isAgree ? RouteStatus.home : RouteStatus.privacyPolicy;
           return MultiProvider(
             providers: [
               ChangeNotifierProvider(create: (_) => YLZCounter()),
               ChangeNotifierProvider(create: (_) => YLZTabbarProvider()),
               ChangeNotifierProvider(create: (_) => YLZCodeProvider()),
               ChangeNotifierProvider(create: (_) => MGVideoDetailProvider()),
-              ChangeNotifierProvider(create: (_) => YLZHealthCodeProvider())
+              ChangeNotifierProvider(create: (_) => YLZHealthCodeProvider()),
+              ChangeNotifierProvider(create: (_) => MGMovieDetailProvider())
             ],
             child: ScreenUtilInit(
                 designSize: Size(1125, 2436),
@@ -128,11 +131,16 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
     if (routeStatus == RouteStatus.home) {
       pages.clear();
       page = pageWrap(YLZBottomNavigator());
-    } else if (routeStatus == RouteStatus.smsLogin) {
-      page = pageWrap(MGSmsLoginPage());
     } else if (routeStatus == RouteStatus.codeLogin) {
       page = pageWrap(MGCodeLoginPage(
           onCodeLoginPageListener: _args?["onCodeLoginPageListener"]));
+    } else if (routeStatus == RouteStatus.register) {
+      page = pageWrap(MGRegisterPage(
+          onCodeLoginPageListener: _args?["onCodeLoginPageListener"]));
+    } else if (routeStatus == RouteStatus.forgetPwd) {
+      page = pageWrap(MGForgetPwdPage(
+        telString: _args?["telString"],
+      ));
     } else if (routeStatus == RouteStatus.reportList) {
       page = pageWrap(YLZReportListPage());
     } else if (routeStatus == RouteStatus.reportDetail) {
@@ -144,7 +152,7 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
     } else if (routeStatus == RouteStatus.scan) {
       page = pageWrap(YLZScanViewPage());
     } else if (routeStatus == RouteStatus.videoPlay) {
-      page = pageWrap(MGHomePlayerPage(id: _args?["id"]));
+      page = pageWrap(MGHomePlayerPage(movieId: _args?["movieId"]));
     } else if (routeStatus == RouteStatus.healthCode) {
       page = pageWrap(YLZHealthCodeViewPage());
     } else if (routeStatus == RouteStatus.topicList) {
