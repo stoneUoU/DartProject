@@ -1,6 +1,6 @@
 import 'package:FlutterProject/logic/mguo/home/model/mg_video_decode_model.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_video_detail_model.dart';
-import 'package:FlutterProject/logic/mguo/topics/model/m_g_ad_models.dart';
+import 'package:FlutterProject/logic/mguo/topics/model/MGAdModels.dart';
 import 'package:FlutterProject/net/http/core/hi_net.dart';
 import 'package:FlutterProject/net/http/request/mguo/mg_video_request.dart';
 
@@ -25,6 +25,7 @@ class MGHomeVideoDao {
     request.add("id", id);
     var result = await HiNet().fire(request);
     model = MGVideoDetailModel.fromJson(result);
+    // print("VideoInfo______${result}");
     return model;
   }
 
@@ -47,7 +48,7 @@ class MGHomeVideoDao {
     request.add("flag", flag);
     var result = await HiNet().fire(request);
     model = MGAdModels.fromJson(result);
-    print("ads ____ ${result}");
+    // print("VideoAds______${result}");
     return model;
   }
 }

@@ -1,18 +1,17 @@
-import 'dart:developer';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class MGVideoDetailProvider with ChangeNotifier, DiagnosticableTreeMixin {
   int _selectedChannel = 0;
+
   int get selectedChannel => _selectedChannel;
 
   int _selectedRow = 0;
+
   int get selectedRow => _selectedRow;
 
   void changeSelectedChannel(int channel) {
     _selectedChannel = channel;
-    log("_selectedChannel    ${_selectedChannel}");
     notifyListeners();
   }
 

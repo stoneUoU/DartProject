@@ -415,7 +415,6 @@ class _MovieHeaderGrid extends StatelessWidget {
                     ),
                   ),
                   onTap: () {
-                    print("AAAAAAAAAAA");
                     HiNavigator().onJumpTo(RouteStatus.videoPlay,
                         args: {"movieId": videoModel.id});
                   },

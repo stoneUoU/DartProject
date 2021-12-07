@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:FlutterProject/base/config/YLZMacros.dart';
 import 'package:FlutterProject/base/config/YLZStyle.dart';
@@ -11,17 +10,23 @@ import 'package:FlutterProject/logic/mguo/home/model/mg_video_decode_model.dart'
 import 'package:FlutterProject/logic/mguo/home/model/mg_video_detail_model.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_video_parse_model.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_video_player_model.dart';
-import 'package:FlutterProject/logic/mguo/home/view/mg_video_widget.dart';
-import 'package:FlutterProject/logic/mguo/topics/model/m_g_ad_models.dart';
+import 'package:FlutterProject/logic/mguo/home/view/videoPlayer/mg_video_channel_widget.dart';
+import 'package:FlutterProject/logic/mguo/topics/model/MGAdModels.dart';
 import 'package:FlutterProject/net/dao/mguo/mg_video_dao.dart';
 import 'package:FlutterProject/net/db/hi_cache.dart';
 import 'package:FlutterProject/provider/MGVideoDetailProvider.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:dio/dio.dart';
+import 'package:fijkplayer/fijkplayer.dart';
+import 'package:fijkplayer_skin/fijkplayer_skin.dart';
+import 'package:fijkplayer_skin/schema.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:rsa_util/rsa_util.dart';
+
+typedef void MGVideoParseModelHandle(MGVideoParseResModel model);
 
 class MGHomePlayerPage extends StatefulWidget {
   final int movieId;
@@ -39,26 +44,71 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
   final publicKeyString =
       "-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC3jrJKw+DB2MO7KRTFdLeaciv+3SDNDSnuc3KtUuIwPuVwrbGnVmgRej6VuRwNA4Qx/CvVaKly1Wijsb/HdP5WXFeAGHzO2JuRrTOYrAlm/H09oAIoQk7KMAEfM9sM5h2jDiZc+GJ7h5f8VBitH1b0RjvTKufhk9AHU/dEyI2YNQIDAQAB\n-----END PUBLIC KEY-----";
   bool adShow = true;
+
+  MGVideoDetailModel videoDetailModel = MGVideoDetailModel();
+
   //选中的渠道：
   int selectedChannel = 0;
+
   //选中的集数：
   int selectedRow = 0;
+  final FijkPlayer player = FijkPlayer();
+  ShowConfigAbs vCfg = PlayerShowConfig();
+
+  Map<String, List<Map<String, dynamic>>> videoList = {
+    "video": [
+      {
+        "name": "天空资源",
+        "list": [
+          {
+            "url": "https://static.smartisanos.cn/common/video/t1-ui.mp4",
+            "name": "锤子UI-1",
+          },
+          {
+            "url": "https://static.smartisanos.cn/common/video/video-jgpro.mp4",
+            "name": "锤子UI-2",
+          },
+          {
+            "url": "https://v-cdn.zjol.com.cn/280443.mp4",
+            "name": "其他",
+          },
+        ]
+      },
+      {
+        "name": "天空资源",
+        "list": [
+          {
+            "url": "https://n1.szjal.cn/20210428/lsNZ6QAL/index.m3u8",
+            "name": "综艺",
+          },
+          {
+            "url": "https://static.smartisanos.cn/common/video/t1-ui.mp4",
+            "name": "锤子1",
+          },
+          {
+            "url": "https://static.smartisanos.cn/common/video/video-jgpro.mp4",
+            "name": "锤子2",
+          }
+        ]
+      },
+    ]
+  };
 
   @override
   void initState() {
     // TODO: implement initState
     _futureBuilderFuture = _start();
-    // _decodeVideo(totalVideolist[1].from ?? "",
-    //     totalVideolist[1].videoModel?[0].playerUrl ?? "");
   }
 
   @override
   void dispose() {
     super.dispose();
+    player.release();
   }
 
   @override
   Widget build(BuildContext context) {
+    selectedChannel = context.watch<MGVideoDetailProvider>().selectedChannel;
     return Scaffold(
         body: FutureBuilder(
             future: _futureBuilderFuture,
@@ -68,28 +118,106 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
                 MGVideoDetailModel model = dataList[0] as MGVideoDetailModel;
                 MGAdModels adModels = dataList[1] as MGAdModels;
                 MGAdModel adModel = adModels.data ?? MGAdModel();
-                //进行数据处理：
-                MGVideoDetailModel modelAfterDeal = dealRecord(model);
-                return _buildWidget(modelAfterDeal, adModel);
+                return _buildWidget(model, adModel);
               } else {
                 return _buildSpinKitFadingCircle();
               }
             }));
   }
 
+  /**
+   * 播放视频：
+   */
+  _fireVideo(String url) async {
+    if (player.value.state == FijkState.completed) {
+      await player.stop();
+    }
+    await player.reset().then((_) async {
+      player.setDataSource(url, autoPlay: true);
+    });
+  }
+
+  /**
+   * 具体的播放视频的URL
+   * */
+  _fireVideoModel() {
+    MGFatherVideoPlayerModel channelModel = MGFatherVideoPlayerModel();
+    this.videoDetailModel.totalVideolist.forEach((element) {
+      MGFatherVideoPlayerModel eleMent = element as MGFatherVideoPlayerModel;
+      if (eleMent.channelChecked) {
+        channelModel = eleMent;
+      }
+    });
+    MGVideoPlayerModel playerModel = MGVideoPlayerModel();
+    for (int i = 0; i < (channelModel.videoModel?.length ?? 0); i++) {
+      if (i == selectedRow) {
+        playerModel = channelModel.videoModel![i];
+      }
+    }
+    _fireVideoParse(channelModel.from ?? "", playerModel.playerUrl ?? "",
+        (parseModel) {
+      print("000000000000000000000000000");
+      _fireVideo(parseModel.url ?? "");
+    });
+  }
+
+  FijkView _buildFijkView(double width, double height) {
+    return FijkView(
+      width: width,
+      height: height,
+      color: Colors.black,
+      fit: FijkFit.cover,
+      player: player,
+      panelBuilder: (
+        FijkPlayer player,
+        FijkData data,
+        BuildContext context,
+        Size viewSize,
+        Rect texturePos,
+      ) {
+        /// 使用自定义的布局
+        return CustomFijkPanel(
+          player: player,
+          viewSize: viewSize,
+          texturePos: texturePos,
+          pageContent: context,
+          // 标题 当前页面顶部的标题部分
+          playerTitle: "标题",
+          // 当前视频改变钩子
+          onChangeVideo: onChangeVideo,
+          // 当前视频源tabIndex
+          curTabIdx: selectedChannel,
+          // 当前视频源activeIndex
+          curActiveIdx: selectedRow,
+          // 显示的配置
+          showConfig: vCfg,
+          // json格式化后的视频数据
+          videoFormat: VideoSourceFormat.fromJson(videoList),
+        );
+      },
+    );
+  }
+
+  // 钩子函数，用于更新状态
+  void onChangeVideo(int curTabIdx, int curActiveIdx) {
+    this.setState(() {
+      // _curTabIdx = curTabIdx;
+      // _curActiveIdx = curActiveIdx;
+    });
+  }
+
   Widget _buildWidget(MGVideoDetailModel model, MGAdModel adModel) {
+    double aspectRatio = 16 / 9;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double playerHeight = screenWidth / aspectRatio;
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            child: MGVideoWidget(
-              "https://assets.mixkit.co/videos/preview/mixkit-daytime-city-traffic-aerial-view-56-large.mp4",
-              cover:
-                  "https://pic.ntimg.cn/BannerPic/20210521/design/20210521194418.jpg",
-              overlayUI: videoAppBar(),
-              barrageUI: Container(),
-            ),
+            child: _buildFijkView(screenWidth, playerHeight),
+            width: screenWidth,
+            height: playerHeight,
           ),
           Container(
               height: ScreenH(context) -
@@ -111,6 +239,9 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
     );
   }
 
+  /**
+   * 猜你喜欢
+   * */
   Container _buildLovesListWidget(MGVideoDetailModel model) {
     return Container(
       padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -183,11 +314,14 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
     );
   }
 
+  /**
+   * 播放列表:视频集数
+   * */
   Container _buildPlayerListWidget(MGVideoDetailModel model) {
     MGFatherVideoPlayerModel channelModel = MGFatherVideoPlayerModel();
     model.totalVideolist.forEach((element) {
       MGFatherVideoPlayerModel eleMent = element as MGFatherVideoPlayerModel;
-      if (eleMent.selected) {
+      if (eleMent.channelChecked) {
         channelModel = eleMent;
       }
     });
@@ -225,24 +359,7 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  InkWell(
-                    child: Text(
-                      "更新至${channelModel.videoModel?.length ?? 0}集",
-                      style: TextStyle(
-                          color: Color(YLZColorTitleTwo), fontSize: 14),
-                    ),
-                    onTap: () {
-                      log("更新至n集");
-                    },
-                  ),
-                  Image.asset(
-                    'assets/images/ylz_arrow_right.png',
-                    fit: BoxFit.fill,
-                  ),
-                ],
-              )
+              _buildUpdateWidget(model, channelModel),
             ],
           ),
           Container(
@@ -262,7 +379,7 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
                         width: (model.isMovie ?? false) ? 96 : 44,
                         height: 44,
                         decoration: new BoxDecoration(
-                            color: Color(playerModel.selected!
+                            color: Color(playerModel.checked!
                                 ? MGColorMainViewTwo
                                 : MGColorMainView),
                             border: new Border.all(
@@ -276,7 +393,7 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
                               ? "${playerModel.sectionName}"
                               : "${index + 1}",
                           style: TextStyle(
-                              color: playerModel.selected!
+                              color: playerModel.checked!
                                   ? Colors.white
                                   : Color(YLZColorTitleThree),
                               fontSize: 14),
@@ -302,9 +419,39 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
     );
   }
 
+  /**
+   * 播放列表右侧的更新集数视图：
+   * */
+
+  Container _buildUpdateWidget(
+      MGVideoDetailModel model, MGFatherVideoPlayerModel channelModel) {
+    if (model.isMovie ?? false) {
+      return Container();
+    }
+    return Container(
+      child: Row(
+        children: [
+          InkWell(
+            child: Text(
+              "更新至${channelModel.videoModel?.length ?? 0}集",
+              style: TextStyle(color: Color(YLZColorTitleTwo), fontSize: 14),
+            ),
+            onTap: () {},
+          ),
+          Image.asset(
+            'assets/images/ylz_arrow_right.png',
+            fit: BoxFit.fill,
+          ),
+        ],
+      ),
+    );
+  }
+
+  /**
+   * 播放页广告
+   * */
   Container _buildAdsWidget(MGAdModel adModel) {
     if (adShow) {
-      print("adModel.img__________${adModel}");
       return Container(
         padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
         child: Stack(
@@ -360,6 +507,9 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
     }
   }
 
+  /**
+   * 播放页操作栏：包括求片反馈、收藏、下载、分享
+   * */
   Container _buildToolsWidget() {
     return Container(
         padding: EdgeInsets.fromLTRB(16, 24, 16, 24),
@@ -430,14 +580,18 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
         ));
   }
 
+  /**
+   * 播放页操作栏：标题栏
+   * */
   Container _buildTitleWidget(MGVideoDetailModel model) {
     MGFatherVideoPlayerModel channelModel = MGFatherVideoPlayerModel();
     model.totalVideolist.forEach((element) {
       MGFatherVideoPlayerModel eleMent = element as MGFatherVideoPlayerModel;
-      if (eleMent.selected) {
+      if (eleMent.channelChecked) {
         channelModel = eleMent;
       }
     });
+    // print("222___${json.encode(model.totalVideolist)}");
     return Container(
       margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
       child: Stack(
@@ -517,6 +671,9 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
     );
   }
 
+  /**
+   * 播放页操作栏：视频简介
+   * */
   Container _buildIntroAlert(MGVideoDetailModel model) {
     return Container(
       color: Colors.green,
@@ -524,68 +681,21 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
     );
   }
 
-  Container _buildChannelAlert(MGVideoDetailModel model) {
-    return Container(
-      color: Color(MGColorMainViewThree),
-      height: 44 * 4 + TabbarSafeBottomM(context),
-      child: Column(
-        children: [
-          Container(
-              height: 44,
-              alignment: Alignment.center,
-              child: Text(
-                "选择播放渠道",
-                style:
-                    TextStyle(color: Color(YLZColorTitleThree), fontSize: 16),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              )),
-          Container(
-            height: 44 * 3,
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemBuilder: (context, index) {
-                MGFatherVideoPlayerModel channelModel =
-                    model.totalVideolist[index];
-                channelModel.selected = index ==
-                    context.watch<MGVideoDetailProvider>().selectedChannel;
-                return InkWell(
-                  child: Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.center,
-                        height: 43,
-                        child: Text(
-                          "${channelModel.show}",
-                          style: TextStyle(
-                              color: channelModel.selected
-                                  ? Colors.red
-                                  : Colors.white,
-                              fontSize: 14),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      Container(height: 1.0, color: Color(MGColorMainViewTwo))
-                    ],
-                  ),
-                  onTap: () {
-                    setState(() {
-                      selectedChannel = index;
-                      selectedRow = 0;
-                    });
-                    context
-                        .read<MGVideoDetailProvider>()
-                        .changeSelectedChannel(index);
-                  },
-                );
-              },
-              itemCount: model.totalVideolist.length,
-            ),
-          )
-        ],
-      ),
-    );
+  /**
+   * 播放页操作栏：播放线路
+   * */
+  MGVideoChannelWidget _buildChannelAlert(MGVideoDetailModel model) {
+    return MGVideoChannelWidget(
+        model: model,
+        channelClickListener: (int index) {
+          Future.delayed(Duration(milliseconds: 500), () {
+            setState(() {
+              selectedChannel = index;
+              selectedRow = 0;
+              _fireVideoModel();
+            });
+          });
+        });
   }
 
   ///视频详情页appBar
@@ -615,16 +725,31 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
     );
   }
 
-  MGVideoDetailModel dealRecord(MGVideoDetailModel model) {
+  /**
+   * 网络请求：播放详情数据 + 广告
+   * */
+  Future _start() async {
+    MGVideoDetailModel detailModel =
+        await MGHomeVideoDao.videoInfo(widget.movieId);
+    MGAdModels adModel = await MGHomeVideoDao.videoAds("ios_video_ad");
+    //进行数据处理：
+    MGVideoDetailModel modelAfterDeal = _dealRecord(detailModel);
+    this.videoDetailModel = modelAfterDeal;
+    _fireVideoModel();
+    return [modelAfterDeal, adModel];
+  }
+
+  /**
+   * 播放数据的处理
+   * */
+  MGVideoDetailModel _dealRecord(MGVideoDetailModel model) {
     List<MGFatherVideoPlayerModel> totalVideolist = [];
     String exampleString = model.playlist ?? "";
     List<String> stringList = [];
     stringList = exampleString.split("\$\$\$");
-
     for (int index = 0; index < model.playerInfo!.length; index++) {
       String sectionUrlString = stringList[index];
       List<String> sectionUrlStringList = sectionUrlString.split("#");
-
       List<String> sectionUrlNewStringList = [];
       for (int a = 0; a < sectionUrlStringList.length; a++) {
         String str = sectionUrlStringList[a];
@@ -646,7 +771,7 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
           "isMovie": model.isMovie,
           "show": playerInfoModel.show,
           "videoId": widget.movieId,
-          "selected": j == selectedRow
+          "checked": j == selectedRow
         };
         sectionUrlModelList.add(endUrlMap);
       }
@@ -658,25 +783,34 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
       };
       MGFatherVideoPlayerModel channelModel =
           MGFatherVideoPlayerModel.fromJson(endUrlMap);
-      channelModel.selected = index == selectedChannel;
+      channelModel.channelChecked = index == selectedChannel;
       totalVideolist.add(channelModel);
     }
     model.totalVideolist = totalVideolist;
     return model;
   }
 
-  Future _start() async {
-    MGVideoDetailModel detailModel =
-        await MGHomeVideoDao.videoInfo(widget.movieId);
-    MGAdModels adModel = await MGHomeVideoDao.videoAds("ios_video_ad");
-    return [detailModel, adModel];
-  }
-
-  Future _decodeVideo(String playerCode, String videoString) async {
+  /**
+   * APP解析数据
+   * 1.parseUrl 为空说明不需要解析，直接播放
+   * 2.parseUrl 不为空则需要Rsa解密parseUrl，然后进行播放地址解析
+   * */
+  Future _fireVideoParse(String playerCode, String videoString,
+      MGVideoParseModelHandle handle) async {
     MGVideoDecodeModel decodeModel =
         await MGHomeVideoDao.videoDecode(playerCode);
-    String parseUrl = await _loadData(decodeModel.data ?? "");
-    _parseUrl(parseUrl, videoString);
+    if (decodeModel.data?.length == 0) {
+      print("此视频不需要解析___________${videoString}");
+      MGVideoParseResModel model = MGVideoParseResModel();
+      model.setUrl(videoString);
+      model.setCookie("");
+      if (handle != null) {
+        handle(model);
+      }
+    } else {
+      String parseUrl = await _loadData(decodeModel.data ?? "");
+      _parseUrl(parseUrl, videoString, handle);
+    }
   }
 
   Future<String> _loadData(String message) async {
@@ -685,15 +819,14 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
     return rsaResult;
   }
 
-  Future _parseUrl(String parseUrl, String videoString) async {
+  Future _parseUrl(String parseUrl, String videoString,
+      MGVideoParseModelHandle handle) async {
     //获取毫秒级时间戳：
     String timeStampString =
         new DateTime.now().millisecondsSinceEpoch.toString();
     HiCache.getInstance().setString("milliseconds", timeStampString);
-
     String saltString = "043730226d9ada98";
     String secretString = "${saltString}${timeStampString}";
-
     Map<String, String> headers = {
       "AUTHORIZE": EncryptUtil.encodeMd5(secretString)
     };
@@ -704,10 +837,26 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
     };
     var response =
         await dio.get("${parseUrl}&url=${data["url"]}&tm=${data["tm"]}");
-    MGVideoParseModel parseModel =
-        MGVideoParseModel.fromJson(json.decode(response.data));
-    //最终获取到了视频数据：
-    log("url___________${parseModel.url}");
+    MGVideoParseModel parseModel = MGVideoParseModel.fromJson(response.data);
+    print("parseModel_____${json.encode(parseModel)}");
+    bool code = parseModel.code == "200" || parseModel.code == "1";
+    MGVideoParseResModel model = MGVideoParseResModel();
+    print("此视频需要解析___________${parseModel.url}");
+    if (code) {
+      model.setUrl(parseModel.url ?? "");
+      model.setUserAgent("");
+      model.setCookie("");
+      if (handle != null) {
+        handle(model);
+      }
+    } else {
+      Fluttertoast.showToast(msg: "解析失败", gravity: ToastGravity.CENTER);
+      model.setUrl(videoString);
+      model.setCookie("");
+      if (handle != null) {
+        handle(model);
+      }
+    }
   }
 
   Center _buildSpinKitFadingCircle() {
@@ -721,4 +870,26 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
       },
     ));
   }
+}
+
+// 定制UI配置项
+class PlayerShowConfig implements ShowConfigAbs {
+  @override
+  bool drawerBtn = true;
+  @override
+  bool nextBtn = true;
+  @override
+  bool speedBtn = true;
+  @override
+  bool topBar = true;
+  @override
+  bool lockBtn = true;
+  @override
+  bool autoNext = true;
+  @override
+  bool bottomPro = true;
+  @override
+  bool stateAuto = true;
+  @override
+  bool isAutoPlay = false;
 }

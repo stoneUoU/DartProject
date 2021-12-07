@@ -10,11 +10,14 @@ class MGFatherVideoPlayerModel {
   String? _show;
   String? _icon;
   String? _from;
-  bool selected = false;
+  bool channelChecked = false;
 
   List<MGVideoPlayerModel>? get videoModel => _videoModel;
+
   String? get show => _show;
+
   String? get icon => _icon;
+
   String? get from => _from;
 
   MGFatherVideoPlayerModel(
@@ -48,6 +51,7 @@ class MGFatherVideoPlayerModel {
     map["show"] = _show;
     map["icon"] = _icon;
     map["from"] = _from;
+    map["channelChecked"] = channelChecked;
     return map;
   }
 }

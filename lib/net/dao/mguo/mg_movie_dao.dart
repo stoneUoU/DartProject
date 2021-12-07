@@ -1,6 +1,6 @@
 import 'package:FlutterProject/logic/mguo/home/model/mg_ad_model.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_video_detail_model.dart';
-import 'package:FlutterProject/logic/mguo/topics/model/m_g_ad_models.dart';
+import 'package:FlutterProject/logic/mguo/topics/model/MGAdModels.dart';
 import 'package:FlutterProject/net/http/core/hi_net.dart';
 import 'package:FlutterProject/net/http/request/mguo/mg_movie_request.dart';
 
