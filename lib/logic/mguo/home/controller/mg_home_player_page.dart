@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:FlutterProject/base/config/YLZMacros.dart';
 import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/base/view/YLZNormalView.dart';
+import 'package:FlutterProject/logic/mguo/home/Configs/mg_fijkplayer_schema.dart';
+import 'package:FlutterProject/logic/mguo/home/Configs/mg_fijkplayer_skin.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_ad_model.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_father_video_player_model.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_home_model.dart';
@@ -18,8 +20,6 @@ import 'package:FlutterProject/provider/MGVideoDetailProvider.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:fijkplayer/fijkplayer.dart';
-import 'package:fijkplayer_skin/fijkplayer_skin.dart';
-import 'package:fijkplayer_skin/schema.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -156,7 +156,6 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
     }
     _fireVideoParse(channelModel.from ?? "", playerModel.playerUrl ?? "",
         (parseModel) {
-      print("000000000000000000000000000");
       _fireVideo(parseModel.url ?? "");
     });
   }
@@ -799,6 +798,7 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
       MGVideoParseModelHandle handle) async {
     MGVideoDecodeModel decodeModel =
         await MGHomeVideoDao.videoDecode(playerCode);
+    print("decodeModel.data___________${decodeModel.data}");
     if (decodeModel.data?.length == 0) {
       print("此视频不需要解析___________${videoString}");
       MGVideoParseResModel model = MGVideoParseResModel();
@@ -835,9 +835,13 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
       "url": videoString,
       "tm": HiCache.getInstance().get("milliseconds")
     };
+    print("parseUrl_____${parseUrl}");
+    String ParseUrlString =
+        "${parseUrl}".contains("?") ? "${parseUrl}" : "${parseUrl}?";
     var response =
-        await dio.get("${parseUrl}&url=${data["url"]}&tm=${data["tm"]}");
+        await dio.get("${ParseUrlString}&url=${data["url"]}&tm=${data["tm"]}");
     MGVideoParseModel parseModel = MGVideoParseModel.fromJson(response.data);
+    print("response.data_____${response.data}");
     print("parseModel_____${json.encode(parseModel)}");
     bool code = parseModel.code == "200" || parseModel.code == "1";
     MGVideoParseResModel model = MGVideoParseResModel();

@@ -487,9 +487,9 @@ class _TvHeaderGrid extends StatelessWidget {
               child: MgHomeNormalCell(
                   videoModel: videoModel, cellWidth: cellWidth),
               onTap: () {
-                HiNavigator().onJumpTo(RouteStatus.register);
-                // HiNavigator().onJumpTo(RouteStatus.videoPlay,
-                //     args: {"movieId": videoModel?.id ?? 0});
+                // HiNavigator().onJumpTo(RouteStatus.register);
+                HiNavigator().onJumpTo(RouteStatus.videoPlay,
+                    args: {"movieId": videoModel?.id ?? 0});
                 // HiNavigator()
                 //     .onJumpTo(RouteStatus.videoPlay, args: {"id": 42484});
               });
