@@ -128,12 +128,13 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
   /**
    * 播放视频：
    */
-  _fireVideo(String url) async {
+  _fireVideo(MGVideoParseResModel model) async {
+    print("model_____${json.encode(model)}");
     if (player.value.state == FijkState.completed) {
       await player.stop();
     }
     await player.reset().then((_) async {
-      player.setDataSource(url, autoPlay: true);
+      player.setDataSource(model.url ?? "", autoPlay: true);
     });
   }
 
@@ -156,7 +157,7 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
     }
     _fireVideoParse(channelModel.from ?? "", playerModel.playerUrl ?? "",
         (parseModel) {
-      _fireVideo(parseModel.url ?? "");
+      _fireVideo(parseModel);
     });
   }
 
@@ -798,7 +799,6 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
       MGVideoParseModelHandle handle) async {
     MGVideoDecodeModel decodeModel =
         await MGHomeVideoDao.videoDecode(playerCode);
-    print("decodeModel.data___________${decodeModel.data}");
     if (decodeModel.data?.length == 0) {
       print("此视频不需要解析___________${videoString}");
       MGVideoParseResModel model = MGVideoParseResModel();
@@ -841,15 +841,18 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
     var response =
         await dio.get("${ParseUrlString}&url=${data["url"]}&tm=${data["tm"]}");
     MGVideoParseModel parseModel = MGVideoParseModel.fromJson(response.data);
-    print("response.data_____${response.data}");
     print("parseModel_____${json.encode(parseModel)}");
     bool code = parseModel.code == "200" || parseModel.code == "1";
+    bool status = parseModel.status == "200";
     MGVideoParseResModel model = MGVideoParseResModel();
     print("此视频需要解析___________${parseModel.url}");
-    if (code) {
+    if (code || status) {
+      // __puus=d9bbd0ce4beb17cf0e8ab60fecffd9ebAASFJKosjNAtXxc6knkmwBTqzelqKJlLZ6PsgoKotdxp5DSd6N1jq5UQR+/X5hOobrgmlKOlDag7sfL+LM8SD3/Ck6fpHA46FG3Rj8aVjxI67CPD9hQDnRx6ONVOyUWJ9TkRk2xecHw9MAmnrxAMsknq;
       model.setUrl(parseModel.url ?? "");
       model.setUserAgent("");
-      model.setCookie("");
+      model.setCookie(parseModel.cookies != null
+          ? fomatCookieString(parseModel.cookies!)
+          : "");
       if (handle != null) {
         handle(model);
       }
@@ -861,6 +864,15 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
         handle(model);
       }
     }
+  }
+
+  String fomatCookieString(MGVideoCookies cookies) {
+    Map map = cookies.toJson();
+    String cookieString = "";
+    map.forEach((key, value) {
+      cookieString = "${key}=${value};";
+    });
+    return cookieString;
   }
 
   Center _buildSpinKitFadingCircle() {
