@@ -1,7 +1,7 @@
 import 'package:FlutterProject/base/config/YLZMacros.dart';
 import 'package:FlutterProject/base/config/YLZStyle.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_father_video_player_model.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_video_detail_model.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGVideoDetailModel.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGVideoPlayerFatherModel.dart';
 import 'package:FlutterProject/provider/MGVideoDetailProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,20 +9,23 @@ import 'package:provider/provider.dart';
 typedef void MGVideoChannelWidgetClickListener(int index);
 
 class MGVideoChannelWidget extends StatelessWidget {
+  final int videoId;
   final MGVideoDetailModel model;
-
   final MGVideoChannelWidgetClickListener channelClickListener;
 
   const MGVideoChannelWidget(
-      {Key? key, required this.model, required this.channelClickListener})
+      {Key? key,
+      required this.videoId,
+      required this.model,
+      required this.channelClickListener})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     for (int i = 0; i < model.totalVideolist.length; i++) {
-      MGFatherVideoPlayerModel channelModel = model.totalVideolist[i];
-      channelModel.channelChecked =
-          i == context.watch<MGVideoDetailProvider>().selectedChannel;
+      MGVideoPlayerFatherModel channelModel = model.totalVideolist[i];
+      channelModel.channelChecked = i ==
+          context.watch<MGVideoDetailProvider>().selectedChannel(this.videoId);
     }
     return Container(
       color: Color(MGColorMainViewThree),
@@ -44,7 +47,7 @@ class MGVideoChannelWidget extends StatelessWidget {
             child: ListView.builder(
               scrollDirection: Axis.vertical,
               itemBuilder: (context, index) {
-                MGFatherVideoPlayerModel channelModel =
+                MGVideoPlayerFatherModel channelModel =
                     model.totalVideolist[index];
                 return InkWell(
                   child: Column(
@@ -67,9 +70,15 @@ class MGVideoChannelWidget extends StatelessWidget {
                     ],
                   ),
                   onTap: () {
+                    if (channelModel.channelChecked) {
+                      return;
+                    }
                     context
                         .read<MGVideoDetailProvider>()
-                        .changeSelectedChannel(index);
+                        .changeSelectedChannel(this.videoId, index);
+                    context
+                        .read<MGVideoDetailProvider>()
+                        .changeSelectedRow(this.videoId, 0);
                     if (this.channelClickListener != null) {
                       this.channelClickListener(index);
                     }

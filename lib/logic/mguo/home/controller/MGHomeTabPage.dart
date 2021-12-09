@@ -1,23 +1,23 @@
 import 'package:FlutterProject/base/config/YLZMacros.dart';
 import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/base/navigator/HiNavigator.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_home_model.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_home_nav_model.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_home_slide_model.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_marquee_model.dart';
-import 'package:FlutterProject/logic/mguo/home/view/cell/mg_home_square_cell.dart';
-import 'package:FlutterProject/logic/mguo/home/view/mg_footer_ad_widget.dart';
-import 'package:FlutterProject/logic/mguo/home/view/mg_footer_button_widget.dart';
-import 'package:FlutterProject/logic/mguo/home/view/mg_footer_feedback_widget.dart';
-import 'package:FlutterProject/logic/mguo/home/view/mg_home_header_widget.dart';
-import 'package:FlutterProject/logic/mguo/home/view/mg_home_more_column_header_widget.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGHomeModel.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGHomeNavModel.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGHomeSlideModel.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGMarqueeModel.dart';
+import 'package:FlutterProject/logic/mguo/home/view/cell/MGHomeSquareCell.dart';
+import 'package:FlutterProject/logic/mguo/home/view/home/MGHomeFooterAdWidget.dart';
+import 'package:FlutterProject/logic/mguo/home/view/home/MGHomeFooterButtonWidget.dart';
+import 'package:FlutterProject/logic/mguo/home/view/home/MGHomeFooterFeedbackWidget.dart';
+import 'package:FlutterProject/logic/mguo/home/view/home/MGHomeHeaderWidget.dart';
+import 'package:FlutterProject/logic/mguo/home/view/home/MGHomeMoreColumnHeaderWidget.dart';
 import 'package:FlutterProject/net/dao/mguo/mg_home_dao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
-import '../view/cell/mg_home_normal_cell.dart';
+import '../view/cell/MGHomeNormalCell.dart';
 
 class MGHomeTabPage extends StatefulWidget {
   final MGHomeNavModel model;
@@ -228,7 +228,7 @@ class _BannerHeaderGrid extends StatelessWidget {
                         MGSlideModel sildeModel = homeModel.slide![index];
                         // HiNavigator().onJumpTo(RouteStatus.scan);
                         HiNavigator().onJumpTo(RouteStatus.videoPlay,
-                            args: {"movieId": sildeModel.id});
+                            args: {"videoId": sildeModel.id});
                         // args: {"id": 42484});
                       },
                       autoplay: true,
@@ -416,7 +416,7 @@ class _MovieHeaderGrid extends StatelessWidget {
                   ),
                   onTap: () {
                     HiNavigator().onJumpTo(RouteStatus.videoPlay,
-                        args: {"movieId": videoModel.id});
+                        args: {"videoId": videoModel.id});
                   },
                 );
               },
@@ -484,12 +484,12 @@ class _TvHeaderGrid extends StatelessWidget {
         (context, index) {
           VideoModel? videoModel = homeModel.tv?.data?[index];
           return InkWell(
-              child: MgHomeNormalCell(
+              child: MGHomeNormalCell(
                   videoModel: videoModel, cellWidth: cellWidth),
               onTap: () {
                 // HiNavigator().onJumpTo(RouteStatus.register);
                 HiNavigator().onJumpTo(RouteStatus.videoPlay,
-                    args: {"movieId": videoModel?.id ?? 0});
+                    args: {"videoId": videoModel?.id ?? 0});
                 // HiNavigator()
                 //     .onJumpTo(RouteStatus.videoPlay, args: {"id": 42484});
               });
@@ -554,7 +554,7 @@ class _VideoHeaderGrid extends StatelessWidget {
         delegate: SliverChildBuilderDelegate(
           (context, index) {
             VideoModel? videoModel = video.data?[index];
-            return MgHomeNormalCell(
+            return MGHomeNormalCell(
                 videoModel: videoModel, cellWidth: cellWidth);
           },
           childCount: video.data?.length ?? 0,
@@ -574,11 +574,11 @@ class _VideoHeaderGrid extends StatelessWidget {
           (context, index) {
             VideoModel? videoModel = video.data?[index];
             return InkWell(
-                child: MgHomeSquareCell(
+                child: MGHomeSquareCell(
                     videoModel: videoModel, cellWidth: cellWidth),
                 onTap: () {
                   HiNavigator().onJumpTo(RouteStatus.videoPlay,
-                      args: {"movieId": videoModel?.id ?? 0});
+                      args: {"videoId": videoModel?.id ?? 0});
                 });
           },
           childCount: video.data?.length ?? 0,
@@ -620,7 +620,10 @@ class _MGFooterGrid extends StatelessWidget {
             return Container(
               // color: Colors.yellow,
               child: Column(
-                children: [MGFooterButtonWidget(), MGFooterFeedBackWidget()],
+                children: [
+                  MGHomeFooterButtonWidget(),
+                  MGHomeFooterFeedBackWidget()
+                ],
               ),
             );
           },
@@ -644,8 +647,8 @@ class _MGFooterGrid extends StatelessWidget {
                 // color: Colors.yellow,
                 child: Column(
                   children: [
-                    MGFooterButtonWidget(),
-                    MGFooterAdWidget(
+                    MGHomeFooterButtonWidget(),
+                    MGHomeFooterAdWidget(
                       adModel: video.ad ?? AdModel(),
                     )
                   ],
@@ -670,7 +673,7 @@ class _MGFooterGrid extends StatelessWidget {
               return Container(
                 // color: Colors.yellow,
                 child: Column(
-                  children: [MGFooterButtonWidget()],
+                  children: [MGHomeFooterButtonWidget()],
                 ),
               );
             },
@@ -750,11 +753,11 @@ class _MoreColumnHeaderGridState extends State<_MoreColumnHeaderGrid> {
         (context, index) {
           VideoModel videoModel = list[index];
           return InkWell(
-              child: MgHomeSquareCell(
+              child: MGHomeSquareCell(
                   videoModel: videoModel, cellWidth: cellWidth),
               onTap: () {
                 HiNavigator().onJumpTo(RouteStatus.videoPlay,
-                    args: {"movieId": videoModel.id});
+                    args: {"videoId": videoModel.id});
               });
         },
         childCount: list.length,

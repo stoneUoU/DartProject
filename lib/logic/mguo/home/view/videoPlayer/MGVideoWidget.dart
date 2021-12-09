@@ -1,13 +1,13 @@
-import 'package:chewie/chewie.dart' hide MaterialControls;
 import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/base/view/YLZNormalView.dart';
+import 'package:chewie/chewie.dart' hide MaterialControls;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import "package:orientation/orientation.dart";
 import 'package:video_player/video_player.dart';
 
-import 'mg_video_controls.dart';
+import 'MGVideoControls.dart';
 
 ///播放器组件
 class MGVideoWidget extends StatefulWidget {

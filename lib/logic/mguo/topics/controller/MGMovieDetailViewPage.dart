@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:FlutterProject/base/config/YLZMacros.dart';
 import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/base/navigator/HiNavigator.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_home_model.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_video_detail_model.dart';
-import 'package:FlutterProject/logic/mguo/login/model/mg_login_model.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGHomeModel.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGVideoDetailModel.dart';
+import 'package:FlutterProject/logic/mguo/login/model/MGLoginModel.dart';
 import 'package:FlutterProject/logic/mguo/topics/model/MGAdModels.dart';
 import 'package:FlutterProject/logic/mguo/topics/model/MGCommentModel.dart';
 import 'package:FlutterProject/net/dao/mguo/mg_movie_dao.dart';
@@ -21,9 +21,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class MGMovieDetailViewPage extends StatefulWidget {
-  int movieId;
+  int videoId;
 
-  MGMovieDetailViewPage({Key? key, required this.movieId}) : super(key: key);
+  MGMovieDetailViewPage({Key? key, required this.videoId}) : super(key: key);
 
   @override
   _MGMovieDetailViewPageState createState() => _MGMovieDetailViewPageState();
@@ -138,7 +138,7 @@ class _MGMovieDetailViewPageState extends State<MGMovieDetailViewPage> {
           YLZMovieTopInfoWidget(
             detailModel: detailModel,
             context: context,
-            movieId: widget.movieId,
+            videoId: widget.videoId,
           ),
           YLZMovieFansWidget(),
           Container(
@@ -291,9 +291,9 @@ class _MGMovieDetailViewPageState extends State<MGMovieDetailViewPage> {
     MGLoginModel model = MGLoginModel.fromJson(map);
 
     MGVideoDetailModel detailModel =
-        await MGMovieDao.videoInfo(widget.movieId, model.token ?? "");
+        await MGMovieDao.videoInfo(widget.videoId, model.token ?? "");
     MGAdModels adModel = await MGMovieDao.videoAds("ios_video_ad");
-    var result = await MGMovieDao.videoCommentList(widget.movieId, pageIndex);
+    var result = await MGMovieDao.videoCommentList(widget.videoId, pageIndex);
     List listRs = result["list"];
     if (!loadMore) {
       commentModels.clear();
@@ -552,12 +552,12 @@ class YLZMovieTopInfoWidget extends StatelessWidget {
       {Key? key,
       required this.detailModel,
       required this.context,
-      required this.movieId})
+      required this.videoId})
       : super(key: key);
 
   final MGVideoDetailModel detailModel;
   final BuildContext context;
-  final int movieId;
+  final int videoId;
 
   @override
   Widget build(BuildContext context) {
@@ -731,7 +731,7 @@ class YLZMovieTopInfoWidget extends StatelessWidget {
 
     if (!collected) {
       var result =
-          await MGMovieDao.videoAddCollect(this.movieId, model.token ?? "");
+          await MGMovieDao.videoAddCollect(this.videoId, model.token ?? "");
       if (result["code"] == 1) {
         detailModel.isCollect = true;
         context.read<MGMovieDetailProvider>().fireMovieDetail(detailModel);
@@ -744,7 +744,7 @@ class YLZMovieTopInfoWidget extends StatelessWidget {
       }
     } else {
       var result =
-          await MGMovieDao.videoCancelCollect(this.movieId, model.token ?? "");
+          await MGMovieDao.videoCancelCollect(this.videoId, model.token ?? "");
       if (result["code"] == 1) {
         detailModel.isCollect = false;
         context.read<MGMovieDetailProvider>().fireMovieDetail(detailModel);

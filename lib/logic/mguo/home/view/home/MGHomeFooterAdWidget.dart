@@ -1,12 +1,13 @@
 import 'package:FlutterProject/base/config/YLZMacros.dart';
 import 'package:FlutterProject/base/config/YLZStyle.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_home_model.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGHomeModel.dart';
 import 'package:flutter/material.dart';
 
-class MGFooterAdWidget extends StatelessWidget {
+class MGHomeFooterAdWidget extends StatelessWidget {
   final AdModel adModel;
 
-  const MGFooterAdWidget({Key? key, required this.adModel}) : super(key: key);
+  const MGHomeFooterAdWidget({Key? key, required this.adModel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

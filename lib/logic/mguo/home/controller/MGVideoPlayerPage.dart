@@ -5,14 +5,14 @@ import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/base/view/YLZNormalView.dart';
 import 'package:FlutterProject/logic/mguo/home/Configs/mg_fijkplayer_schema.dart';
 import 'package:FlutterProject/logic/mguo/home/Configs/mg_fijkplayer_skin.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_ad_model.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_father_video_player_model.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_home_model.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_video_decode_model.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_video_detail_model.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_video_parse_model.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_video_player_model.dart';
-import 'package:FlutterProject/logic/mguo/home/view/videoPlayer/mg_video_channel_widget.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGAdModel.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGHomeModel.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGVideoDecodeModel.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGVideoDetailModel.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGVideoParseModel.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGVideoPlayerFatherModel.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGVideoPlayerModel.dart';
+import 'package:FlutterProject/logic/mguo/home/view/videoPlayer/MGVideoChannelAlphaWidget.dart';
 import 'package:FlutterProject/logic/mguo/topics/model/MGAdModels.dart';
 import 'package:FlutterProject/net/dao/mguo/mg_video_dao.dart';
 import 'package:FlutterProject/net/db/hi_cache.dart';
@@ -28,19 +28,19 @@ import 'package:rsa_util/rsa_util.dart';
 
 typedef void MGVideoParseModelHandle(MGVideoParseResModel model);
 
-class MGHomePlayerPage extends StatefulWidget {
-  final int movieId;
+class MGVideoPlayerPage extends StatefulWidget {
+  final int videoId;
 
-  const MGHomePlayerPage({Key? key, required this.movieId}) : super(key: key);
+  const MGVideoPlayerPage({Key? key, required this.videoId}) : super(key: key);
 
   @override
-  _MGHomePlayerPageState createState() => _MGHomePlayerPageState();
+  _MGVideoPlayerPageState createState() => _MGVideoPlayerPageState();
 }
 
-class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
+class _MGVideoPlayerPageState extends State<MGVideoPlayerPage> {
   late Future _futureBuilderFuture;
   Dio dio = Dio();
-  List<MGFatherVideoPlayerModel> videolists = [];
+  List<MGVideoPlayerFatherModel> videolists = [];
   final publicKeyString =
       "-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC3jrJKw+DB2MO7KRTFdLeaciv+3SDNDSnuc3KtUuIwPuVwrbGnVmgRej6VuRwNA4Qx/CvVaKly1Wijsb/HdP5WXFeAGHzO2JuRrTOYrAlm/H09oAIoQk7KMAEfM9sM5h2jDiZc+GJ7h5f8VBitH1b0RjvTKufhk9AHU/dEyI2YNQIDAQAB\n-----END PUBLIC KEY-----";
   bool adShow = true;
@@ -108,7 +108,10 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
 
   @override
   Widget build(BuildContext context) {
-    selectedChannel = context.watch<MGVideoDetailProvider>().selectedChannel;
+    selectedChannel =
+        context.watch<MGVideoDetailProvider>().selectedChannel(widget.videoId);
+    selectedRow =
+        context.watch<MGVideoDetailProvider>().selectedRow(widget.videoId);
     return Scaffold(
         body: FutureBuilder(
             future: _futureBuilderFuture,
@@ -145,9 +148,9 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
    * 具体的播放视频的URL
    * */
   _fireVideoModel() {
-    MGFatherVideoPlayerModel channelModel = MGFatherVideoPlayerModel();
+    MGVideoPlayerFatherModel channelModel = MGVideoPlayerFatherModel();
     this.videoDetailModel.totalVideolist.forEach((element) {
-      MGFatherVideoPlayerModel eleMent = element as MGFatherVideoPlayerModel;
+      MGVideoPlayerFatherModel eleMent = element as MGVideoPlayerFatherModel;
       if (eleMent.channelChecked) {
         channelModel = eleMent;
       }
@@ -321,9 +324,9 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
    * 播放列表:视频集数
    * */
   Container _buildPlayerListWidget(MGVideoDetailModel model) {
-    MGFatherVideoPlayerModel channelModel = MGFatherVideoPlayerModel();
+    MGVideoPlayerFatherModel channelModel = MGVideoPlayerFatherModel();
     model.totalVideolist.forEach((element) {
-      MGFatherVideoPlayerModel eleMent = element as MGFatherVideoPlayerModel;
+      MGVideoPlayerFatherModel eleMent = element as MGVideoPlayerFatherModel;
       if (eleMent.channelChecked) {
         channelModel = eleMent;
       }
@@ -405,10 +408,19 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
                         ),
                       ),
                       onTap: () {
-                        print("${index}");
                         if (selectedRow != index) {
                           setState(() {
+                            channelModel.videoModel?.forEach((element) {
+                              element.setChecked(false);
+                            });
+                            MGVideoPlayerModel playerModel =
+                                channelModel.videoModel![index];
+                            playerModel.setChecked(true);
                             selectedRow = index;
+                            context
+                                .read<MGVideoDetailProvider>()
+                                .changeSelectedRow(widget.videoId, index);
+                            _fireVideoModel();
                           });
                         }
                       },
@@ -427,7 +439,7 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
    * */
 
   Container _buildUpdateWidget(
-      MGVideoDetailModel model, MGFatherVideoPlayerModel channelModel) {
+      MGVideoDetailModel model, MGVideoPlayerFatherModel channelModel) {
     if (model.isMovie ?? false) {
       return Container();
     }
@@ -587,9 +599,9 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
    * 播放页操作栏：标题栏
    * */
   Container _buildTitleWidget(MGVideoDetailModel model) {
-    MGFatherVideoPlayerModel channelModel = MGFatherVideoPlayerModel();
+    MGVideoPlayerFatherModel channelModel = MGVideoPlayerFatherModel();
     model.totalVideolist.forEach((element) {
-      MGFatherVideoPlayerModel eleMent = element as MGFatherVideoPlayerModel;
+      MGVideoPlayerFatherModel eleMent = element as MGVideoPlayerFatherModel;
       if (eleMent.channelChecked) {
         channelModel = eleMent;
       }
@@ -664,6 +676,9 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
                   showModalBottomSheet(
                       context: context,
                       isScrollControlled: true,
+                      backgroundColor: Colors.black12,
+                      isDismissible: true,
+                      enableDrag: false,
                       builder: (BuildContext context) {
                         return _buildChannelAlert(model);
                       });
@@ -687,8 +702,9 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
   /**
    * 播放页操作栏：播放线路
    * */
-  MGVideoChannelWidget _buildChannelAlert(MGVideoDetailModel model) {
-    return MGVideoChannelWidget(
+  MGVideoChannelAlphaWidget _buildChannelAlert(MGVideoDetailModel model) {
+    return MGVideoChannelAlphaWidget(
+        videoId: widget.videoId,
         model: model,
         channelClickListener: (int index) {
           Future.delayed(Duration(milliseconds: 500), () {
@@ -733,7 +749,7 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
    * */
   Future _start() async {
     MGVideoDetailModel detailModel =
-        await MGHomeVideoDao.videoInfo(widget.movieId);
+        await MGHomeVideoDao.videoInfo(widget.videoId);
     MGAdModels adModel = await MGHomeVideoDao.videoAds("ios_video_ad");
     //进行数据处理：
     MGVideoDetailModel modelAfterDeal = _dealRecord(detailModel);
@@ -746,7 +762,7 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
    * 播放数据的处理
    * */
   MGVideoDetailModel _dealRecord(MGVideoDetailModel model) {
-    List<MGFatherVideoPlayerModel> totalVideolist = [];
+    List<MGVideoPlayerFatherModel> totalVideolist = [];
     String exampleString = model.playlist ?? "";
     List<String> stringList = [];
     stringList = exampleString.split("\$\$\$");
@@ -773,7 +789,7 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
           "playerUrl": endUrlStringList[1].toString(),
           "isMovie": model.isMovie,
           "show": playerInfoModel.show,
-          "videoId": widget.movieId,
+          "videoId": widget.videoId,
           "checked": j == selectedRow
         };
         sectionUrlModelList.add(endUrlMap);
@@ -784,8 +800,8 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
         "from": playerInfoModel.from,
         "icon": playerInfoModel.icon
       };
-      MGFatherVideoPlayerModel channelModel =
-          MGFatherVideoPlayerModel.fromJson(endUrlMap);
+      MGVideoPlayerFatherModel channelModel =
+          MGVideoPlayerFatherModel.fromJson(endUrlMap);
       channelModel.channelChecked = index == selectedChannel;
       totalVideolist.add(channelModel);
     }

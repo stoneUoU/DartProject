@@ -1,4 +1,4 @@
-import 'package:FlutterProject/logic/mguo/home/model/mg_video_detail_model.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGVideoDetailModel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 

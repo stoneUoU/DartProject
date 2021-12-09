@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/base/navigator/HiNavigator.dart';
-import 'package:FlutterProject/logic/mguo/home/controller/mg_home_view_page.dart';
-import 'package:FlutterProject/logic/mguo/login/model/mg_login_model.dart';
+import 'package:FlutterProject/logic/mguo/home/controller/MGHomeViewPage.dart';
+import 'package:FlutterProject/logic/mguo/login/model/MGLoginModel.dart';
 import 'package:FlutterProject/logic/mguo/topics/controller/MGTopicListViewPage.dart';
 import 'package:FlutterProject/logic/mine/controller/YLZMineViewPage.dart';
 import 'package:FlutterProject/net/db/hi_cache.dart';

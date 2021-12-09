@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'model/mg_login_model.dart';
+import 'model/MGLoginModel.dart';
 
 typedef void OnCodeLoginPageListener(bool isSuccess);
 

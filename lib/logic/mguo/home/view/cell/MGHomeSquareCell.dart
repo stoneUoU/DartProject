@@ -1,9 +1,9 @@
 import 'package:FlutterProject/base/config/YLZStyle.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_home_model.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGHomeModel.dart';
 import 'package:flutter/material.dart';
 
-class MgHomeSquareCell extends StatelessWidget {
-  const MgHomeSquareCell({
+class MGHomeSquareCell extends StatelessWidget {
+  const MGHomeSquareCell({
     Key? key,
     required this.videoModel,
     required this.cellWidth,

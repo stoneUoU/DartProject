@@ -2,8 +2,8 @@ import 'package:FlutterProject/base/config/YLZMacros.dart';
 import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:flutter/material.dart';
 
-class MGFooterFeedBackWidget extends StatelessWidget {
-  const MGFooterFeedBackWidget({Key? key}) : super(key: key);
+class MGHomeFooterFeedBackWidget extends StatelessWidget {
+  const MGHomeFooterFeedBackWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

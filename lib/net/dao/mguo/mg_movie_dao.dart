@@ -1,5 +1,5 @@
-import 'package:FlutterProject/logic/mguo/home/model/mg_ad_model.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_video_detail_model.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGAdModel.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGVideoDetailModel.dart';
 import 'package:FlutterProject/logic/mguo/topics/model/MGAdModels.dart';
 import 'package:FlutterProject/net/http/core/hi_net.dart';
 import 'package:FlutterProject/net/http/request/mguo/mg_movie_request.dart';
@@ -21,8 +21,8 @@ class MGMovieDao {
     return _sendVideoCancelCollect(id, token);
   }
 
-  static videoCommentList(int movieId, int pageIndex) {
-    return _sendVideoCommentList(movieId, pageIndex);
+  static videoCommentList(int videoId, int pageIndex) {
+    return _sendVideoCommentList(videoId, pageIndex);
   }
 
   static _sendVideoInfo(int id, String token) async {
@@ -72,11 +72,11 @@ class MGMovieDao {
     return result;
   }
 
-  static _sendVideoCommentList(int movieId, int pageIndex) async {
+  static _sendVideoCommentList(int videoId, int pageIndex) async {
     MGMovieRequest request;
     request = MGMovieRequest();
     request.pathCategory = 4;
-    request.add("vod_id", movieId);
+    request.add("vod_id", videoId);
     request.add("page", pageIndex);
     request.add("limit", 10);
     var result = await HiNet().fire(request);

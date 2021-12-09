@@ -3,7 +3,7 @@ import 'package:FlutterProject/base/navigator/HiNavigator.dart';
 import 'package:FlutterProject/logic/chsHome/YLZElecCodeViewPage.dart';
 import 'package:FlutterProject/logic/chsHome/YLZScanViewPage.dart';
 import 'package:FlutterProject/logic/healthCode/controller/YLZHealthCodeViewPage.dart';
-import 'package:FlutterProject/logic/mguo/home/controller/mg_home_player_page.dart';
+import 'package:FlutterProject/logic/mguo/home/controller/MGVideoPlayerPage.dart';
 import 'package:FlutterProject/logic/mguo/login/MGCodeLoginPage.dart';
 import 'package:FlutterProject/logic/mguo/login/MGForgetPwdPage.dart';
 import 'package:FlutterProject/logic/mguo/login/MGRegisterPage.dart';
@@ -152,7 +152,7 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
     } else if (routeStatus == RouteStatus.scan) {
       page = pageWrap(YLZScanViewPage());
     } else if (routeStatus == RouteStatus.videoPlay) {
-      page = pageWrap(MGHomePlayerPage(movieId: _args?["movieId"]));
+      page = pageWrap(MGVideoPlayerPage(videoId: _args?["videoId"]));
     } else if (routeStatus == RouteStatus.healthCode) {
       page = pageWrap(YLZHealthCodeViewPage());
     } else if (routeStatus == RouteStatus.topicList) {
@@ -163,7 +163,7 @@ class APPRouteDelegate extends RouterDelegate<APPRoutePath>
       ));
     } else if (routeStatus == RouteStatus.movieDetail) {
       page = pageWrap(MGMovieDetailViewPage(
-        movieId: _args?["movieId"],
+        videoId: _args?["videoId"],
       ));
     } else if (routeStatus == RouteStatus.privacyPolicy) {
       page = pageWrap(MGPrivacyPolicyViewPage());

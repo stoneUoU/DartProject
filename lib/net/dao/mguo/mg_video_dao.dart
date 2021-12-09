@@ -1,6 +1,6 @@
-import 'package:FlutterProject/logic/mguo/home/model/mg_video_decode_model.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_video_detail_model.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_video_parse_model.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGVideoDecodeModel.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGVideoDetailModel.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGVideoParseModel.dart';
 import 'package:FlutterProject/logic/mguo/topics/model/MGAdModels.dart';
 import 'package:FlutterProject/net/http/core/hi_net.dart';
 import 'package:FlutterProject/net/http/request/mguo/mg_video_parse_equest.dart';

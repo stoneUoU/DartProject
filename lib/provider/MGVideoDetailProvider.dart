@@ -1,29 +1,23 @@
+import 'package:FlutterProject/net/db/hi_cache.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class MGVideoDetailProvider with ChangeNotifier, DiagnosticableTreeMixin {
-  int _selectedChannel = 0;
+  int selectedChannel(int videoId) {
+    return HiCache.getInstance().get("Channel-${videoId}") ?? 0;
+  }
 
-  int get selectedChannel => _selectedChannel;
+  int selectedRow(int videoId) {
+    return HiCache.getInstance().get("Row-${videoId}") ?? 0;
+  }
 
-  int _selectedRow = 0;
-
-  int get selectedRow => _selectedRow;
-
-  void changeSelectedChannel(int channel) {
-    _selectedChannel = channel;
+  void changeSelectedChannel(int videoId, int channel) {
+    HiCache.getInstance().setInt("Channel-${videoId}", channel);
     notifyListeners();
   }
 
-  void changeSelectedRow(int row) {
-    _selectedRow = row;
+  void changeSelectedRow(int videoId, int row) {
+    HiCache.getInstance().setInt("Row-${videoId}", row);
     notifyListeners();
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(IntProperty('_selectedChannel', selectedChannel));
-    properties.add(IntProperty('_selectedRow', selectedRow));
   }
 }

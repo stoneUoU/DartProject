@@ -1,7 +1,7 @@
 import 'package:FlutterProject/logic/chsHome/YLZElecCodeViewPage.dart';
 import 'package:FlutterProject/logic/chsHome/YLZScanViewPage.dart';
 import 'package:FlutterProject/logic/healthCode/controller/YLZHealthCodeViewPage.dart';
-import 'package:FlutterProject/logic/mguo/home/controller/mg_home_player_page.dart';
+import 'package:FlutterProject/logic/mguo/home/controller/MGVideoPlayerPage.dart';
 import 'package:FlutterProject/logic/mguo/login/MGCodeLoginPage.dart';
 import 'package:FlutterProject/logic/mguo/login/MGForgetPwdPage.dart';
 import 'package:FlutterProject/logic/mguo/login/MGRegisterPage.dart';
@@ -71,7 +71,7 @@ RouteStatus getStatus(MaterialPage page) {
     return RouteStatus.elecCode;
   } else if (page.child is YLZScanViewPage) {
     return RouteStatus.scan;
-  } else if (page.child is MGHomePlayerPage) {
+  } else if (page.child is MGVideoPlayerPage) {
     return RouteStatus.videoPlay;
   } else if (page.child is YLZHealthCodeViewPage) {
     return RouteStatus.healthCode;

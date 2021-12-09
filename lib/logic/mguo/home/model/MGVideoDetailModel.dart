@@ -1,5 +1,5 @@
-import 'package:FlutterProject/logic/mguo/home/model/mg_father_video_player_model.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_home_model.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGHomeModel.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGVideoPlayerFatherModel.dart';
 
 /// name : "流星幻剑"
 /// msg : "2021"
@@ -60,13 +60,18 @@ class MGVideoDetailModel {
   bool? _isSharevip;
   bool? _openSharevip;
   List<VideoModel>? _likes;
-  List<MGFatherVideoPlayerModel> totalVideolist = [];
+  List<MGVideoPlayerFatherModel> totalVideolist = [];
 
   String? get name => _name;
+
   String? get msg => _msg;
+
   String? get score => _score;
+
   int? get hits => _hits;
+
   int? get isFree => _isFree;
+
   bool? get openH5 => _openH5;
 
   String? get type => _type;

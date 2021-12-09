@@ -1,9 +1,9 @@
 import 'package:FlutterProject/base/config/YLZMacros.dart';
 import 'package:FlutterProject/base/config/YLZStyle.dart';
-import 'package:FlutterProject/logic/mguo/home/controller/mg_home_tab_page.dart';
-import 'package:FlutterProject/logic/mguo/home/model/mg_home_nav_model.dart';
-import 'package:FlutterProject/logic/mguo/home/view/mg_home_navigation_widget.dart';
-import 'package:FlutterProject/logic/mguo/home/view/mg_top_tab_widget.dart';
+import 'package:FlutterProject/logic/mguo/home/controller/MGHomeTabPage.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGHomeNavModel.dart';
+import 'package:FlutterProject/logic/mguo/home/view/home/MGHomeNavigationWidget.dart';
+import 'package:FlutterProject/logic/mguo/home/view/home/MGHomeTopTabWidget.dart';
 import 'package:FlutterProject/net/dao/mguo/mg_home_dao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -82,7 +82,7 @@ class _MGHomeViewPageState extends State<MGHomeViewPage>
 
   ///自定义顶部tab
   _tabBar() {
-    return MGTopTabWidget(
+    return MGHomeTopTabWidget(
       modelList.map<Tab>((tab) {
         return Tab(
           text: tab.name,

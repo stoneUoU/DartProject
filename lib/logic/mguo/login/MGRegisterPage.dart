@@ -6,7 +6,7 @@ import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/base/extent/YLZTextFieldExtent.dart';
 import 'package:FlutterProject/base/extent/YLZValidatedExtent.dart';
 import 'package:FlutterProject/logic/mguo/login/MGCodeLoginPage.dart';
-import 'package:FlutterProject/logic/mguo/login/model/mg_login_model.dart';
+import 'package:FlutterProject/logic/mguo/login/model/MGLoginModel.dart';
 import 'package:FlutterProject/net/dao/mguo/mg_login_dao.dart';
 import 'package:FlutterProject/net/db/hi_cache.dart';
 import 'package:FlutterProject/net/model/MGBaseModel.dart';

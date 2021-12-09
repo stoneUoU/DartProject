@@ -1,7 +1,7 @@
 import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:flutter/material.dart';
 
-class MGTopTabWidget extends StatelessWidget {
+class MGHomeTopTabWidget extends StatelessWidget {
   final List<Widget> tabs;
   final TabController controller;
   final double fontSize;
@@ -9,7 +9,7 @@ class MGTopTabWidget extends StatelessWidget {
   final double insets;
   final Color unselectedLabelColor;
 
-  const MGTopTabWidget(this.tabs,
+  const MGHomeTopTabWidget(this.tabs,
       {Key? key,
       required this.controller,
       this.fontSize = 13,
