@@ -31,7 +31,6 @@ class HiNet {
       printLog(e);
     }
     var result = response.data;
-    printLog(result);
     var status = response.statusCode;
     switch (status) {
       case 200:
@@ -56,6 +55,6 @@ class HiNet {
   }
 
   void printLog(log) {
-    // print('hi_net:' + log.toString());
+    print('hi_net:' + log.toString());
   }
 }

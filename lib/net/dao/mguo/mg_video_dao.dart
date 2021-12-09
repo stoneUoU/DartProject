@@ -1,7 +1,9 @@
 import 'package:FlutterProject/logic/mguo/home/model/mg_video_decode_model.dart';
 import 'package:FlutterProject/logic/mguo/home/model/mg_video_detail_model.dart';
+import 'package:FlutterProject/logic/mguo/home/model/mg_video_parse_model.dart';
 import 'package:FlutterProject/logic/mguo/topics/model/MGAdModels.dart';
 import 'package:FlutterProject/net/http/core/hi_net.dart';
+import 'package:FlutterProject/net/http/request/mguo/mg_video_parse_equest.dart';
 import 'package:FlutterProject/net/http/request/mguo/mg_video_request.dart';
 
 class MGHomeVideoDao {
@@ -11,6 +13,10 @@ class MGHomeVideoDao {
 
   static videoDecode(String player_code) {
     return _sendVideoDecode(player_code);
+  }
+
+  static videoParse(String requestUrl, String AUTHORIZE) {
+    return _sendVideoParse(requestUrl, AUTHORIZE);
   }
 
   static videoAds(String flag) {
@@ -48,7 +54,18 @@ class MGHomeVideoDao {
     request.add("flag", flag);
     var result = await HiNet().fire(request);
     model = MGAdModels.fromJson(result);
-    // print("VideoAds______${result}");
     return model;
+  }
+
+  static _sendVideoParse(String requestUrl, String AUTHORIZE) async {
+    MGVideoParseRequest request;
+    MGVideoParseModel parseModel = MGVideoParseModel();
+    request = MGVideoParseRequest();
+    request.requestUrl = requestUrl;
+    request.addHeader("AUTHORIZE", AUTHORIZE);
+    var result = await HiNet().fire(request);
+    print("result_____${result}");
+    parseModel = MGVideoParseModel.fromJson(result);
+    return parseModel;
   }
 }

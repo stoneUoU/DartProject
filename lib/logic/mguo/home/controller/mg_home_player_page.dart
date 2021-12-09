@@ -134,6 +134,9 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
       await player.stop();
     }
     await player.reset().then((_) async {
+      FijkOption option = FijkOption();
+      option.setPlayerOption("Cookie", model.cookie);
+      player.applyOptions(option);
       player.setDataSource(model.url ?? "", autoPlay: true);
     });
   }
@@ -827,21 +830,15 @@ class _MGHomePlayerPageState extends State<MGHomePlayerPage> {
     HiCache.getInstance().setString("milliseconds", timeStampString);
     String saltString = "043730226d9ada98";
     String secretString = "${saltString}${timeStampString}";
-    Map<String, String> headers = {
-      "AUTHORIZE": EncryptUtil.encodeMd5(secretString)
-    };
-    dio.options.headers.addAll({});
     var data = {
       "url": videoString,
       "tm": HiCache.getInstance().get("milliseconds")
     };
-    print("parseUrl_____${parseUrl}");
     String ParseUrlString =
         "${parseUrl}".contains("?") ? "${parseUrl}" : "${parseUrl}?";
-    var response =
-        await dio.get("${ParseUrlString}&url=${data["url"]}&tm=${data["tm"]}");
-    MGVideoParseModel parseModel = MGVideoParseModel.fromJson(response.data);
-    print("parseModel_____${json.encode(parseModel)}");
+    MGVideoParseModel parseModel = await MGHomeVideoDao.videoParse(
+        "${ParseUrlString}&url=${data["url"]}&tm=${data["tm"]}",
+        EncryptUtil.encodeMd5(secretString));
     bool code = parseModel.code == "200" || parseModel.code == "1";
     bool status = parseModel.status == "200";
     MGVideoParseResModel model = MGVideoParseResModel();
