@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:FlutterProject/base/config/YLZMacros.dart';
 import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/base/view/YLZNormalView.dart';
-import 'package:FlutterProject/logic/mguo/home/Configs/mg_fijkplayer_schema.dart';
-import 'package:FlutterProject/logic/mguo/home/Configs/mg_fijkplayer_skin.dart';
+import 'package:FlutterProject/logic/mguo/home/Configs/MGFijkplayerSkin.dart';
 import 'package:FlutterProject/logic/mguo/home/model/MGAdModel.dart';
 import 'package:FlutterProject/logic/mguo/home/model/MGHomeModel.dart';
 import 'package:FlutterProject/logic/mguo/home/model/MGVideoDecodeModel.dart';
@@ -132,14 +129,12 @@ class _MGVideoPlayerPageState extends State<MGVideoPlayerPage> {
    * 播放视频：
    */
   _fireVideo(MGVideoParseResModel model) async {
-    print("model_____${json.encode(model)}");
     if (player.value.state == FijkState.completed) {
       await player.stop();
     }
     await player.reset().then((_) async {
-      FijkOption option = FijkOption();
-      option.setPlayerOption("Cookie", model.cookie);
-      player.applyOptions(option);
+      player.setOption(FijkOption.formatCategory, "headers",
+          "User-Agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, liKe Gecko) Chrome/94.0.4606.81 Safari/537.36\r\nCookie:${model.cookie}");
       player.setDataSource(model.url ?? "", autoPlay: true);
     });
   }
@@ -167,7 +162,15 @@ class _MGVideoPlayerPageState extends State<MGVideoPlayerPage> {
     });
   }
 
-  FijkView _buildFijkView(double width, double height) {
+  FijkView _buildFijkView(
+      MGVideoDetailModel model, double width, double height) {
+    MGVideoPlayerFatherModel channelModel = MGVideoPlayerFatherModel();
+    model.totalVideolist.forEach((element) {
+      MGVideoPlayerFatherModel eleMent = element as MGVideoPlayerFatherModel;
+      if (eleMent.channelChecked) {
+        channelModel = eleMent;
+      }
+    });
     return FijkView(
       width: width,
       height: height,
@@ -182,23 +185,30 @@ class _MGVideoPlayerPageState extends State<MGVideoPlayerPage> {
         Rect texturePos,
       ) {
         /// 使用自定义的布局
-        return CustomFijkPanel(
+        return MGFijkPanel(
           player: player,
           viewSize: viewSize,
           texturePos: texturePos,
           pageContent: context,
           // 标题 当前页面顶部的标题部分
-          playerTitle: "标题",
+          playerTitle: (model.isMovie ?? false)
+              ? (model.name ?? "")
+              : ("${model.name ?? ""}(第${selectedRow + 1}集)"),
           // 当前视频改变钩子
           onChangeVideo: onChangeVideo,
-          // 当前视频源tabIndex
+          // 当前视频源tabIndexv
           curTabIdx: selectedChannel,
           // 当前视频源activeIndex
           curActiveIdx: selectedRow,
           // 显示的配置
           showConfig: vCfg,
+          videoId: widget.videoId,
           // json格式化后的视频数据
-          videoFormat: VideoSourceFormat.fromJson(videoList),
+          totalVideolist: model.totalVideolist,
+          model: model,
+          fijkPanelFireListener: () {
+            this._fireVideoModel();
+          },
         );
       },
     );
@@ -221,7 +231,7 @@ class _MGVideoPlayerPageState extends State<MGVideoPlayerPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            child: _buildFijkView(screenWidth, playerHeight),
+            child: _buildFijkView(model, screenWidth, playerHeight),
             width: screenWidth,
             height: playerHeight,
           ),

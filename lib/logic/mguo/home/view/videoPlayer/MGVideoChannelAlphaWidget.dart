@@ -1,4 +1,3 @@
-import 'package:FlutterProject/base/config/YLZMacros.dart';
 import 'package:FlutterProject/base/config/YLZStyle.dart';
 import 'package:FlutterProject/logic/mguo/home/model/MGVideoDetailModel.dart';
 import 'package:FlutterProject/logic/mguo/home/model/MGVideoPlayerFatherModel.dart';
@@ -41,83 +40,118 @@ class MGVideoChannelAlphaWidget extends StatelessWidget {
               height: playerHeight,
             ),
             Positioned(
-                child: Container(
-                  decoration: new BoxDecoration(
-                    color: Color(MGColorMainViewThree),
-                    borderRadius:
-                        new BorderRadius.all(new Radius.circular(4.0)),
-                  ),
-                  height: 44 * 4 + TabbarSafeBottomM(context),
-                  width: 120,
-                  child: Column(
-                    children: [
-                      Container(
-                          height: 44,
-                          alignment: Alignment.center,
-                          child: Text(
-                            "选择播放渠道",
-                            style: TextStyle(
-                                color: Color(YLZColorTitleThree), fontSize: 16),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          )),
-                      Container(
-                        height: 44 * 3,
-                        child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemBuilder: (context, index) {
-                            MGVideoPlayerFatherModel channelModel =
-                                model.totalVideolist[index];
-                            return InkWell(
-                              child: Column(
-                                children: [
-                                  Container(
-                                    alignment: Alignment.center,
-                                    height: 43,
-                                    child: Text(
-                                      "${channelModel.show}",
-                                      style: TextStyle(
-                                          color: channelModel.channelChecked
-                                              ? Colors.red
-                                              : Colors.white,
-                                          fontSize: 14),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                child: InkWell(
+                  child: Container(
+                    decoration: new BoxDecoration(
+                      color: Color(MGColorMainViewThree),
+                      borderRadius:
+                          new BorderRadius.all(new Radius.circular(4.0)),
+                    ),
+                    height: 50 * 4,
+                    width: 136,
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (context, index) {
+                        MGVideoPlayerFatherModel channelModel =
+                            model.totalVideolist[index];
+                        print("____-${channelModel.icon}");
+                        return InkWell(
+                          child: Container(
+                            height: 50,
+                            child: Row(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(left: 16),
+                                  child: _buildImageView(channelModel),
+                                  width: 16,
+                                  height: 16,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 16),
+                                  height: 50,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        height: 49.5,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "${channelModel.show}",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color: channelModel.channelChecked
+                                                  ? Color(0xffA6AFC4)
+                                                  : Color(0xff696F82),
+                                              fontSize: 14),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.bottomRight,
+                                        width: 88,
+                                        height: 0.5,
+                                        color:
+                                            model.totalVideolist.length - 1 ==
+                                                    index
+                                                ? Color(MGColorMainViewThree)
+                                                : Color(0xff696F82),
+                                      ),
+                                    ],
                                   ),
-                                  Container(
-                                      height: 1.0,
-                                      color: Color(MGColorMainViewTwo))
-                                ],
-                              ),
-                              onTap: () {
-                                if (channelModel.channelChecked) {
-                                  return;
-                                }
-                                context
-                                    .read<MGVideoDetailProvider>()
-                                    .changeSelectedChannel(this.videoId, index);
-                                context
-                                    .read<MGVideoDetailProvider>()
-                                    .changeSelectedRow(this.videoId, 0);
-                                if (this.channelClickListener != null) {
-                                  this.channelClickListener(index);
-                                }
-                              },
-                            );
+                                ),
+                              ],
+                            ),
+                          ),
+                          onTap: () {
+                            if (channelModel.channelChecked) {
+                              return;
+                            }
+                            context
+                                .read<MGVideoDetailProvider>()
+                                .changeSelectedChannel(this.videoId, index);
+                            context
+                                .read<MGVideoDetailProvider>()
+                                .changeSelectedRow(this.videoId, 0);
+                            if (this.channelClickListener != null) {
+                              this.channelClickListener(index);
+                            }
                           },
-                          itemCount: model.totalVideolist.length,
-                        ),
-                      )
-                    ],
+                        );
+                      },
+                      itemCount: model.totalVideolist.length,
+                    ),
                   ),
+                  onTap: () {},
                 ),
                 right: 16,
+                top: playerHeight + 52),
+            Positioned(
+                child: Image.asset(
+                  'assets/images/hsa_switch_movie_up.png',
+                ),
+                right: 24,
                 top: playerHeight + 44)
           ])),
       onTap: () {
-        print("关闭");
+        Navigator.pop(context);
       },
     );
+  }
+
+  Widget _buildImageView(MGVideoPlayerFatherModel model) {
+    if (model.icon?.length == 0) {
+      return Image.asset(
+        'assets/images/ic_logo_place.png',
+        fit: BoxFit.fill,
+      );
+    } else {
+      return ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          child: new FadeInImage.assetNetwork(
+            placeholder: "assets/images/ic_logo_place.png",
+            image: "${model.icon ?? ""}",
+            fit: BoxFit.cover,
+          ));
+    }
   }
 }

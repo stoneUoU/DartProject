@@ -3,12 +3,16 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:FlutterProject/logic/mguo/home/Configs/MGFijkplayerSlider.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGVideoDetailModel.dart';
+import 'package:FlutterProject/logic/mguo/home/model/MGVideoPlayerFatherModel.dart';
+import 'package:FlutterProject/provider/MGVideoDetailProvider.dart';
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:wakelock/wakelock.dart';
 
-import './mg_fijkplayer_schema.dart' show VideoSourceFormat;
-import './mg_fijkplayer_slider.dart' show NewFijkSliderColors, NewFijkSlider;
+import './MGFijkplayerSlider.dart' show NewFijkSliderColors, NewFijkSlider;
 
 double speed = 1.0;
 bool lockStuff = false;
@@ -17,6 +21,10 @@ final double barHeight = 50.0;
 final double barFillingHeight =
     MediaQueryData.fromWindow(window).padding.top + barHeight;
 final double barGap = barFillingHeight - barHeight;
+
+typedef void MGFijkPanelFireListener();
+
+typedef void MGBuildGestureDetectorFireListener();
 
 abstract class ShowConfigAbs {
   late bool nextBtn;
@@ -48,7 +56,7 @@ String _duration2String(Duration duration) {
       : "$twoDigitMinutes:$twoDigitSeconds";
 }
 
-class CustomFijkPanel extends StatefulWidget {
+class MGFijkPanel extends StatefulWidget {
   final FijkPlayer player;
   final Size viewSize;
   final Rect texturePos;
@@ -58,9 +66,12 @@ class CustomFijkPanel extends StatefulWidget {
   final int curTabIdx;
   final int curActiveIdx;
   final ShowConfigAbs showConfig;
-  final VideoSourceFormat? videoFormat;
+  final int videoId;
+  final MGVideoDetailModel model;
+  final List<MGVideoPlayerFatherModel> totalVideolist;
+  final MGFijkPanelFireListener fijkPanelFireListener;
 
-  CustomFijkPanel({
+  MGFijkPanel({
     required this.player,
     required this.viewSize,
     required this.texturePos,
@@ -68,22 +79,25 @@ class CustomFijkPanel extends StatefulWidget {
     this.playerTitle = "",
     required this.showConfig,
     this.onChangeVideo,
-    required this.videoFormat,
+    required this.videoId,
+    required this.totalVideolist,
+    required this.model,
+    required this.fijkPanelFireListener,
     required this.curTabIdx,
     required this.curActiveIdx,
   });
 
   @override
-  _CustomFijkPanelState createState() => _CustomFijkPanelState();
+  _MGFijkPanelState createState() => _MGFijkPanelState();
 }
 
-class _CustomFijkPanelState extends State<CustomFijkPanel>
+class _MGFijkPanelState extends State<MGFijkPanel>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   FijkPlayer get player => widget.player;
 
   ShowConfigAbs get showConfig => widget.showConfig;
 
-  VideoSourceFormat get _videoSourceTabs => widget.videoFormat!;
+  List<MGVideoPlayerFatherModel> get _videoSourceTabs => widget.totalVideolist;
 
   bool _lockStuff = lockStuff;
   bool _hideLockStuff = hideLockStuff;
@@ -101,7 +115,7 @@ class _CustomFijkPanelState extends State<CustomFijkPanel>
 
   void initEvent() {
     _tabController = TabController(
-      length: _videoSourceTabs.video!.length,
+      length: _videoSourceTabs.length,
       vsync: this,
     );
     _animationController = AnimationController(
@@ -114,7 +128,7 @@ class _CustomFijkPanelState extends State<CustomFijkPanel>
       end: Offset.zero,
     ).animate(_animationController!);
     // is not null
-    if (_videoSourceTabs.video!.length < 1) return null;
+    if (_videoSourceTabs.length < 1) return null;
     // init plater state
     setState(() {
       _playerState = player.value.state;
@@ -125,7 +139,7 @@ class _CustomFijkPanelState extends State<CustomFijkPanel>
       });
     }
     // is not null
-    if (_videoSourceTabs.video!.length < 1) return null;
+    if (_videoSourceTabs.length < 1) return null;
     // autoplay and existurl
     if (showConfig.isAutoPlay && !_isPlaying) {
       int curTabIdx = widget.curTabIdx;
@@ -192,12 +206,19 @@ class _CustomFijkPanelState extends State<CustomFijkPanel>
   Future<void> changeCurPlayVideo(int tabIdx, int activeIdx) async {
     // await player.stop();
     await player.reset().then((_) {
-      String curTabActiveUrl =
-          _videoSourceTabs.video![tabIdx]!.list![activeIdx]!.url!;
-      player.setDataSource(
-        curTabActiveUrl,
-        autoPlay: true,
-      );
+      // String curTabActiveUrl =
+      //     _videoSourceTabs[tabIdx]!.videoModel![activeIdx]!.url!;
+      // player.setDataSource(
+      //   curTabActiveUrl,
+      //   autoPlay: true,
+      // );
+      context
+          .read<MGVideoDetailProvider>()
+          .changeSelectedChannel(widget.videoId, tabIdx);
+      context
+          .read<MGVideoDetailProvider>()
+          .changeSelectedRow(widget.videoId, activeIdx);
+      widget.fijkPanelFireListener();
       // 回调
       widget.onChangeVideo!(tabIdx, activeIdx);
     });
@@ -339,8 +360,7 @@ class _CustomFijkPanelState extends State<CustomFijkPanel>
             color: Colors.purple[700],
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
-          tabs:
-              _videoSourceTabs.video!.map((e) => Tab(text: e!.name!)).toList(),
+          tabs: _videoSourceTabs.map((e) => Tab(text: e.show)).toList(),
           isScrollable: true,
           controller: _tabController,
         ),
@@ -358,8 +378,9 @@ class _CustomFijkPanelState extends State<CustomFijkPanel>
   // 剧集 tabCon
   List<Widget> _createTabConList() {
     List<Widget> list = [];
-    _videoSourceTabs.video!.asMap().keys.forEach((int tabIdx) {
-      List<Widget> playListBtns = _videoSourceTabs.video![tabIdx]!.list!
+    _videoSourceTabs.asMap().keys.forEach((int tabIdx) {
+      List<Widget> playListBtns = _videoSourceTabs[tabIdx]
+          .videoModel!
           .asMap()
           .keys
           .map((int activeIdx) {
@@ -385,7 +406,7 @@ class _CustomFijkPanelState extends State<CustomFijkPanel>
               changeCurPlayVideo(newTabIdx, newActiveIdx);
             },
             child: Text(
-              _videoSourceTabs.video![tabIdx]!.list![activeIdx]!.name!,
+              _videoSourceTabs[tabIdx].videoModel![activeIdx].sectionName!,
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -606,7 +627,7 @@ class _CustomFijkPanelState extends State<CustomFijkPanel>
         );
       } else {
         ws.add(
-          _buildGestureDetector(
+          _MGBuildGestureDetector(
             curActiveIdx: widget.curActiveIdx,
             curTabIdx: widget.curTabIdx,
             onChangeVideo: widget.onChangeVideo,
@@ -616,9 +637,10 @@ class _CustomFijkPanelState extends State<CustomFijkPanel>
             pageContent: widget.pageContent,
             playerTitle: widget.playerTitle,
             viewSize: widget.viewSize,
-            videoFormat: widget.videoFormat,
+            totalVideolist: widget.totalVideolist,
             changeDrawerState: changeDrawerState,
             changeLockState: changeLockState,
+            buildGestureDetectorFireListener: widget.fijkPanelFireListener,
           ),
         );
       }
@@ -642,7 +664,7 @@ class _CustomFijkPanelState extends State<CustomFijkPanel>
   bool get wantKeepAlive => true;
 }
 
-class _buildGestureDetector extends StatefulWidget {
+class _MGBuildGestureDetector extends StatefulWidget {
   final FijkPlayer player;
   final Size viewSize;
   final Rect texturePos;
@@ -654,9 +676,10 @@ class _buildGestureDetector extends StatefulWidget {
   final Function changeDrawerState;
   final Function changeLockState;
   final ShowConfigAbs showConfig;
-  final VideoSourceFormat? videoFormat;
+  final List<MGVideoPlayerFatherModel> totalVideolist;
+  final MGBuildGestureDetectorFireListener buildGestureDetectorFireListener;
 
-  _buildGestureDetector({
+  _MGBuildGestureDetector({
     Key? key,
     required this.player,
     required this.viewSize,
@@ -667,21 +690,22 @@ class _buildGestureDetector extends StatefulWidget {
     this.onChangeVideo,
     required this.curTabIdx,
     required this.curActiveIdx,
-    required this.videoFormat,
+    required this.totalVideolist,
     required this.changeDrawerState,
     required this.changeLockState,
+    required this.buildGestureDetectorFireListener,
   }) : super(key: key);
 
   @override
-  _buildGestureDetectorState createState() => _buildGestureDetectorState();
+  _MGBuildGestureDetectorState createState() => _MGBuildGestureDetectorState();
 }
 
-class _buildGestureDetectorState extends State<_buildGestureDetector> {
+class _MGBuildGestureDetectorState extends State<_MGBuildGestureDetector> {
   FijkPlayer get player => widget.player;
 
   ShowConfigAbs get showConfig => widget.showConfig;
 
-  VideoSourceFormat get _videoSourceTabs => widget.videoFormat!;
+  List<MGVideoPlayerFatherModel> get _videoSourceTabs => widget.totalVideolist;
 
   Duration _duration = Duration();
   Duration _currentPos = Duration();
@@ -731,7 +755,7 @@ class _buildGestureDetectorState extends State<_buildGestureDetector> {
   };
 
   // 初始化构造函数
-  _buildGestureDetectorState();
+  _MGBuildGestureDetectorState();
 
   void initEvent() {
     // 设置初始化的值，全屏与半屏切换后，重设
@@ -821,7 +845,7 @@ class _buildGestureDetectorState extends State<_buildGestureDetector> {
     // 播放完成
     bool playend = (value.state == FijkState.completed);
     bool isOverFlow = widget.curActiveIdx + 1 >=
-        _videoSourceTabs.video![widget.curTabIdx]!.list!.length;
+        _videoSourceTabs[widget.curTabIdx].videoModel!.length;
     // 播放完成 && tablen没有溢出 && curActive没有溢出
     if (playend && !isOverFlow && showConfig.autoNext) {
       int newTabIdx = widget.curTabIdx;
@@ -967,12 +991,13 @@ class _buildGestureDetectorState extends State<_buildGestureDetector> {
     });
     player.reset().then((_) {
       _speed = speed = 1.0;
-      String curTabActiveUrl =
-          _videoSourceTabs.video![tabIdx]!.list![activeIdx]!.url!;
-      player.setDataSource(
-        curTabActiveUrl,
-        autoPlay: true,
-      );
+      // String curTabActiveUrl =
+      //     _videoSourceTabs[tabIdx]!.videoModel![activeIdx]!.url!;
+      // player.setDataSource(
+      //   curTabActiveUrl,
+      //   autoPlay: true,
+      // );
+      widget.buildGestureDetectorFireListener();
       // 回调
       widget.onChangeVideo!(tabIdx, activeIdx);
     });
@@ -1083,8 +1108,9 @@ class _buildGestureDetectorState extends State<_buildGestureDetector> {
                             Icons.skip_next,
                             () {
                               bool isOverFlow = widget.curActiveIdx + 1 >=
-                                  _videoSourceTabs
-                                      .video![widget.curTabIdx]!.list!.length;
+                                  _videoSourceTabs[widget.curTabIdx]
+                                      .videoModel!
+                                      .length;
                               // 没有溢出的情况下
                               if (!isOverFlow) {
                                 int newTabIdx = widget.curTabIdx;
@@ -1475,7 +1501,7 @@ class _buildGestureDetectorState extends State<_buildGestureDetector> {
   }
 
   // 播放器控制器 ui
-  Widget _buildGestureDetector() {
+  Widget _MGBuildGestureDetector() {
     return GestureDetector(
       onTap: _cancelAndRestartTimer,
       behavior: HitTestBehavior.opaque,
@@ -1576,6 +1602,6 @@ class _buildGestureDetectorState extends State<_buildGestureDetector> {
 
   @override
   Widget build(BuildContext context) {
-    return _buildGestureDetector();
+    return _MGBuildGestureDetector();
   }
 }
