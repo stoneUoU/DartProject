@@ -1,5 +1,5 @@
-import 'package:FlutterProject/base/config/YLZStyle.dart';
-import 'package:FlutterProject/base/view/YLZNormalView.dart';
+import 'package:DartProject/base/config/YLZStyle.dart';
+import 'package:DartProject/base/view/YLZNormalView.dart';
 import 'package:chewie/chewie.dart' hide MaterialControls;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

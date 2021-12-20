@@ -1,11 +1,11 @@
 import 'dart:math';
 
-import 'package:FlutterProject/base/config/YLZMacros.dart';
-import 'package:FlutterProject/base/navigator/HiNavigator.dart';
-import 'package:FlutterProject/logic/chsHome/view/cell/elec/YLZElecCodeBannerWidget.dart';
-import 'package:FlutterProject/logic/chsHome/view/cell/elec/YLZElecCodeCarouselWidget.dart';
-import 'package:FlutterProject/logic/chsHome/view/cell/elec/YLZElecCodeFunctionWidget.dart';
-import 'package:FlutterProject/logic/chsHome/view/cell/elec/YLZElecCodeWidget.dart';
+import 'package:DartProject/base/config/YLZMacros.dart';
+import 'package:DartProject/base/navigator/HiNavigator.dart';
+import 'package:DartProject/logic/chsHome/view/cell/elec/YLZElecCodeBannerWidget.dart';
+import 'package:DartProject/logic/chsHome/view/cell/elec/YLZElecCodeCarouselWidget.dart';
+import 'package:DartProject/logic/chsHome/view/cell/elec/YLZElecCodeFunctionWidget.dart';
+import 'package:DartProject/logic/chsHome/view/cell/elec/YLZElecCodeWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 

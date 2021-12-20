@@ -1,7 +1,7 @@
-import 'package:FlutterProject/base/config/YLZMacros.dart';
-import 'package:FlutterProject/base/config/YLZStyle.dart';
-import 'package:FlutterProject/logic/mguo/topics/model/MGDetailModel.dart';
-import 'package:FlutterProject/net/dao/mguo/mg_topics_dao.dart';
+import 'package:DartProject/base/config/YLZMacros.dart';
+import 'package:DartProject/base/config/YLZStyle.dart';
+import 'package:DartProject/logic/mguo/topics/model/MGDetailModel.dart';
+import 'package:DartProject/net/dao/mguo/mg_topics_dao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';

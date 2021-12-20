@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:FlutterProject/base/config/YLZStyle.dart';
-import 'package:FlutterProject/base/navigator/HiNavigator.dart';
-import 'package:FlutterProject/logic/mguo/home/controller/MGHomeViewPage.dart';
-import 'package:FlutterProject/logic/mguo/login/model/MGLoginModel.dart';
-import 'package:FlutterProject/logic/mguo/topics/controller/MGTopicListViewPage.dart';
-import 'package:FlutterProject/logic/mine/controller/YLZMineViewPage.dart';
-import 'package:FlutterProject/net/db/hi_cache.dart';
+import 'package:DartProject/base/config/YLZStyle.dart';
+import 'package:DartProject/base/navigator/HiNavigator.dart';
+import 'package:DartProject/logic/mguo/home/controller/MGHomeViewPage.dart';
+import 'package:DartProject/logic/mguo/login/model/MGLoginModel.dart';
+import 'package:DartProject/logic/mguo/topics/controller/MGTopicListViewPage.dart';
+import 'package:DartProject/logic/mine/controller/YLZMineViewPage.dart';
+import 'package:DartProject/net/db/hi_cache.dart';
 import 'package:flutter/material.dart';
 
 ///底部导航

@@ -1,4 +1,4 @@
-import 'package:FlutterProject/net/http/core/dio_adapter.dart';
+import 'package:DartProject/net/http/core/dio_adapter.dart';
 import 'package:singleton/singleton.dart';
 
 import '../request/base_request.dart';

@@ -1,7 +1,7 @@
-import 'package:FlutterProject/base/config/YLZMacros.dart';
-import 'package:FlutterProject/base/config/YLZStyle.dart';
-import 'package:FlutterProject/base/view/YLZPhotoView.dart';
-import 'package:FlutterProject/logic/rainBow/model/YLZReportDetailModel.dart';
+import 'package:DartProject/base/config/YLZMacros.dart';
+import 'package:DartProject/base/config/YLZStyle.dart';
+import 'package:DartProject/base/view/YLZPhotoView.dart';
+import 'package:DartProject/logic/rainBow/model/YLZReportDetailModel.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';

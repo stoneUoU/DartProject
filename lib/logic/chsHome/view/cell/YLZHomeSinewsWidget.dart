@@ -1,6 +1,6 @@
-import 'package:FlutterProject/base/config/YLZStyle.dart';
-import 'package:FlutterProject/base/view/YLZSeparatorView.dart';
-import 'package:FlutterProject/logic/chsHome/model/YLZDynamicModel.dart';
+import 'package:DartProject/base/config/YLZStyle.dart';
+import 'package:DartProject/base/view/YLZSeparatorView.dart';
+import 'package:DartProject/logic/chsHome/model/YLZDynamicModel.dart';
 import 'package:flutter/material.dart';
 
 class YLZHomeSinewsWidget extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'package:FlutterProject/net/http/request/base_request.dart';
+import 'package:DartProject/net/http/request/base_request.dart';
 
 class HomeRequest extends BaseRequest {
   int pathCategory = 0;

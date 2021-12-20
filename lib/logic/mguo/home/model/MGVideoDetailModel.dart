@@ -1,5 +1,5 @@
-import 'package:FlutterProject/logic/mguo/home/model/MGHomeModel.dart';
-import 'package:FlutterProject/logic/mguo/home/model/MGVideoPlayerFatherModel.dart';
+import 'package:DartProject/logic/mguo/home/model/MGHomeModel.dart';
+import 'package:DartProject/logic/mguo/home/model/MGVideoPlayerFatherModel.dart';
 
 /// name : "流星幻剑"
 /// msg : "2021"

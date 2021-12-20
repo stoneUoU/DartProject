@@ -1,5 +1,5 @@
-import 'package:FlutterProject/base/config/YLZStyle.dart';
-import 'package:FlutterProject/logic/mguo/home/model/MGHomeModel.dart';
+import 'package:DartProject/base/config/YLZStyle.dart';
+import 'package:DartProject/logic/mguo/home/model/MGHomeModel.dart';
 import 'package:flutter/material.dart';
 
 class MGHomeSquareCell extends StatelessWidget {

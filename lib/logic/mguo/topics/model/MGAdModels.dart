@@ -1,4 +1,4 @@
-import 'package:FlutterProject/logic/mguo/home/model/MGAdModel.dart';
+import 'package:DartProject/logic/mguo/home/model/MGAdModel.dart';
 
 /// code : 1
 /// msg : "ok"

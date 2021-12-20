@@ -1,7 +1,7 @@
-import 'package:FlutterProject/logic/mguo/topics/model/MGDetailModel.dart';
-import 'package:FlutterProject/net/http/core/hi_net.dart';
-import 'package:FlutterProject/net/http/request/base_request.dart';
-import 'package:FlutterProject/net/http/request/mguo/mg_topics_request.dart';
+import 'package:DartProject/logic/mguo/topics/model/MGDetailModel.dart';
+import 'package:DartProject/net/http/core/hi_net.dart';
+import 'package:DartProject/net/http/request/base_request.dart';
+import 'package:DartProject/net/http/request/mguo/mg_topics_request.dart';
 
 class MGTopicDao {
   static list(int pageIndex) {

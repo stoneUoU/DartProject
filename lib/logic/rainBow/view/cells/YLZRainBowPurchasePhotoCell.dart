@@ -1,7 +1,7 @@
-import 'package:FlutterProject/base/config/YLZMacros.dart';
-import 'package:FlutterProject/base/config/YLZStyle.dart';
-import 'package:FlutterProject/logic/rainBow/model/YLZRainBowModel.dart';
-import 'package:FlutterProject/logic/rainBow/view/YLZRainBowBoxLabelView.dart';
+import 'package:DartProject/base/config/YLZMacros.dart';
+import 'package:DartProject/base/config/YLZStyle.dart';
+import 'package:DartProject/logic/rainBow/model/YLZRainBowModel.dart';
+import 'package:DartProject/logic/rainBow/view/YLZRainBowBoxLabelView.dart';
 import 'package:flutter/material.dart';
 
 class YLZRainBowPurchasePhotoCell extends StatefulWidget {

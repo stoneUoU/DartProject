@@ -1,6 +1,6 @@
-import 'package:FlutterProject/base/config/YLZMacros.dart';
-import 'package:FlutterProject/base/config/YLZStyle.dart';
-import 'package:FlutterProject/logic/rainBow/model/YLZReportModel.dart';
+import 'package:DartProject/base/config/YLZMacros.dart';
+import 'package:DartProject/base/config/YLZStyle.dart';
+import 'package:DartProject/logic/rainBow/model/YLZReportModel.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 //flutter闭包与android类似的

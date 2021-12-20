@@ -3,10 +3,10 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:FlutterProject/logic/mguo/home/Configs/MGFijkplayerSlider.dart';
-import 'package:FlutterProject/logic/mguo/home/model/MGVideoDetailModel.dart';
-import 'package:FlutterProject/logic/mguo/home/model/MGVideoPlayerFatherModel.dart';
-import 'package:FlutterProject/provider/MGVideoDetailProvider.dart';
+import 'package:DartProject/logic/mguo/home/Configs/MGFijkplayerSlider.dart';
+import 'package:DartProject/logic/mguo/home/model/MGVideoDetailModel.dart';
+import 'package:DartProject/logic/mguo/home/model/MGVideoPlayerFatherModel.dart';
+import 'package:DartProject/provider/MGVideoDetailProvider.dart';
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

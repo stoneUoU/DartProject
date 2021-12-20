@@ -1,5 +1,5 @@
-import 'package:FlutterProject/base/config/YLZStyle.dart';
-import 'package:FlutterProject/logic/area/model/YLZGeneralModel.dart';
+import 'package:DartProject/base/config/YLZStyle.dart';
+import 'package:DartProject/logic/area/model/YLZGeneralModel.dart';
 import 'package:flutter/material.dart';
 
 class YLZMineListWidget extends StatelessWidget {

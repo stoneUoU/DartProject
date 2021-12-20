@@ -1,16 +1,16 @@
 import 'dart:convert';
 
-import 'package:FlutterProject/base/config/YLZMacros.dart';
-import 'package:FlutterProject/base/config/YLZStyle.dart';
-import 'package:FlutterProject/base/navigator/HiNavigator.dart';
-import 'package:FlutterProject/logic/mguo/home/model/MGHomeModel.dart';
-import 'package:FlutterProject/logic/mguo/home/model/MGVideoDetailModel.dart';
-import 'package:FlutterProject/logic/mguo/login/model/MGLoginModel.dart';
-import 'package:FlutterProject/logic/mguo/topics/model/MGAdModels.dart';
-import 'package:FlutterProject/logic/mguo/topics/model/MGCommentModel.dart';
-import 'package:FlutterProject/net/dao/mguo/mg_movie_dao.dart';
-import 'package:FlutterProject/net/db/hi_cache.dart';
-import 'package:FlutterProject/provider/MGMovieDetailProvider.dart';
+import 'package:DartProject/base/config/YLZMacros.dart';
+import 'package:DartProject/base/config/YLZStyle.dart';
+import 'package:DartProject/base/navigator/HiNavigator.dart';
+import 'package:DartProject/logic/mguo/home/model/MGHomeModel.dart';
+import 'package:DartProject/logic/mguo/home/model/MGVideoDetailModel.dart';
+import 'package:DartProject/logic/mguo/login/model/MGLoginModel.dart';
+import 'package:DartProject/logic/mguo/topics/model/MGAdModels.dart';
+import 'package:DartProject/logic/mguo/topics/model/MGCommentModel.dart';
+import 'package:DartProject/net/dao/mguo/mg_movie_dao.dart';
+import 'package:DartProject/net/db/hi_cache.dart';
+import 'package:DartProject/provider/MGMovieDetailProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';

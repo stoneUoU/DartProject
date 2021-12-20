@@ -1,4 +1,4 @@
-import 'package:FlutterProject/base/config/YLZMacros.dart';
+import 'package:DartProject/base/config/YLZMacros.dart';
 import 'package:flutter/material.dart';
 
 class YLZElecCodeBannerWidget extends StatelessWidget {

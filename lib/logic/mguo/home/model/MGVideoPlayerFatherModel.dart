@@ -1,4 +1,4 @@
-import 'package:FlutterProject/logic/mguo/home/model/MGVideoPlayerModel.dart';
+import 'package:DartProject/logic/mguo/home/model/MGVideoPlayerModel.dart';
 
 /// videoModel : [{"playerUrl":"https://ks-xpc4.xpccdn.com/26ad2412-3068-43f8-9afc-19de6f94ccde.mp4","img":"http://r1.ykimg.com/053500006004EB8D13EA35084A250A9B?x-oss-process=image/resize,w_750/interlace,1/quality,Q_100/sharpen,100","sectionName":"第1集","videoId":"42068","show":"萌果TV","videoName":"为理想，去实现","isMovie":false,"from":"mguotv"}]
 /// show : "萌果TV"

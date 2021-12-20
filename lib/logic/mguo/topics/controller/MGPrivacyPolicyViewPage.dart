@@ -1,6 +1,6 @@
-import 'package:FlutterProject/base/config/YLZStyle.dart';
-import 'package:FlutterProject/base/navigator/HiNavigator.dart';
-import 'package:FlutterProject/net/db/hi_cache.dart';
+import 'package:DartProject/base/config/YLZStyle.dart';
+import 'package:DartProject/base/navigator/HiNavigator.dart';
+import 'package:DartProject/net/db/hi_cache.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -1,10 +1,10 @@
-import 'package:FlutterProject/logic/mguo/home/model/MGVideoDecodeModel.dart';
-import 'package:FlutterProject/logic/mguo/home/model/MGVideoDetailModel.dart';
-import 'package:FlutterProject/logic/mguo/home/model/MGVideoParseModel.dart';
-import 'package:FlutterProject/logic/mguo/topics/model/MGAdModels.dart';
-import 'package:FlutterProject/net/http/core/hi_net.dart';
-import 'package:FlutterProject/net/http/request/mguo/mg_video_parse_equest.dart';
-import 'package:FlutterProject/net/http/request/mguo/mg_video_request.dart';
+import 'package:DartProject/logic/mguo/home/model/MGVideoDecodeModel.dart';
+import 'package:DartProject/logic/mguo/home/model/MGVideoDetailModel.dart';
+import 'package:DartProject/logic/mguo/home/model/MGVideoParseModel.dart';
+import 'package:DartProject/logic/mguo/topics/model/MGAdModels.dart';
+import 'package:DartProject/net/http/core/hi_net.dart';
+import 'package:DartProject/net/http/request/mguo/mg_video_parse_equest.dart';
+import 'package:DartProject/net/http/request/mguo/mg_video_request.dart';
 
 class MGHomeVideoDao {
   static videoInfo(int id) {

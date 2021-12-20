@@ -1,8 +1,8 @@
-import 'package:FlutterProject/logic/mguo/home/model/MGAdModel.dart';
-import 'package:FlutterProject/logic/mguo/home/model/MGVideoDetailModel.dart';
-import 'package:FlutterProject/logic/mguo/topics/model/MGAdModels.dart';
-import 'package:FlutterProject/net/http/core/hi_net.dart';
-import 'package:FlutterProject/net/http/request/mguo/mg_movie_request.dart';
+import 'package:DartProject/logic/mguo/home/model/MGAdModel.dart';
+import 'package:DartProject/logic/mguo/home/model/MGVideoDetailModel.dart';
+import 'package:DartProject/logic/mguo/topics/model/MGAdModels.dart';
+import 'package:DartProject/net/http/core/hi_net.dart';
+import 'package:DartProject/net/http/request/mguo/mg_movie_request.dart';
 
 class MGMovieDao {
   static videoInfo(int id, String token) {

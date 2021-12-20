@@ -1,6 +1,6 @@
-import 'package:FlutterProject/base/config/YLZMacros.dart';
-import 'package:FlutterProject/base/config/YLZStyle.dart';
-import 'package:FlutterProject/logic/chsHome/model/YLZInsuredLandModel.dart';
+import 'package:DartProject/base/config/YLZMacros.dart';
+import 'package:DartProject/base/config/YLZStyle.dart';
+import 'package:DartProject/logic/chsHome/model/YLZInsuredLandModel.dart';
 import 'package:flutter/material.dart';
 
 class YLZElecAreaWidget extends StatefulWidget {

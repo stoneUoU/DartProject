@@ -1,6 +1,6 @@
-import 'package:FlutterProject/net/http/core/hi_net.dart';
-import 'package:FlutterProject/net/http/request/base_request.dart';
-import 'package:FlutterProject/net/http/request/mguo/mg_login_request.dart';
+import 'package:DartProject/net/http/core/hi_net.dart';
+import 'package:DartProject/net/http/request/base_request.dart';
+import 'package:DartProject/net/http/request/mguo/mg_login_request.dart';
 
 class MGLoginDao {
   static login(String user_name, String user_pwd) {

@@ -1,4 +1,4 @@
-import 'package:FlutterProject/base/route/RouteHandles.dart';
+import 'package:DartProject/base/route/RouteHandles.dart';
 import 'package:fluro/fluro.dart';
 
 class Routes {
